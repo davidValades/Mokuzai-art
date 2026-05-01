@@ -82,9 +82,38 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
             {/* Pie del Cajón - Checkout */}
             {cart.length > 0 && (
               <div className="p-8 bg-[#DBDBDB] border-t border-[#706D54]/10">
+                
+                {/* Lógica de Envío de Cortesía */}
+                {cartTotal < 300 ? (
+                  <div className="mb-6">
+                    <div className="flex justify-between text-[#706D54]/80 text-[10px] tracking-widest uppercase mb-2">
+                      <span>Envío Peninsular</span>
+                      <span>15 €</span>
+                    </div>
+                    <div className="w-full h-[1px] bg-[#706D54]/20 relative">
+                      <div 
+                        className="absolute top-0 left-0 h-full bg-[#A08963] transition-all duration-700"
+                        style={{ width: `${(cartTotal / 300) * 100}%` }}
+                      ></div>
+                    </div>
+                    <p className="text-center text-[#706D54]/60 text-[10px] mt-2 italic">
+                      Faltan {300 - cartTotal} € para disfrutar del envío de cortesía.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="mb-6 text-center border border-[#A08963]/30 py-2">
+                    <span className="font-inter text-[10px] tracking-widest uppercase text-[#A08963]">
+                      Envío de cortesía activado
+                    </span>
+                  </div>
+                )}
+
+                {/* Total y Botón */}
                 <div className="flex justify-between items-center mb-8">
-                  <span className="font-inter text-xs tracking-widest uppercase text-[#706D54]/80">Total</span>
-                  <span className="font-inter text-xl text-[#706D54]">{cartTotal} €</span>
+                  <span className="font-inter text-xs tracking-widest uppercase text-[#706D54]/80">Total (IVA incl.)</span>
+                  <span className="font-inter text-xl text-[#706D54]">
+                    {cartTotal < 300 ? cartTotal + 15 : cartTotal} €
+                  </span>
                 </div>
                 <button className="w-full py-5 bg-[#706D54] text-[#DBDBDB] font-inter text-xs tracking-[0.2em] uppercase transition-all duration-500 hover:bg-[#5a5743]">
                   Formalizar Adquisición
