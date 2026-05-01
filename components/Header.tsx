@@ -292,7 +292,7 @@ export default function Header() {
                         : "text-[#706D54]/60 hover:text-[#706D54]"
                     }`}
                   >
-                    <span className="text-2xl">{l.flag}</span>
+                    <span className={`fi fi-${l.icon} text-2xl`}></span>
                     <span className="font-inter text-[8px] tracking-[0.2em] uppercase">
                       {l.code}
                     </span>
