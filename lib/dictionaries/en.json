@@ -1,0 +1,22 @@
+{
+  "navigation": {
+    "collection": "Collection",
+    "workshop": "The Workshop",
+    "contact": "Contact"
+  },
+  "cart": {
+    "title": "Your Selection",
+    "empty_state": "The space is empty.",
+    "discover": "Discover pieces for your collection.",
+    "remove": "Remove",
+    "total": "Total (VAT incl.)",
+    "checkout": "Complete Acquisition"
+  },
+  "product": {
+    "specs": "Artwork Specifications",
+    "add_to_cart": "Add to Cart",
+    "adding": "Safeguarding...",
+    "buy_now": "Direct Acquisition",
+    "back": "Return"
+  }
+}

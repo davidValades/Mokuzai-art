@@ -1,0 +1,14 @@
+{
+  "navigation": {
+    "collection": "Bilduma",
+    "workshop": "Lantegia",
+    "contact": "Kontaktua"
+  },
+  "product": {
+    "back": "Itzuli",
+    "specs": "Lanaren Zehaztapenak",
+    "add_to_cart": "Saskira Gehitu",
+    "adding": "Zaintzen...",
+    "buy_now": "Eskuratu"
+  }
+}

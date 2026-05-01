@@ -1,0 +1,22 @@
+{
+  "navigation": {
+    "collection": "Colección",
+    "workshop": "El Taller",
+    "contact": "Contacto"
+  },
+  "cart": {
+    "title": "Tu Selección",
+    "empty_state": "El espacio está vacío.",
+    "discover": "Descubre piezas para tu colección.",
+    "remove": "Retirar",
+    "total": "Total (IVA incl.)",
+    "checkout": "Formalizar Adquisición"
+  },
+  "product": {
+    "specs": "Especificaciones de la Obra",
+    "add_to_cart": "Añadir a la Cesta",
+    "adding": "Custodiando...",
+    "buy_now": "Adquirir Directamente",
+    "back": "Volver"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "navigation": {
+    "collection": "Col·lecció",
+    "workshop": "El Taller",
+    "contact": "Contacte"
+  },
+  "product": {
+    "back": "Tornar",
+    "specs": "Especificacions de l'Obra",
+    "add_to_cart": "Afegir a la Cesta",
+    "adding": "Custodiant...",
+    "buy_now": "Adquirir"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "navigation": {
+    "collection": "Kollektion",
+    "workshop": "Die Werkstatt",
+    "contact": "Kontakt"
+  },
+  "product": {
+    "back": "Zurück",
+    "specs": "Spezifikationen des Werks",
+    "add_to_cart": "In den Warenkorb",
+    "adding": "In Obhut...",
+    "buy_now": "Erwerben"
+  }
+}
