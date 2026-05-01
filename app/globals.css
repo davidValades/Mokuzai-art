@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+@theme {
+  --color-olive-dark: #706D54;
+  --color-earth-noble: #A08963;
+  --color-wood-light: #C9B194;
+  --color-stone-serene: #DBDBDB;
+}
+
+:root {
+  --background: var(--color-stone-serene);
+  --foreground: var(--color-olive-dark);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+}
