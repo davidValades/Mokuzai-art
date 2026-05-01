@@ -4,11 +4,30 @@
     "workshop": "Die Werkstatt",
     "contact": "Kontakt"
   },
+  "cart": {
+    "title": "Ihre Auswahl",
+    "empty_state": "Der Raum ist leer.",
+    "discover": "Entdecken Sie Stücke für Ihre Kollektion.",
+    "remove": "Entfernen",
+    "total": "Gesamt (inkl. MwSt.)",
+    "checkout": "Erwerb Abschließen"
+  },
   "product": {
-    "back": "Zurück",
     "specs": "Spezifikationen des Werks",
     "add_to_cart": "In den Warenkorb",
     "adding": "In Obhut...",
-    "buy_now": "Erwerben"
+    "buy_now": "Direkt Erwerben",
+    "back": "Zurück"
+  },
+  "home": {
+    "subtitle": "Craftsmanship & Dedication",
+    "tagline": "Die Seele des Holzes.",
+    "our_works": "Unsere Werke",
+    "master_collections": "Meisterkollektionen",
+    "view_collection": "Kollektion ansehen",
+    "meisho_desc": "Der Raum für Kontemplation. Architektur im intimen Maßstab.",
+    "shokutaku_desc": "Eleganz im Alltäglichen. Das Ritual des Tisches.",
+    "budo_desc": "Die bewachte Ehre. Etuis für den Weg des Kriegers.",
+    "footer_rights": "Crafted with Dedication"
   }
 }

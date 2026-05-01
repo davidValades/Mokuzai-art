@@ -1,10 +1,10 @@
 import { type SchemaTypeDefinition } from "sanity";
-import artwork from "./artwork"; // Importamos la obra que acabamos de crear
+import artwork from "./artwork";
+import collection from "./collection";
+import home from "./home";
 
-// Exportamos schemaTypes para que coincida con lo que busca tu sanity.config.ts
-export const schemaTypes: SchemaTypeDefinition[] = [artwork];
+export const schemaTypes: SchemaTypeDefinition[] = [artwork, collection, home];
 
-// Mantenemos este objeto por si Sanity lo usa internamente en su config base
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: schemaTypes,
 };

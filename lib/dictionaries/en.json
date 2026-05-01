@@ -10,13 +10,24 @@
     "discover": "Discover pieces for your collection.",
     "remove": "Remove",
     "total": "Total (VAT incl.)",
-    "checkout": "Complete Acquisition"
+    "checkout": "Finalize Acquisition"
   },
   "product": {
     "specs": "Artwork Specifications",
-    "add_to_cart": "Add to Cart",
-    "adding": "Safeguarding...",
-    "buy_now": "Direct Acquisition",
+    "add_to_cart": "Add to Basket",
+    "adding": "Guarding...",
+    "buy_now": "Acquire Directly",
     "back": "Return"
+  },
+  "home": {
+    "subtitle": "Craftsmanship & Dedication",
+    "tagline": "The soul of the wood.",
+    "our_works": "Our Works",
+    "master_collections": "Master Collections",
+    "view_collection": "View collection",
+    "meisho_desc": "The space for contemplation. Architecture on an intimate scale.",
+    "shokutaku_desc": "Elegance in the everyday. The ritual of the table.",
+    "budo_desc": "Honor guarded. Cases for the warrior's path.",
+    "footer_rights": "Crafted with Dedication"
   }
 }

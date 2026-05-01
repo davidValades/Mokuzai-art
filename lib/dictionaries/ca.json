@@ -1,14 +1,33 @@
 {
   "navigation": {
     "collection": "Col·lecció",
-    "workshop": "El Taller",
+    "workshop": "L'Atelier",
     "contact": "Contacte"
   },
+  "cart": {
+    "title": "La Teva Selecció",
+    "empty_state": "L'espai està buit.",
+    "discover": "Descobreix peces per a la teva col·lecció.",
+    "remove": "Retirar",
+    "total": "Total (IVA inclòs)",
+    "checkout": "Formalitzar Adquisició"
+  },
   "product": {
-    "back": "Tornar",
     "specs": "Especificacions de l'Obra",
-    "add_to_cart": "Afegir a la Cesta",
+    "add_to_cart": "Afegir a la Cistella",
     "adding": "Custodiant...",
-    "buy_now": "Adquirir"
+    "buy_now": "Adquirir Directament",
+    "back": "Tornar"
+  },
+  "home": {
+    "subtitle": "Craftsmanship & Dedication",
+    "tagline": "L'ànima de la fusta.",
+    "our_works": "Les Nostres Obres",
+    "master_collections": "Col·leccions Mestres",
+    "view_collection": "Veure col·lecció",
+    "meisho_desc": "L'espai per a la contemplació. Arquitectura en escala íntima.",
+    "shokutaku_desc": "L'elegància en la quotidianitat. El ritual de la taula.",
+    "budo_desc": "L'honor custodiat. Estoigs per al camí del guerrer.",
+    "footer_rights": "Crafted with Dedication"
   }
 }

@@ -4,11 +4,30 @@
     "workshop": "Lantegia",
     "contact": "Kontaktua"
   },
+  "cart": {
+    "title": "Zure Aukera",
+    "empty_state": "Espazioa hutsik dago.",
+    "discover": "Ezagutu zure bildumarako piezak.",
+    "remove": "Kendu",
+    "total": "Guztira (BEZa barne)",
+    "checkout": "Eskuraketa Gauzatu"
+  },
   "product": {
-    "back": "Itzuli",
-    "specs": "Lanaren Zehaztapenak",
+    "specs": "Lanaren Xehetasunak",
     "add_to_cart": "Saskira Gehitu",
     "adding": "Zaintzen...",
-    "buy_now": "Eskuratu"
+    "buy_now": "Zuzenean Eskuratu",
+    "back": "Itzuli"
+  },
+  "home": {
+    "subtitle": "Craftsmanship & Dedication",
+    "tagline": "Zurezko arima.",
+    "our_works": "Gure Lanak",
+    "master_collections": "Bilduma Maisuak",
+    "view_collection": "Bilduma ikusi",
+    "meisho_desc": "Kontenplaziorako espazioa. Arkitektura eskala intimoan.",
+    "shokutaku_desc": "Dotorezia egunerokotasunean. Mahaiaren errituala.",
+    "budo_desc": "Ohorea zainduta. Gerlariaren biderako estutxeak.",
+    "footer_rights": "Crafted with Dedication"
   }
 }

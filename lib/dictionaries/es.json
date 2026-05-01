@@ -18,5 +18,16 @@
     "adding": "Custodiando...",
     "buy_now": "Adquirir Directamente",
     "back": "Volver"
+  },
+  "home": {
+    "subtitle": "Craftsmanship & Dedication",
+    "tagline": "El alma de la madera.",
+    "our_works": "Nuestras Obras",
+    "master_collections": "Colecciones Maestras",
+    "view_collection": "Ver colección",
+    "meisho_desc": "El espacio para la contemplación. Arquitectura en escala íntima.",
+    "shokutaku_desc": "La elegancia en lo cotidiano. El ritual de la mesa.",
+    "budo_desc": "El honor custodiado. Estuches para el camino del guerrero.",
+    "footer_rights": "Crafted with Dedication"
   }
 }
