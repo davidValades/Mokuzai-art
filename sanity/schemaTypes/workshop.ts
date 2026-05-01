@@ -67,6 +67,12 @@ export default defineType({
             type: "array",
             of: [{ type: "string" }],
           },
+          {
+            name: "ctaText",
+            title: "CTA - Frase de invitación",
+            type: "string",
+          },
+          { name: "ctaButton", title: "CTA - Texto del botón", type: "string" },
         ],
       })),
     }),
