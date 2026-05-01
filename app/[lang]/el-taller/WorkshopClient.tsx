@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
+import Link from "next/link";
 
 export default function WorkshopClient({
   data,
@@ -143,7 +144,7 @@ export default function WorkshopClient({
         </motion.div>
       </div>
 
-      {/* 4. CIERRE: Tu CTA original */}
+      {/* 4. CIERRE Y LLAMADA A LA ACCIÓN DINÁMICA */}
       <div className="py-32 px-6 text-center bg-[#DBDBDB]">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -152,14 +153,16 @@ export default function WorkshopClient({
           transition={{ duration: 1 }}
         >
           <p className="font-cormorant text-2xl italic text-[#706D54] mb-10">
-            Descubre las piezas que han nacido en esta mesa de trabajo.
+            {/* Usamos la traducción de Sanity con un fallback por seguridad */}
+            {t.ctaText ||
+              "Descubre las piezas que han nacido en esta mesa de trabajo."}
           </p>
-          <a
+          <Link
             href={`/${lang}/coleccion`}
             className="inline-block py-4 px-12 border border-[#706D54] text-[#706D54] font-inter text-xs tracking-[0.2em] uppercase transition-all duration-500 hover:bg-[#706D54] hover:text-[#DBDBDB]"
           >
-            Explorar la Colección
-          </a>
+            {t.ctaButton || "Explorar la Colección"}
+          </Link>
         </motion.div>
       </div>
     </div>
