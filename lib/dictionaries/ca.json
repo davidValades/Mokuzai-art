@@ -1,16 +1,18 @@
 {
   "navigation": {
     "collection": "Col·lecció",
-    "workshop": "L'Atelier",
+    "workshop": "El Taller",
     "contact": "Contacte"
   },
   "cart": {
     "title": "La Teva Selecció",
-    "empty_state": "L'espai està buit.",
-    "discover": "Descobreix peces per a la teva col·lecció.",
-    "remove": "Retirar",
-    "total": "Total (IVA inclòs)",
-    "checkout": "Formalitzar Adquisició"
+    "checkout": "Finalitzar Comanda",
+    "empty_state": "La teva cistella és buida",
+    "discover": "Descobreix l'ànima de la fusta a la nostra col·lecció",
+    "remove": "Treure",
+    "total": "Total Estimat",
+    "shipping_courtesy": "Enviament de cortesia activat",
+    "shipping_missing": "Falten {{amount}}€ per a l'enviament de cortesia"
   },
   "product": {
     "specs": "Especificacions de l'Obra",
@@ -20,14 +22,23 @@
     "back": "Tornar"
   },
   "home": {
-    "subtitle": "Craftsmanship & Dedication",
+    "subtitle": "Artesania & Dedicació",
     "tagline": "L'ànima de la fusta.",
     "our_works": "Les Nostres Obres",
     "master_collections": "Col·leccions Mestres",
     "view_collection": "Veure col·lecció",
-    "meisho_desc": "L'espai per a la contemplació. Arquitectura en escala íntima.",
-    "shokutaku_desc": "L'elegància en la quotidianitat. El ritual de la taula.",
+    "meisho_desc": "L'espai per a la contemplació. Arquitectura a escala íntima.",
+    "shokutaku_desc": "L'elegància en el quotidià. El ritual de la taula.",
     "budo_desc": "L'honor custodiat. Estoigs per al camí del guerrer.",
-    "footer_rights": "Crafted with Dedication"
+    "footer_rights": "Creat amb Dedicació"
+  },
+  "checkout": {
+    "guest_title": "Informació d'Enviament",
+    "email": "Correu electrònic",
+    "name": "Nom complet",
+    "address": "Adreça completa",
+    "city": "Ciutat",
+    "pay_now": "Procedir al pagament",
+    "processing": "Processant artesania..."
   }
 }

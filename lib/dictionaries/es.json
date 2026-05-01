@@ -6,11 +6,13 @@
   },
   "cart": {
     "title": "Tu Selección",
-    "empty_state": "El espacio está vacío.",
-    "discover": "Descubre piezas para tu colección.",
-    "remove": "Retirar",
-    "total": "Total (IVA incl.)",
-    "checkout": "Formalizar Adquisición"
+    "checkout": "Finalizar Pedido",
+    "empty_state": "Tu cesta está vacía",
+    "discover": "Descubre el alma de la madera en nuestra colección",
+    "remove": "Quitar",
+    "total": "Total Estimado",
+    "shipping_courtesy": "Envío de cortesía activado",
+    "shipping_missing": "Faltan {{amount}}€ para envío de cortesía"
   },
   "product": {
     "specs": "Especificaciones de la Obra",
@@ -29,5 +31,14 @@
     "shokutaku_desc": "La elegancia en lo cotidiano. El ritual de la mesa.",
     "budo_desc": "El honor custodiado. Estuches para el camino del guerrero.",
     "footer_rights": "Crafted with Dedication"
+  },
+  "checkout": {
+    "guest_title": "Información de Envío",
+    "email": "Correo electrónico",
+    "name": "Nombre completo",
+    "address": "Dirección completa",
+    "city": "Ciudad",
+    "pay_now": "Proceder al pago",
+    "processing": "Procesando artesanía..."
   }
 }

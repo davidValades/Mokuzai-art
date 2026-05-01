@@ -5,29 +5,40 @@
     "contact": "Kontakt"
   },
   "cart": {
-    "title": "Ihre Auswahl",
-    "empty_state": "Der Raum ist leer.",
-    "discover": "Entdecken Sie Stücke für Ihre Kollektion.",
+    "title": "Deine Auswahl",
+    "checkout": "Bestellung abschließen",
+    "empty_state": "Dein Warenkorb ist leer",
+    "discover": "Entdecke die Seele des Holzes in unserer Kollektion",
     "remove": "Entfernen",
-    "total": "Gesamt (inkl. MwSt.)",
-    "checkout": "Erwerb Abschließen"
+    "total": "Geschätzter Gesamtbetrag",
+    "shipping_courtesy": "Kostenloser Versand aktiviert",
+    "shipping_missing": "Es fehlen {{amount}}€ für kostenlosen Versand"
   },
   "product": {
     "specs": "Spezifikationen des Werks",
     "add_to_cart": "In den Warenkorb",
-    "adding": "In Obhut...",
-    "buy_now": "Direkt Erwerben",
+    "adding": "Wird verwahrt...",
+    "buy_now": "Direkt erwerben",
     "back": "Zurück"
   },
   "home": {
-    "subtitle": "Craftsmanship & Dedication",
+    "subtitle": "Handwerkskunst & Hingabe",
     "tagline": "Die Seele des Holzes.",
     "our_works": "Unsere Werke",
     "master_collections": "Meisterkollektionen",
     "view_collection": "Kollektion ansehen",
     "meisho_desc": "Der Raum für Kontemplation. Architektur im intimen Maßstab.",
     "shokutaku_desc": "Eleganz im Alltäglichen. Das Ritual des Tisches.",
-    "budo_desc": "Die bewachte Ehre. Etuis für den Weg des Kriegers.",
-    "footer_rights": "Crafted with Dedication"
+    "budo_desc": "Die gehütete Ehre. Etuis für den Weg des Kriegers.",
+    "footer_rights": "Mit Hingabe gefertigt"
+  },
+  "checkout": {
+    "guest_title": "Versandinformationen",
+    "email": "E-Mail-Adresse",
+    "name": "Vollständiger Name",
+    "address": "Vollständige Adresse",
+    "city": "Stadt",
+    "pay_now": "Zur Zahlung fortfahren",
+    "processing": "Handwerk wird verarbeitet..."
   }
 }

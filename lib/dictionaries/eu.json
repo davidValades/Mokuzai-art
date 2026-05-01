@@ -1,33 +1,44 @@
 {
   "navigation": {
     "collection": "Bilduma",
-    "workshop": "Lantegia",
-    "contact": "Kontaktua"
+    "workshop": "Tailerra",
+    "contact": "Harremanetarako"
   },
   "cart": {
-    "title": "Zure Aukera",
-    "empty_state": "Espazioa hutsik dago.",
-    "discover": "Ezagutu zure bildumarako piezak.",
+    "title": "Zure Hautaketa",
+    "checkout": "Eskaria Bete",
+    "empty_state": "Zure saskia hutsik dago",
+    "discover": "Ezagutu egurraren arima gure bilduman",
     "remove": "Kendu",
-    "total": "Guztira (BEZa barne)",
-    "checkout": "Eskuraketa Gauzatu"
+    "total": "Guztira Estimatu",
+    "shipping_courtesy": "Doako bidalketa aktibatuta",
+    "shipping_missing": "{{amount}}€ falta dira doako bidalketarako"
   },
   "product": {
-    "specs": "Lanaren Xehetasunak",
+    "specs": "Lanaren Zehaztapenak",
     "add_to_cart": "Saskira Gehitu",
-    "adding": "Zaintzen...",
-    "buy_now": "Zuzenean Eskuratu",
+    "adding": "Zainduz...",
+    "buy_now": "Zuzenean Erosi",
     "back": "Itzuli"
   },
   "home": {
-    "subtitle": "Craftsmanship & Dedication",
-    "tagline": "Zurezko arima.",
+    "subtitle": "Eskuzko Lana & Dedikazioa",
+    "tagline": "Egurraren arima.",
     "our_works": "Gure Lanak",
-    "master_collections": "Bilduma Maisuak",
+    "master_collections": "Maisu Bildumak",
     "view_collection": "Bilduma ikusi",
-    "meisho_desc": "Kontenplaziorako espazioa. Arkitektura eskala intimoan.",
-    "shokutaku_desc": "Dotorezia egunerokotasunean. Mahaiaren errituala.",
-    "budo_desc": "Ohorea zainduta. Gerlariaren biderako estutxeak.",
-    "footer_rights": "Crafted with Dedication"
+    "meisho_desc": "Kontenplaziorako lekua. Arkitektura eskala intimoan.",
+    "shokutaku_desc": "Egunerokoan dotorezia. Mahaiaren errituala.",
+    "budo_desc": "Zaindutako ohorea. Gerrillariaren bidearen estutzuak.",
+    "footer_rights": "Dedikazioz landua"
+  },
+  "checkout": {
+    "guest_title": "Bidalketa Informazioa",
+    "email": "Posta elektronikoa",
+    "name": "Izen osoa",
+    "address": "Helbide osoa",
+    "city": "Hiria",
+    "pay_now": "Ordainketara joan",
+    "processing": "Eskuzko lana prozesatzen..."
   }
 }
