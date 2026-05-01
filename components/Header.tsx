@@ -3,11 +3,12 @@
 import { useState } from "react";
 import { motion, useScroll, useTransform, useMotionValueEvent, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { useCart } from "@/context/CartContext"; // NUEVO: Importamos el gancho del contexto
+import CartDrawer from "@/components/CartDrawer"; // NUEVO: Importamos el Cajón Visual
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  // Estado para controlar el carrito lateral (lo implementaremos después)
   const [isCartOpen, setIsCartOpen] = useState(false);
   
   const { scrollY } = useScroll();
@@ -26,10 +27,9 @@ export default function Header() {
   const textColor = isScrolled || isOpen ? "text-olive-dark" : "text-stone-serene";
   const lineColor = isScrolled || isOpen ? "bg-olive-dark" : "bg-stone-serene";
 
-  // Contador de prueba para el carrito
-  const cartItemsCount = 0; 
+  // NUEVO: Reemplazamos el '0' estático por la cuenta real de obras en nuestra memoria
+  const { cartCount } = useCart(); 
 
-  // NUEVO: Definimos nuestras rutas de forma estricta para evitar tildes en las URLs
   const navItems = [
     { name: "Colección", path: "/coleccion" },
     { name: "El Taller", path: "/el-taller" },
@@ -54,7 +54,6 @@ export default function Header() {
           
           {/* Navegación Desktop */}
           <nav className="hidden md:flex space-x-12">
-            {/* NUEVO: Iteramos sobre navItems usando item.path */}
             {navItems.map((item) => (
               <Link
                 key={item.name}
@@ -77,8 +76,8 @@ export default function Header() {
               <line x1="3" y1="6" x2="21" y2="6"></line>
               <path d="M16 10a4 4 0 0 1-8 0"></path>
             </svg>
-            {/* Punto sutil si hay items en el carrito */}
-            {cartItemsCount > 0 && (
+            {/* NUEVO: Punto sutil si hay items en el carrito (usa la variable cartCount) */}
+            {cartCount > 0 && (
               <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-[#A08963]" />
             )}
           </button>
@@ -114,7 +113,6 @@ export default function Header() {
             className="fixed inset-0 bg-[#DBDBDB] flex flex-col items-center justify-center z-50"
           >
             <div className="flex flex-col items-center space-y-10">
-              {/* NUEVO: Iteramos sobre navItems también en el menú móvil */}
               {navItems.map((item, index) => (
                 <motion.div
                   key={item.name}
@@ -142,6 +140,9 @@ export default function Header() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* NUEVO: Renderizamos el componente del Carrito pasándole el estado para abrir/cerrar */}
+      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </>
   );
 }

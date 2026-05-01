@@ -4,6 +4,7 @@ import { use, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { useCart } from "@/context/CartContext"; // NUEVO: Importamos el cerebro de nuestra cesta
 
 // Base de datos completa
 const MOCK_DB = [
@@ -78,6 +79,9 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
   const product = MOCK_DB.find((p) => p.slug === slug);
   const [isHovered, setIsHovered] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
+
+  // NUEVO: Instanciamos nuestra función de añadir al carrito
+  const { addToCart } = useCart();
   
   // Efecto Parallax suave para la imagen de cabecera
   const { scrollY } = useScroll();
@@ -94,16 +98,36 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
     );
   }
 
+  // NUEVO: La lógica real de adquisición
   const handleAddToCart = () => {
     setIsAdding(true);
     setTimeout(() => {
+      // 1. Guardamos la obra en la memoria
+      addToCart({
+        id: product.slug,
+        name: product.name,
+        price: product.price,
+        image: product.image,
+        quantity: 1
+      });
       setIsAdding(false);
-      alert(`La obra ${product.name} ha sido guardada en tu selección.`); 
-    }, 800);
+      
+      // 2. Disparamos un evento silencioso para que el Header abra el cajón
+      window.dispatchEvent(new CustomEvent("openCartDrawer"));
+    }, 800); // Mantenemos esta pausa de 800ms; da sensación de proceso premium
   };
 
   const handleDirectBuy = () => {
+    // Para adquisición directa, añadimos al carrito primero
+    addToCart({
+      id: product.slug,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      quantity: 1
+    });
     alert(`Iniciando adquisición directa de: ${product.name}`);
+    // Aquí en el futuro haríamos un router.push('/checkout');
   };
 
   return (
@@ -137,8 +161,6 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
             />
           )}
           
-          {/* ELIMINADO: El gradiente a blanco. 
-              NUEVO: Un degradado sutil de negro a negro oscuro solo para proteger el contraste del Kanji, sin emborronar la foto */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none"></div>
           
           {/* Kanji flotante */}
@@ -153,7 +175,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
         </motion.div>
       </div>
 
-      {/* 2. SECCIÓN DE CONTENIDO (Entra con un corte arquitectónico limpio) */}
+      {/* 2. SECCIÓN DE CONTENIDO */}
       <div className="relative z-10 bg-[#DBDBDB] pt-24 pb-32 px-6 md:px-16 w-full flex justify-center shadow-[0_-20px_40px_rgba(0,0,0,0.15)]">
         <div className="max-w-3xl w-full">
           
