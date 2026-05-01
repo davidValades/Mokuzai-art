@@ -1,6 +1,7 @@
 "use client";
 
 import { use } from "react";
+import Link from "next/link";
 import ProductCard, { Product } from "@/components/ProductCard";
 import { motion } from "framer-motion";
 
@@ -23,7 +24,7 @@ const MOCK_PRODUCTS: Record<string, Product[]> = {
       category: "Iluminación / Shoji",
       price: 145,
       image: "/collections/meisho/mokuzai-meisho-farol-madera-luz-calida.webp",
-      hoverImage: "/collections/meisho/mokuzai-meisho-farol-madera-luz-calida-oscura.webp", // ¡Aquí está la magia!
+      hoverImage: "/collections/meisho/mokuzai-meisho-farol-madera-luz-calida-oscura.webp",
     },
     {
       id: "m3",
@@ -95,7 +96,6 @@ const COLLECTION_INFO: Record<string, { title: string; kanji: string; desc: stri
 };
 
 export default function CollectionPage({ params }: { params: Promise<{ id: string }> }) {
-  // En Next.js 15+, params es una promesa que debemos resolver
   const resolvedParams = use(params);
   const { id } = resolvedParams;
   
@@ -106,6 +106,17 @@ export default function CollectionPage({ params }: { params: Promise<{ id: strin
     <div className="min-h-screen bg-[#DBDBDB] pt-32 pb-24 px-6 md:px-16">
       <div className="max-w-7xl mx-auto">
         
+        {/* NUEVO: Botón de Retorno Minimalista */}
+        <Link 
+          href="/coleccion" 
+          className="mb-10 inline-flex items-center space-x-3 text-[#706D54]/50 hover:text-[#706D54] transition-colors group cursor-pointer"
+        >
+          <svg className="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="1.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          <span className="font-inter text-[10px] tracking-[0.3em] uppercase">Volver a Colecciones</span>
+        </Link>
+
         {/* Cabecera de la Galería */}
         <div className="mb-16 border-b border-[#706D54]/20 pb-12 text-center md:text-left flex flex-col md:flex-row md:items-end justify-between gap-8">
           <div>
