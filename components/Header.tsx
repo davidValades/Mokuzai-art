@@ -11,15 +11,16 @@ import {
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
-import { useI18n } from "@/context/I18nContext"; // NUEVO
+import { useI18n } from "@/context/I18nContext";
 import CartDrawer from "@/components/CartDrawer";
+import "../node_modules/flag-icons/css/flag-icons.min.css";
 
 const LANGUAGES_CONFIG = [
-  { code: "ES", name: "Español", flag: "ES" },
-  { code: "EN", name: "English", flag: "EN" },
-  { code: "CA", name: "Català", flag: "CA" },
-  { code: "EU", name: "Euskara", flag: "EU" },
-  { code: "DE", name: "Deutsch", flag: "DE" },
+  { code: "ES", name: "Español", icon: "es" },
+  { code: "EN", name: "English", icon: "gb" },
+  { code: "CA", name: "Català", icon: "es-ct" },
+  { code: "EU", name: "Euskara", icon: "es-pv" },
+  { code: "DE", name: "Deutsch", icon: "de" },
 ];
 
 export default function Header() {
@@ -177,9 +178,9 @@ export default function Header() {
                     onClick={() => switchLanguage(l.code)}
                     className="w-full px-6 py-2 flex items-center gap-3 hover:bg-[#706D54]/5 transition-colors group/item"
                   >
-                    <span className="text-base grayscale group-hover/item:grayscale-0 transition-all duration-500">
-                      {l.flag}
-                    </span>
+                    <span
+                      className={`fi fi-${l.icon} text-sm grayscale group-hover:grayscale-0 transition-all duration-500`}
+                    />
                     <span className="font-inter text-[9px] tracking-[0.2em] uppercase text-[#706D54]">
                       {l.name}
                     </span>
