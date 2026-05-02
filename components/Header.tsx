@@ -43,6 +43,18 @@ export default function Header({ musicUrl }: { musicUrl?: string | null }) {
     return () => window.removeEventListener("openCartDrawer", handleOpenCart);
   }, []);
 
+  useEffect(() => {
+    if (!musicUrl) return;
+    const audio = new Audio(musicUrl);
+    audio.loop = true;
+    audio.volume = 0.2;
+    audioRef.current = audio;
+    return () => {
+      audio.pause();
+      audioRef.current = null;
+    };
+  }, [musicUrl]);
+
   const toggleAudio = async () => {
     if (audioRef.current) {
       if (isPlaying) {
@@ -101,10 +113,6 @@ export default function Header({ musicUrl }: { musicUrl?: string | null }) {
 
   return (
     <>
-      {musicUrl && (
-        <audio ref={audioRef} loop src={musicUrl} preload="auto" />
-      )}
-
       <motion.header
         style={{ height: headerHeight, backgroundColor: headerBg }}
         className="fixed top-0 left-0 w-full z-[60] flex items-center justify-between px-8 md:px-16 transition-all duration-500 ease-in-out backdrop-blur-sm"
@@ -124,7 +132,7 @@ export default function Header({ musicUrl }: { musicUrl?: string | null }) {
         <div className="flex items-center space-x-6 md:space-x-8 z-50">
           <button
             onClick={toggleAudio}
-            className={`hidden md:flex items-center gap-2 transition-colors duration-500 hover:opacity-50 ${textColor}`}
+            className={`hidden lg:flex items-center gap-2 transition-colors duration-500 hover:opacity-50 ${textColor}`}
           >
             <div className="flex items-end gap-[2px] h-3">
               <motion.div
@@ -157,7 +165,7 @@ export default function Header({ musicUrl }: { musicUrl?: string | null }) {
             </div>
           </button>
 
-          <div className="hidden md:flex items-center gap-4 group relative">
+          <div className="hidden lg:flex items-center gap-4 group relative">
             <div className="flex items-center gap-1 cursor-pointer py-2">
               <span
                 className={`font-inter text-[10px] tracking-widest transition-colors duration-500 ${textColor}`}
@@ -195,7 +203,7 @@ export default function Header({ musicUrl }: { musicUrl?: string | null }) {
             </div>
           </div>
 
-          <nav className="hidden md:flex space-x-8 lg:space-x-12 border-l border-current/20 pl-6 md:pl-8">
+          <nav className="hidden lg:flex space-x-8 lg:space-x-12 border-l border-current/20 pl-6 lg:pl-8">
             {navItems.map((item) => (
               <Link
                 key={item.name}
@@ -213,7 +221,7 @@ export default function Header({ musicUrl }: { musicUrl?: string | null }) {
               href={`/${lang}/cuenta`}
               className={`transition-colors duration-500 hover:text-[#A08963] ${textColor} flex items-center gap-2`}
             >
-              <span className="font-inter text-[10px] tracking-widest uppercase hidden md:inline">
+              <span className="font-inter text-[10px] tracking-widest uppercase hidden lg:inline">
                 {session.user?.name?.split(" ")[0] || "Cuenta"}
               </span>
               <svg
@@ -249,7 +257,7 @@ export default function Header({ musicUrl }: { musicUrl?: string | null }) {
 
           <button
             onClick={() => setIsCartOpen(true)}
-            className={`relative transition-colors duration-500 hover:opacity-50 ${textColor} md:ml-4`}
+            className={`relative transition-colors duration-500 hover:opacity-50 ${textColor} lg:ml-4`}
           >
             <svg
               width="20"
@@ -271,7 +279,7 @@ export default function Header({ musicUrl }: { musicUrl?: string | null }) {
 
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden relative w-7 h-3 focus:outline-none flex flex-col justify-between ml-4"
+            className="lg:hidden relative w-7 h-3 focus:outline-none flex flex-col justify-between ml-4"
           >
             <span
               className={`absolute left-0 w-full h-[1px] transition-all duration-500 origin-center ${lineColor} ${isOpen ? "top-1/2 -translate-y-1/2 rotate-45" : "top-0"}`}
