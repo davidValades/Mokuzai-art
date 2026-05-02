@@ -22,10 +22,10 @@ const cormorant = Cormorant_Garamond({
 export const metadata: Metadata = {
   title: {
     template: "%s | Mokuzai Art",
-    default: "Mokuzai Art | El alma de la madera",
+    default: "Mokuzai Art | El Alma de la Madera Japonesa", //
   },
   description:
-    "Estudio de diseño y artesanía premium. Piezas decorativas talladas a mano inspiradas en el minimalismo japonés y la elegancia Japandi.",
+    "Descubre piezas de artesanía premium talladas a mano. Diseño minimalista inspirado en la estética Zen y Japandi para hogares contemplativos.", //
   keywords: [
     "artesanía japonesa",
     "madera",
@@ -36,28 +36,28 @@ export const metadata: Metadata = {
     "mokuzai",
   ],
   openGraph: {
-    title: "Mokuzai Art | El alma de la madera",
+    title: "Mokuzai Art | El Alma de la Madera Japonesa", //
     description:
-      "Estudio de diseño y artesanía premium. Piezas decorativas talladas a mano inspiradas en el minimalismo japonés.",
-    url: "https://mokuzai-art.vercel.app",
+      "Descubre piezas de artesanía premium talladas a mano. Diseño minimalista inspirado en la estética Zen y Japandi para hogares contemplativos.", //
+    url: "https://mokuzai-art.vercel.app", //
     siteName: "Mokuzai Art",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "/og-image.jpg", //
         width: 1200,
         height: 630,
-        alt: "Bodegón de artesanía japonesa Mokuzai Art: lámparas, dioramas y sets de té.",
+        alt: "Bodegón de artesanía japonesa Mokuzai Art: lámparas, dioramas y sets de té.", //
       },
     ],
     locale: "es_ES",
-    type: "website",
+    type: "website", //
   },
   twitter: {
-    card: "summary_large_image",
-    title: "Mokuzai Art | El alma de la madera",
+    card: "summary_large_image", //
+    title: "Mokuzai Art | El Alma de la Madera Japonesa", //
     description:
-      "Estudio de diseño y artesanía premium inspirado en el minimalismo japonés.",
-    images: ["/og-image.jpg"],
+      "Descubre piezas de artesanía premium talladas a mano. Diseño minimalista inspirado en la estética Zen y Japandi para hogares contemplativos.", //
+    images: ["/og-image.jpg"], //
   },
 };
 
