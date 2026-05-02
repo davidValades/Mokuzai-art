@@ -1,17 +1,10 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, Suspense } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-
-const STATIC_CATEGORIES = [
-  { id: "Meisho", name: "Meisho" },
-  { id: "Shokutaku", name: "Shokutaku" },
-  { id: "Budō", name: "Budō" },
-  { id: "Kazaru", name: "Kazaru" },
-];
 
 const ALL_LABELS: Record<string, string> = {
   es: "Todas",
@@ -21,24 +14,63 @@ const ALL_LABELS: Record<string, string> = {
   de: "Alle",
 };
 
-export default function CollectionClient({ artworks, dict, lang, initialFilter }: any) {
+// 1. Extraemos el componente a una función interna para poder usar Suspense (Requisito de Next.js)
+function CollectionContent({ artworks, dict, lang, initialFilter }: any) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
 
-  const categories = useMemo(
-    () => [
-      { id: "all", name: ALL_LABELS[lang] ?? "Todas" },
-      ...STATIC_CATEGORIES,
-    ],
-    [lang],
-  );
+  // 2. CREACIÓN DINÁMICA DE PESTAÑAS BASADA EN LA BASE DE DATOS
+  const categories = useMemo(() => {
+    const extractedCategories = new Map();
 
+    // Escaneamos todas las obras y extraemos sus categorías únicas
+    artworks.forEach((art: any) => {
+      if (art.category) {
+        const rawName = art.category; // Ej: "Budō"
+        // Creamos un ID limpio para usar en la URL: "budo"
+        const safeId = rawName
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "");
+
+        if (!extractedCategories.has(safeId)) {
+          extractedCategories.set(safeId, rawName);
+        }
+      }
+    });
+
+    // Convertimos el Map en un Array para pintar los botones
+    const dynamicTabs = Array.from(extractedCategories.entries()).map(
+      ([id, name]) => ({
+        id,
+        name,
+      }),
+    );
+
+    return [{ id: "all", name: ALL_LABELS[lang] ?? "Todas" }, ...dynamicTabs];
+  }, [artworks, lang]);
+
+  // 3. LECTOR DE URL INTELIGENTE (Arregla el fallo de Budo y Kazaru)
   const resolveFilter = (param: string | null) => {
     if (!param) return "all";
-    const found = categories.find(
-      (cat) => cat.id.toLowerCase() === param.toLowerCase(),
-    );
+
+    const normalizedParam = param
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+
+    // Intento 1: Coincidencia exacta
+    let found = categories.find((cat) => cat.id === normalizedParam);
+
+    // Intento 2: Coincidencia parcial (Si la URL dice "budo-collection" y el ID es "budo")
+    if (!found) {
+      found = categories.find(
+        (cat) =>
+          normalizedParam.includes(cat.id) || cat.id.includes(normalizedParam),
+      );
+    }
+
     return found ? found.id : "all";
   };
 
@@ -48,7 +80,7 @@ export default function CollectionClient({ artworks, dict, lang, initialFilter }
 
   useEffect(() => {
     setFilter(resolveFilter(searchParams.get("categoria")));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams, categories]);
 
   const handleFilterChange = (id: string) => {
@@ -60,12 +92,23 @@ export default function CollectionClient({ artworks, dict, lang, initialFilter }
       params.set("categoria", id);
     }
     const query = params.toString();
-    router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
+    router.replace(query ? `${pathname}?${query}` : pathname, {
+      scroll: false,
+    });
   };
 
-  const filteredArtworks = artworks.filter((art: any) =>
-    filter === "all" ? true : art.category === filter,
-  );
+  // 4. FILTRADO DE OBRAS
+  const filteredArtworks = artworks.filter((art: any) => {
+    if (filter === "all") return true;
+
+    const artCategorySafe = art.category
+      ? art.category
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+      : "";
+    return artCategorySafe === filter;
+  });
 
   return (
     <div className="px-8 md:px-16 pb-32">
@@ -77,7 +120,7 @@ export default function CollectionClient({ artworks, dict, lang, initialFilter }
         <div className="w-12 h-[1px] bg-[#A08963] mx-auto"></div>
       </div>
 
-      {/* Filtros Minimalistas */}
+      {/* Filtros Generados Dinámicamente */}
       <div className="flex flex-wrap justify-center gap-8 md:gap-12 mb-20 border-b border-[#706D54]/10 pb-6">
         {categories.map((cat) => (
           <button
@@ -107,7 +150,6 @@ export default function CollectionClient({ artworks, dict, lang, initialFilter }
       >
         <AnimatePresence mode="popLayout">
           {filteredArtworks.map((art: any) => {
-            // Lógica de Rescate Multilingüe
             const t = art.translations?.[lang] || art.translations?.es || {};
 
             return (
@@ -162,5 +204,20 @@ export default function CollectionClient({ artworks, dict, lang, initialFilter }
         </AnimatePresence>
       </motion.div>
     </div>
+  );
+}
+
+// 5. Componente Principal envuelto en Suspense (Previene errores de build en Next.js)
+export default function CollectionClient(props: any) {
+  return (
+    <Suspense
+      fallback={
+        <div className="w-full py-32 flex justify-center text-[#706D54]/50 tracking-widest uppercase font-inter text-xs">
+          Cargando la colección...
+        </div>
+      }
+    >
+      <CollectionContent {...props} />
+    </Suspense>
   );
 }
