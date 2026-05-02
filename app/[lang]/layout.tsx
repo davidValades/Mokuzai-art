@@ -4,7 +4,7 @@ import "../globals.css";
 import Header from "@/components/Header";
 import { CartProvider } from "@/context/CartContext";
 import { I18nProvider } from "@/context/I18nContext";
-import { AuthProvider } from "@/components/Providers"; // NUEVO: Proveedor de autenticación
+import { AuthProvider } from "@/components/Providers";
 import { getDictionary, Locale } from "@/lib/dictionary";
 import { serverClient } from "@/lib/sanity";
 
@@ -89,8 +89,6 @@ export default async function RootLayout({
       <body
         className={`${inter.variable} ${cormorant.variable} font-sans antialiased bg-stone-serene text-olive-dark selection:bg-earth-noble/20 selection:text-olive-dark`}
       >
-        <div className="fixed inset-0 pointer-events-none z-[99] opacity-[0.03] bg-[url('/noise.png')]"></div>
-
         {/* Envolvemos todo con nuestro proveedor de autenticación */}
         <AuthProvider>
           {/* Envolvemos la app con nuestro proveedor de idiomas */}
