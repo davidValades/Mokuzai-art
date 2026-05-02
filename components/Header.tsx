@@ -43,15 +43,20 @@ export default function Header({ musicUrl }: { musicUrl?: string | null }) {
     return () => window.removeEventListener("openCartDrawer", handleOpenCart);
   }, []);
 
-  const toggleAudio = () => {
+  const toggleAudio = async () => {
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause();
+        setIsPlaying(false);
       } else {
-        audioRef.current.play();
         audioRef.current.volume = 0.2;
+        try {
+          await audioRef.current.play();
+          setIsPlaying(true);
+        } catch (error) {
+          console.error("Error al reproducir la música:", error);
+        }
       }
-      setIsPlaying(!isPlaying);
     }
   };
 
