@@ -31,6 +31,7 @@ export default function CollectionClient({ artworks, dict, lang }: any) {
     { id: "Meisho", name: "Meisho" },
     { id: "Shokutaku", name: "Shokutaku" },
     { id: "Budō", name: "Budō" },
+    { id: "Kazaru", name: "Kazaru" },
   ];
 
   const filteredArtworks = artworks.filter((art: any) =>

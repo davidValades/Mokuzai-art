@@ -48,6 +48,7 @@ export default defineType({
           { title: "Meisho (Estructuras y Luz)", value: "Meisho" },
           { title: "Shokutaku (Culinario y Té)", value: "Shokutaku" },
           { title: "Budō (Artes Marciales)", value: "Budō" },
+          { title: "Kazaru (Piezas Decorativas)", value: "Kazaru" },
         ],
       },
     }),
