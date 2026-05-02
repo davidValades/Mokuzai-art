@@ -1,4 +1,4 @@
-import ProductDetailClient from "./ProductDetailClient";
+import ProductDetailClient from "../../producto/[slug]/ProductDetailClient";
 import { client } from "@/lib/sanity";
 import { notFound } from "next/navigation";
 
