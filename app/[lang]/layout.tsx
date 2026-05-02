@@ -43,14 +43,14 @@ export const metadata: Metadata = {
     title: "Mokuzai Art | El alma de la madera",
     description:
       "Estudio de diseño y artesanía premium. Piezas decorativas talladas a mano inspiradas en el minimalismo japonés.",
-    url: "https://mokuzai-art.com", // Asegúrate de poner tu dominio real cuando lo tengas
+    url: "https://mokuzai-art.vercel.app",
     siteName: "Mokuzai Art",
     images: [
       {
-        url: "/og-image.jpg", // Esta es la imagen que irá en tu carpeta public/
+        url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Mokuzai Art - Artesanía y Minimalismo Japonés",
+        alt: "Bodegón de artesanía japonesa Mokuzai Art: lámparas, dioramas y sets de té.",
       },
     ],
     locale: "es_ES",
