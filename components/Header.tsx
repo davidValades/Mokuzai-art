@@ -44,36 +44,28 @@ export default function Header({ musicUrl }: { musicUrl?: string | null }) {
     return () => window.removeEventListener("openCartDrawer", handleOpenCart);
   }, []);
 
-  useEffect(() => {
-    if (!musicUrl) {
-      setIsPlaying(false);
-      return;
-    }
-    const audio = new Audio(musicUrl);
-    audio.loop = true;
-    audio.volume = 0.2;
-    audio.preload = "auto";
-    audioRef.current = audio;
-    return () => {
-      audio.pause();
-      audioRef.current = null;
-      setIsPlaying(false);
-    };
-  }, [musicUrl]);
-
   const toggleAudio = async () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-        setIsPlaying(false);
-      } else {
-        audioRef.current.volume = 0.2;
-        try {
-          await audioRef.current.play();
-          setIsPlaying(true);
-        } catch (error) {
-          console.error("Error al reproducir la música:", error);
-        }
+    if (!musicUrl) return;
+
+    // Create the audio element lazily on the first user gesture so mobile
+    // browsers (which block autoplay outside a user interaction) can play it.
+    if (!audioRef.current) {
+      const audio = new Audio(musicUrl);
+      audio.loop = true;
+      audio.volume = 0.2;
+      audio.preload = "auto";
+      audioRef.current = audio;
+    }
+
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      try {
+        await audioRef.current.play();
+        setIsPlaying(true);
+      } catch (error) {
+        console.error("Error al reproducir la música:", error);
       }
     }
   };
