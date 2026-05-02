@@ -1,11 +1,11 @@
 import { client } from "@/lib/sanity";
 import { getDictionary, Locale } from "@/lib/dictionary";
-import CollectionDetailClient from "./[slug]/CollectionDetailClient";
+import CollectionClient from "./CollectionClient";
 
 // Traemos todas las obras y sus categorías
-const query = `*[_type == "product"] | order(_createdAt desc) {
+const query = `*[_type == "artwork"] | order(_createdAt desc) {
   "slug": slug.current,
-  "category": collection->title,
+  category,
   price,
   "image": image.asset->url,
   "hoverImage": hoverImage.asset->url,
@@ -23,7 +23,7 @@ export default async function AllCollectionsPage({
 
   return (
     <main className="min-h-screen bg-[#DBDBDB] pt-32">
-      <CollectionDetailClient artworks={artworks} dict={dict} lang={lang} />
+      <CollectionClient artworks={artworks} dict={dict} lang={lang} />
     </main>
   );
 }

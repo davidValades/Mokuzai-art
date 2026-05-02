@@ -34,6 +34,13 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "music",
+      title: "Música Ambiental",
+      type: "file",
+      description: "Archivo de audio para la atmósfera del sitio (MP3 recomendado).",
+      options: { accept: "audio/*" },
+    }),
+    defineField({
       name: "translations",
       title: "Textos de la Portada",
       type: "object",
