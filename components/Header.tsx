@@ -53,7 +53,6 @@ export default function Header({ musicUrl }: { musicUrl?: string | null }) {
     audio.loop = true;
     audio.volume = 0.2;
     audio.preload = "auto";
-    audio.load();
     audioRef.current = audio;
     return () => {
       audio.pause();
