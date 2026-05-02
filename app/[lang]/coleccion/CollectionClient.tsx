@@ -21,7 +21,7 @@ const ALL_LABELS: Record<string, string> = {
   de: "Alle",
 };
 
-export default function CollectionClient({ artworks, dict, lang }: any) {
+export default function CollectionClient({ artworks, dict, lang, initialFilter }: any) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -43,7 +43,7 @@ export default function CollectionClient({ artworks, dict, lang }: any) {
   };
 
   const [filter, setFilter] = useState(() =>
-    resolveFilter(searchParams.get("categoria")),
+    resolveFilter(initialFilter ?? searchParams.get("categoria")),
   );
 
   useEffect(() => {

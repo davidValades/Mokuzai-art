@@ -15,17 +15,25 @@ const query = `*[_type == "artwork"] | order(_createdAt desc) {
 
 export default async function AllCollectionsPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ lang: string }>;
+  searchParams: Promise<{ categoria?: string }>;
 }) {
   const { lang } = await params;
+  const { categoria } = await searchParams;
   const dict = await getDictionary(lang as Locale);
   const artworks = await client.fetch(query);
 
   return (
     <main className="min-h-screen bg-[#DBDBDB] pt-32">
       <Suspense>
-        <CollectionClient artworks={artworks} dict={dict} lang={lang} />
+        <CollectionClient
+          artworks={artworks}
+          dict={dict}
+          lang={lang}
+          initialFilter={categoria}
+        />
       </Suspense>
     </main>
   );
