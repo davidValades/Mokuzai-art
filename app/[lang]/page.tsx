@@ -12,6 +12,7 @@ const query = `{
   },
   "collections": *[_type == "collection"] | order(_createdAt asc) {
     "slug": slug.current,
+    categoryId,
     kanji,
     layout,
     "image": image.asset->url,

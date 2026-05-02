@@ -21,6 +21,21 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "categoryId",
+      title: "ID de Categoría (Artwork)",
+      type: "string",
+      description:
+        "Valor de categoría exacto que se usa en las obras (ej: Kazaru, Meisho). Necesario para que el enlace desde la página principal filtre correctamente.",
+      options: {
+        list: [
+          { title: "Meisho (Estructuras y Luz)", value: "Meisho" },
+          { title: "Shokutaku (Culinario y Té)", value: "Shokutaku" },
+          { title: "Budō (Artes Marciales)", value: "Budō" },
+          { title: "Kazaru (Piezas Decorativas)", value: "Kazaru" },
+        ],
+      },
+    }),
+    defineField({
       name: "slug",
       title: "Slug (URL)",
       type: "slug",

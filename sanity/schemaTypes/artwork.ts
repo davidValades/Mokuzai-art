@@ -60,6 +60,14 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "additionalImages",
+      title: "Imágenes Adicionales (galería)",
+      type: "array",
+      description: "Añade entre 1 y 4 fotos adicionales que se mostrarán en la galería del producto.",
+      of: [{ type: "image", options: { hotspot: true } }],
+      validation: (Rule) => Rule.max(4),
+    }),
+    defineField({
       name: "hoverImage",
       title: "Imagen Iluminada (Efecto noche)",
       type: "image",
