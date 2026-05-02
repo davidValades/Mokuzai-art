@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { signOut } from "next-auth/react";
 
-export default function DashboardClient({ session, orders, dict }: any) {
+export default function DashboardClient({ session, orders, dict, lang }: any) {
   return (
     <div className="max-w-5xl mx-auto px-6 py-32">
       {/* Cabecera Zen */}
@@ -24,7 +24,8 @@ export default function DashboardClient({ session, orders, dict }: any) {
             {session?.user?.name}
           </motion.h1>
           <button
-            onClick={() => signOut()}
+            // Redirección explícita a la raíz del idioma actual para evitar el 404
+            onClick={() => signOut({ callbackUrl: `/${lang}` })}
             className="font-inter text-[10px] tracking-widest uppercase text-[#706D54]/50 hover:text-[#706D54] transition-colors pb-2 border-b border-[#706D54]/20"
           >
             Cerrar Sesión

@@ -12,7 +12,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 import { useI18n } from "@/context/I18nContext";
-import { useSession, signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import CartDrawer from "@/components/CartDrawer";
 import "../node_modules/flag-icons/css/flag-icons.min.css";
 
@@ -88,10 +88,10 @@ export default function Header() {
 
   const { cartCount } = useCart();
 
+  // El lujo silencioso exige enfocarse solo en lo esencial. El contacto vivirá en el Footer.
   const navItems = [
     { name: dict.navigation.collection, path: `/${lang}/coleccion` },
     { name: dict.navigation.workshop, path: `/${lang}/el-taller` },
-    { name: dict.navigation.contact, path: `/${lang}/contacto` },
   ];
 
   return (
@@ -202,7 +202,6 @@ export default function Header() {
 
           {/* Área de autenticación y cuenta */}
           {session ? (
-            // Si hay sesión, redirigimos al área personal
             <Link
               href={`/${lang}/cuenta`}
               className={`transition-colors duration-500 hover:text-[#A08963] ${textColor} flex items-center gap-2`}
@@ -223,10 +222,9 @@ export default function Header() {
               </svg>
             </Link>
           ) : (
-            // Si no hay sesión, disparamos el login de NextAuth
             <Link
               href={`/${lang}/auth/signin`}
-              className="text-[#706D54] hover:text-[#A08963] transition-colors"
+              className={`transition-colors duration-500 hover:text-[#A08963] ${textColor} ml-2`}
             >
               <svg
                 width="20"
@@ -339,7 +337,6 @@ export default function Header() {
                 ))}
               </div>
 
-              {/* Botón de autenticación para móvil con la nueva lógica */}
               {session ? (
                 <Link
                   href={`/${lang}/cuenta`}
@@ -362,8 +359,9 @@ export default function Header() {
                   </svg>
                 </Link>
               ) : (
-                <button
-                  onClick={() => signIn()}
+                <Link
+                  href={`/${lang}/auth/signin`}
+                  onClick={() => setIsOpen(false)}
                   className="text-[#706D54] hover:text-[#A08963] transition-colors"
                 >
                   <svg
@@ -377,7 +375,7 @@ export default function Header() {
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                     <circle cx="12" cy="7" r="4" />
                   </svg>
-                </button>
+                </Link>
               )}
 
               <button
