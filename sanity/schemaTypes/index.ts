@@ -5,6 +5,7 @@ import home from "./home";
 import workshop from "./workshop";
 import order from "./order";
 import user from "./user";
+import siteSettings from "./siteSettings";
 
 export const schemaTypes: SchemaTypeDefinition[] = [
   artwork,
@@ -13,6 +14,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   workshop,
   order,
   user,
+  siteSettings,
 ];
 
 export const schema: { types: SchemaTypeDefinition[] } = {
