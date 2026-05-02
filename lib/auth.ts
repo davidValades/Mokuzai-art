@@ -9,10 +9,10 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   // Esto es vital para que NextAuth sepa dónde enviar al usuario
-  /*pages: {
+  pages: {
     signIn: "/auth/signin", // Opcional: una página de login Zen más adelante
     error: "/auth/error",
-  },*/
+  },
   callbacks: {
     async session({ session, token }) {
       return session;
