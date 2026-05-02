@@ -203,7 +203,7 @@ export default function Header({ musicUrl }: { musicUrl?: string | null }) {
             </div>
           </div>
 
-          <nav className="hidden lg:flex space-x-8 lg:space-x-12 border-l border-current/20 pl-6 lg:pl-8">
+          <nav className="hidden lg:flex lg:space-x-12 border-l border-current/20 lg:pl-8">
             {navItems.map((item) => (
               <Link
                 key={item.name}
