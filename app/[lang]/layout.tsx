@@ -24,9 +24,45 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "Mokuzai Art | El alma de la madera",
+  title: {
+    template: "%s | Mokuzai Art",
+    default: "Mokuzai Art | El alma de la madera",
+  },
   description:
     "Estudio de diseño y artesanía premium. Piezas decorativas talladas a mano inspiradas en el minimalismo japonés y la elegancia Japandi.",
+  keywords: [
+    "artesanía japonesa",
+    "madera",
+    "minimalismo",
+    "japandi",
+    "lujo silencioso",
+    "decoración zen",
+    "mokuzai",
+  ],
+  openGraph: {
+    title: "Mokuzai Art | El alma de la madera",
+    description:
+      "Estudio de diseño y artesanía premium. Piezas decorativas talladas a mano inspiradas en el minimalismo japonés.",
+    url: "https://mokuzai-art.com", // Asegúrate de poner tu dominio real cuando lo tengas
+    siteName: "Mokuzai Art",
+    images: [
+      {
+        url: "/og-image.jpg", // Esta es la imagen que irá en tu carpeta public/
+        width: 1200,
+        height: 630,
+        alt: "Mokuzai Art - Artesanía y Minimalismo Japonés",
+      },
+    ],
+    locale: "es_ES",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Mokuzai Art | El alma de la madera",
+    description:
+      "Estudio de diseño y artesanía premium inspirado en el minimalismo japonés.",
+    images: ["/og-image.jpg"],
+  },
 };
 
 export default async function RootLayout({
@@ -44,7 +80,7 @@ export default async function RootLayout({
 
   // Obtenemos la URL del archivo de música ambiental desde Sanity
   const musicData = await serverClient.fetch(
-    `*[_type == "home"][0] { "musicUrl": music.asset->url }`
+    `*[_type == "home"][0] { "musicUrl": music.asset->url }`,
   );
   const musicUrl: string | null = musicData?.musicUrl ?? null;
 
