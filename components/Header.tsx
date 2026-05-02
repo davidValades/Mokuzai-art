@@ -9,6 +9,7 @@ import {
   AnimatePresence,
 } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image"; // Importante para el icono
 import { usePathname, useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 import { useI18n } from "@/context/I18nContext";
@@ -109,7 +110,6 @@ export default function Header({ musicUrl }: { musicUrl?: string | null }) {
 
   const { cartCount } = useCart();
 
-  // El lujo silencioso exige enfocarse solo en lo esencial. El contacto vivirá en el Footer.
   const navItems = [
     { name: dict.navigation.collection, path: `/${lang}/coleccion` },
     { name: dict.navigation.workshop, path: `/${lang}/el-taller` },
@@ -121,55 +121,53 @@ export default function Header({ musicUrl }: { musicUrl?: string | null }) {
         style={{ height: headerHeight, backgroundColor: headerBg }}
         className="fixed top-0 left-0 w-full z-[60] flex items-center justify-between px-8 md:px-16 transition-all duration-500 ease-in-out backdrop-blur-sm"
       >
+        {/* LOGO CON ICONO */}
         <Link
           href={`/${lang}`}
-          className="z-50"
+          className="z-50 flex items-center gap-4 group"
           onClick={() => setIsOpen(false)}
         >
+          <div className="relative w-8 h-8 md:w-9 md:h-9 transition-all duration-700 ease-out group-hover:scale-[0.96] group-hover:opacity-80">
+            {" "}
+            <Image
+              src="/favicon.ico"
+              alt="Mokuzai Logo"
+              fill
+              className="object-contain"
+              priority
+            />
+          </div>
           <h1
-            className={`font-cormorant text-2xl md:text-3xl tracking-widest uppercase transition-colors duration-500 ${textColor}`}
+            className={`font-cormorant text-xl md:text-2xl tracking-[0.2em] uppercase transition-colors duration-500 whitespace-nowrap ${textColor}`}
           >
             Mokuzai Art
           </h1>
         </Link>
 
-        <div className="flex items-center space-x-6 md:space-x-8 z-50">
+        <div className="flex items-center space-x-6 xl:space-x-8 z-50">
+          {/* Audio Visualizer Desktop */}
           <button
             onClick={toggleAudio}
-            className={`hidden lg:flex items-center gap-2 transition-colors duration-500 hover:opacity-50 ${textColor}`}
+            className={`hidden xl:flex items-center gap-2 transition-colors duration-500 hover:opacity-50 ${textColor}`}
           >
             <div className="flex items-end gap-[2px] h-3">
-              <motion.div
-                animate={{ height: isPlaying ? ["4px", "10px", "4px"] : "4px" }}
-                transition={{
-                  repeat: Infinity,
-                  duration: 1,
-                  ease: "easeInOut",
-                }}
-                className={`w-[2px] ${lineColor}`}
-              ></motion.div>
-              <motion.div
-                animate={{ height: isPlaying ? ["8px", "4px", "8px"] : "4px" }}
-                transition={{
-                  repeat: Infinity,
-                  duration: 1.2,
-                  ease: "easeInOut",
-                }}
-                className={`w-[2px] ${lineColor}`}
-              ></motion.div>
-              <motion.div
-                animate={{ height: isPlaying ? ["6px", "12px", "6px"] : "4px" }}
-                transition={{
-                  repeat: Infinity,
-                  duration: 0.8,
-                  ease: "easeInOut",
-                }}
-                className={`w-[2px] ${lineColor}`}
-              ></motion.div>
+              {[1, 2, 3].map((i) => (
+                <motion.div
+                  key={i}
+                  animate={{ height: isPlaying ? [4, 12, 4] : 4 }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 0.8 + i * 0.2,
+                    ease: "easeInOut",
+                  }}
+                  className={`w-[2px] ${lineColor}`}
+                />
+              ))}
             </div>
           </button>
 
-          <div className="hidden lg:flex items-center gap-4 group relative">
+          {/* Selector Idioma Desktop - Cambiado a xl para evitar colisión */}
+          <div className="hidden xl:flex items-center gap-4 group relative">
             <div className="flex items-center gap-1 cursor-pointer py-2">
               <span
                 className={`font-inter text-[10px] tracking-widest transition-colors duration-500 ${textColor}`}
@@ -207,7 +205,8 @@ export default function Header({ musicUrl }: { musicUrl?: string | null }) {
             </div>
           </div>
 
-          <nav className="hidden lg:flex lg:space-x-12 border-l border-current/20 lg:pl-8">
+          {/* Navegación Desktop - Cambiado a xl */}
+          <nav className="hidden xl:flex xl:space-x-12 border-l border-current/20 xl:pl-8">
             {navItems.map((item) => (
               <Link
                 key={item.name}
@@ -219,49 +218,33 @@ export default function Header({ musicUrl }: { musicUrl?: string | null }) {
             ))}
           </nav>
 
-          {/* Área de autenticación y cuenta */}
-          {session ? (
-            <Link
-              href={`/${lang}/cuenta`}
-              className={`transition-colors duration-500 hover:text-[#A08963] ${textColor} flex items-center gap-2`}
-            >
-              <span className="font-inter text-[10px] tracking-widest uppercase hidden lg:inline">
-                {session.user?.name?.split(" ")[0] || "Cuenta"}
+          {/* Icono de Cuenta */}
+          <Link
+            href={session ? `/${lang}/cuenta` : `/${lang}/auth/signin`}
+            className={`transition-colors duration-500 hover:text-[#A08963] ${textColor} flex items-center gap-2`}
+          >
+            {session && (
+              <span className="font-inter text-[10px] tracking-widest uppercase hidden xl:inline">
+                {session.user?.name?.split(" ")[0]}
               </span>
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.2"
-              >
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                <circle cx="12" cy="7" r="4" />
-              </svg>
-            </Link>
-          ) : (
-            <Link
-              href={`/${lang}/auth/signin`}
-              className={`transition-colors duration-500 hover:text-[#A08963] ${textColor} ml-2`}
+            )}
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.2"
             >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.2"
-              >
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                <circle cx="12" cy="7" r="4" />
-              </svg>
-            </Link>
-          )}
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+          </Link>
 
+          {/* Carrito */}
           <button
             onClick={() => setIsCartOpen(true)}
-            className={`relative transition-colors duration-500 hover:opacity-50 ${textColor} lg:ml-4`}
+            className={`relative transition-colors duration-500 hover:opacity-50 ${textColor}`}
           >
             <svg
               width="20"
@@ -270,7 +253,6 @@ export default function Header({ musicUrl }: { musicUrl?: string | null }) {
               fill="none"
               stroke="currentColor"
               strokeWidth="1.5"
-              strokeLinecap="square"
             >
               <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
               <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -281,15 +263,16 @@ export default function Header({ musicUrl }: { musicUrl?: string | null }) {
             )}
           </button>
 
+          {/* Menú Hamburguesa - Ahora visible desde xl para abajo */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden relative w-7 h-3 focus:outline-none flex flex-col justify-between ml-4"
+            className="xl:hidden relative w-7 h-3 focus:outline-none flex flex-col justify-between"
           >
             <span
-              className={`absolute left-0 w-full h-[1px] transition-all duration-500 origin-center ${lineColor} ${isOpen ? "top-1/2 -translate-y-1/2 rotate-45" : "top-0"}`}
+              className={`absolute left-0 w-full h-[1px] transition-all duration-500 ${lineColor} ${isOpen ? "top-1/2 -rotate-45" : "top-0"}`}
             />
             <span
-              className={`absolute left-0 w-full h-[1px] transition-all duration-500 origin-center ${lineColor} ${isOpen ? "top-1/2 -translate-y-1/2 -rotate-45" : "bottom-0"}`}
+              className={`absolute left-0 w-full h-[1px] transition-all duration-500 ${lineColor} ${isOpen ? "top-1/2 rotate-45" : "bottom-0"}`}
             />
           </button>
         </div>
@@ -301,22 +284,21 @@ export default function Header({ musicUrl }: { musicUrl?: string | null }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="fixed inset-0 bg-[#DBDBDB] flex flex-col items-center justify-center z-50"
           >
+            {/* Contenido Menú Mobile... (mantiene tu lógica actual) */}
             <div className="flex flex-col items-center space-y-8 mb-12">
               {navItems.map((item, index) => (
                 <motion.div
                   key={item.name}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  transition={{ delay: index * 0.1 + 0.1, duration: 0.5 }}
+                  transition={{ delay: index * 0.1 }}
                 >
                   <Link
                     href={item.path}
                     onClick={() => setIsOpen(false)}
-                    className="font-cormorant text-4xl tracking-widest text-[#706D54] uppercase hover:opacity-60 transition-opacity"
+                    className="font-cormorant text-4xl tracking-widest text-[#706D54] uppercase hover:opacity-60"
                   >
                     {item.name}
                   </Link>
@@ -324,123 +306,36 @@ export default function Header({ musicUrl }: { musicUrl?: string | null }) {
               ))}
             </div>
 
-            <motion.div
-              initial={{ opacity: 0, scaleX: 0 }}
-              animate={{ opacity: 1, scaleX: 1 }}
-              transition={{ delay: 0.4, duration: 0.8 }}
-              className="w-16 h-[1px] bg-[#706D54]/20 mb-12"
-            />
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.5 }}
-              className="flex flex-col items-center space-y-8"
-            >
-              <div className="flex flex-wrap justify-center gap-6">
-                {LANGUAGES_CONFIG.map((l) => (
-                  <button
-                    key={l.code}
-                    onClick={() => switchLanguage(l.code)}
-                    className={`flex flex-col items-center gap-2 transition-all duration-300 ${
-                      lang.toUpperCase() === l.code
-                        ? "text-[#A08963] scale-110"
-                        : "text-[#706D54]/60 hover:text-[#706D54]"
-                    }`}
-                  >
-                    <span className={`fi fi-${l.icon} text-2xl`}></span>
-                    <span className="font-inter text-[8px] tracking-[0.2em] uppercase">
-                      {l.code}
-                    </span>
-                  </button>
-                ))}
-              </div>
-
-              {session ? (
-                <Link
-                  href={`/${lang}/cuenta`}
-                  onClick={() => setIsOpen(false)}
-                  className="text-[#706D54] hover:text-[#A08963] transition-colors flex items-center gap-2"
+            {/* ... Resto de tu menú móvil (Idiomas, Audio etc) ... */}
+            <div className="flex flex-wrap justify-center gap-6 mb-12">
+              {LANGUAGES_CONFIG.map((l) => (
+                <button
+                  key={l.code}
+                  onClick={() => switchLanguage(l.code)}
+                  className="flex flex-col items-center gap-2"
                 >
-                  <span className="font-inter text-[10px] tracking-widest uppercase">
-                    {session.user?.name?.split(" ")[0] || "Cuenta"}
+                  <span className={`fi fi-${l.icon} text-2xl`}></span>
+                  <span className="font-inter text-[8px] tracking-[0.2em] uppercase text-[#706D54]">
+                    {l.code}
                   </span>
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.2"
-                  >
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                    <circle cx="12" cy="7" r="4" />
-                  </svg>
-                </Link>
-              ) : (
-                <Link
-                  href={`/${lang}/auth/signin`}
-                  onClick={() => setIsOpen(false)}
-                  className="text-[#706D54] hover:text-[#A08963] transition-colors"
-                >
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.2"
-                  >
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                    <circle cx="12" cy="7" r="4" />
-                  </svg>
-                </Link>
-              )}
+                </button>
+              ))}
+            </div>
 
-              <button
-                onClick={toggleAudio}
-                className="flex items-center space-x-3 text-[#706D54]"
-              >
-                <span className="font-inter text-[10px] tracking-[0.2em] uppercase text-[#706D54]/60">
-                  {isPlaying ? "Pausar Atmósfera" : "Activar Atmósfera"}
-                </span>
-                <div className="flex items-end gap-[2px] h-3">
-                  <motion.div
-                    animate={{
-                      height: isPlaying ? ["4px", "10px", "4px"] : "4px",
-                    }}
-                    transition={{
-                      repeat: Infinity,
-                      duration: 1,
-                      ease: "easeInOut",
-                    }}
-                    className="w-[2px] bg-[#706D54]"
-                  ></motion.div>
-                  <motion.div
-                    animate={{
-                      height: isPlaying ? ["8px", "4px", "8px"] : "4px",
-                    }}
-                    transition={{
-                      repeat: Infinity,
-                      duration: 1.2,
-                      ease: "easeInOut",
-                    }}
-                    className="w-[2px] bg-[#706D54]"
-                  ></motion.div>
-                  <motion.div
-                    animate={{
-                      height: isPlaying ? ["6px", "12px", "6px"] : "4px",
-                    }}
-                    transition={{
-                      repeat: Infinity,
-                      duration: 0.8,
-                      ease: "easeInOut",
-                    }}
-                    className="w-[2px] bg-[#706D54]"
-                  ></motion.div>
-                </div>
-              </button>
-            </motion.div>
+            <button
+              onClick={toggleAudio}
+              className="flex items-center space-x-3 text-[#706D54]"
+            >
+              <span className="font-inter text-[10px] tracking-[0.2em] uppercase">
+                {isPlaying ? "Pausar" : "Activar"} Atmósfera
+              </span>
+              {/* Reutilización de visualizer simple */}
+              <div className="flex items-end gap-[1px] h-3">
+                <div
+                  className={`w-[2px] h-3 bg-current ${isPlaying ? "animate-pulse" : ""}`}
+                />
+              </div>
+            </button>
           </motion.div>
         )}
       </AnimatePresence>
