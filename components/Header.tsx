@@ -52,6 +52,8 @@ export default function Header({ musicUrl }: { musicUrl?: string | null }) {
     const audio = new Audio(musicUrl);
     audio.loop = true;
     audio.volume = 0.2;
+    audio.preload = "auto";
+    audio.load();
     audioRef.current = audio;
     return () => {
       audio.pause();
@@ -138,17 +140,17 @@ export default function Header({ musicUrl }: { musicUrl?: string | null }) {
             />
           </div>
           <h1
-            className={`font-cormorant text-xl md:text-2xl tracking-[0.2em] uppercase transition-colors duration-500 whitespace-nowrap ${textColor}`}
+            className={`hidden sm:inline font-cormorant text-xl md:text-2xl tracking-[0.2em] uppercase transition-colors duration-500 whitespace-nowrap ${textColor}`}
           >
             Mokuzai Art
           </h1>
         </Link>
 
         <div className="flex items-center space-x-6 xl:space-x-8 z-50">
-          {/* Audio Visualizer Desktop */}
+          {/* Audio Visualizer */}
           <button
             onClick={toggleAudio}
-            className={`hidden xl:flex items-center gap-2 transition-colors duration-500 hover:opacity-50 ${textColor}`}
+            className={`flex items-center gap-2 transition-colors duration-500 hover:opacity-50 ${textColor}`}
           >
             <div className="flex items-end gap-[2px] h-3">
               {[1, 2, 3].map((i) => (
