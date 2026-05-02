@@ -10,9 +10,19 @@ export default function SignInPage() {
 
   return (
     <main className="min-h-screen bg-[#DBDBDB] flex flex-col items-center justify-center px-6 relative overflow-hidden selection:bg-[#706D54] selection:text-[#DBDBDB]">
-      {/* Círculo decorativo sutil de fondo (Estética Zen) */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vh] h-[80vh] border border-[#706D54]/5 rounded-full pointer-events-none"></div>
-
+      {/* Círculo decorativo sutil de fondo (Estética Zen - Respiración) */}
+      <motion.div
+        animate={{
+          scale: [1, 1.02, 1],
+          opacity: [0.15, 0.25, 0.15],
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vh] h-[80vh] border border-[#706D54] rounded-full pointer-events-none"
+      ></motion.div>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
