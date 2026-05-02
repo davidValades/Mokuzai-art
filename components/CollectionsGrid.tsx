@@ -56,7 +56,7 @@ export default function CollectionsGrid({
               className={`relative group overflow-hidden bg-[#706D54] ${collection.layout}`}
             >
               <Link
-                href={`/${lang}/coleccion/${collection.slug}`}
+                href={`/${lang}/coleccion?categoria=${collection.slug}`}
                 className="absolute inset-0 z-20 w-full h-full"
               >
                 <span className="sr-only">

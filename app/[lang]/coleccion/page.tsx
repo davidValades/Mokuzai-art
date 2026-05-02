@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { client } from "@/lib/sanity";
 import { getDictionary, Locale } from "@/lib/dictionary";
 import CollectionClient from "./CollectionClient";
@@ -23,7 +24,9 @@ export default async function AllCollectionsPage({
 
   return (
     <main className="min-h-screen bg-[#DBDBDB] pt-32">
-      <CollectionClient artworks={artworks} dict={dict} lang={lang} />
+      <Suspense>
+        <CollectionClient artworks={artworks} dict={dict} lang={lang} />
+      </Suspense>
     </main>
   );
 }
