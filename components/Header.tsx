@@ -44,7 +44,10 @@ export default function Header({ musicUrl }: { musicUrl?: string | null }) {
   }, []);
 
   useEffect(() => {
-    if (!musicUrl) return;
+    if (!musicUrl) {
+      setIsPlaying(false);
+      return;
+    }
     const audio = new Audio(musicUrl);
     audio.loop = true;
     audio.volume = 0.2;
@@ -52,6 +55,7 @@ export default function Header({ musicUrl }: { musicUrl?: string | null }) {
     return () => {
       audio.pause();
       audioRef.current = null;
+      setIsPlaying(false);
     };
   }, [musicUrl]);
 
