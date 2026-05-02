@@ -22,6 +22,7 @@ interface ProductType {
   price: number;
   image: string;
   hoverImage?: string;
+  additionalImages?: string[];
 }
 
 export default function ProductDetailClient({
@@ -124,7 +125,32 @@ export default function ProductDetailClient({
         </motion.div>
       </div>
 
-      {/* 2. SECCIÓN DE CONTENIDO */}
+      {/* 2. GALERÍA DE IMÁGENES ADICIONALES */}
+      {translatedProduct.additionalImages && translatedProduct.additionalImages.length > 0 && (
+        <div className="bg-[#DBDBDB] py-12 px-6 md:px-16">
+          <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
+            {translatedProduct.additionalImages.map((imgUrl: string, idx: number) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: idx * 0.1 }}
+                className="relative aspect-square overflow-hidden bg-[#C9B194]/10 group cursor-pointer"
+              >
+                <Image
+                  src={imgUrl}
+                  alt={`${translatedProduct.name} — foto ${idx + 2}`}
+                  fill
+                  className="object-cover transition-transform duration-[2000ms] ease-out group-hover:scale-105"
+                />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 3. SECCIÓN DE CONTENIDO */}
       <div className="relative z-10 bg-[#DBDBDB] pt-24 pb-32 px-6 md:px-16 w-full flex justify-center shadow-[0_-20px_40px_rgba(0,0,0,0.15)]">
         <div className="max-w-3xl w-full">
           <div className="flex justify-between items-center mb-16">
@@ -213,7 +239,7 @@ export default function ProductDetailClient({
         </div>
       </div>
 
-      {/* 3. BARRA FLOTANTE */}
+      {/* 4. BARRA FLOTANTE */}
       <motion.div
         animate={{ y: showFloatingBar ? 0 : 150 }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
@@ -221,10 +247,10 @@ export default function ProductDetailClient({
       >
         <div className="hidden md:flex flex-col">
           <span className="font-cormorant text-2xl text-[#706D54]">
-            {product.name}
+            {translatedProduct.name}
           </span>
           <span className="font-inter text-xs text-[#A08963]">
-            {product.price} €
+            {translatedProduct.price} €
           </span>
         </div>
 

@@ -1,15 +1,16 @@
 import { client } from "@/lib/sanity";
 import { getDictionary, Locale } from "@/lib/dictionary";
-import ProductDetailClient from "./ProductDetailClient";
+import ProductDetailClient from "@/components/ProductDetailClient";
 import { notFound } from "next/navigation";
 
-// GROQ: El lenguaje de consultas de Sanity para pedir los datos exactos
 const query = `*[_type == "artwork" && slug.current == $slug][0]{
   "slug": slug.current,
   kanji,
   price,
+  category,
   "image": image.asset->url,
   "hoverImage": hoverImage.asset->url,
+  "additionalImages": additionalImages[].asset->url,
   translations
 }`;
 
