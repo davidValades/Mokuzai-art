@@ -2,8 +2,13 @@
 
 import { motion } from "framer-motion";
 import { signOut } from "next-auth/react";
+import { useI18n } from "@/context/I18nContext"; // 1. Importamos tu maravilla de contexto
 
-export default function DashboardClient({ session, orders, dict, lang }: any) {
+// 2. Quitamos 'dict' y 'lang' de los props, ya no dependemos del padre para esto
+export default function DashboardClient({ session, orders }: any) {
+  // 3. Extraemos la información de forma segura y directa
+  const { lang, dict } = useI18n();
+
   return (
     <div className="max-w-5xl mx-auto px-6 py-32">
       {/* Cabecera Zen */}
@@ -24,7 +29,7 @@ export default function DashboardClient({ session, orders, dict, lang }: any) {
             {session?.user?.name}
           </motion.h1>
           <button
-            // Redirección explícita a la raíz del idioma actual para evitar el 404
+            // 4. Ahora 'lang' SIEMPRE tendrá un valor ('es', 'en', etc.)
             onClick={() => signOut({ callbackUrl: `/${lang}` })}
             className="font-inter text-[10px] tracking-widest uppercase text-[#706D54]/50 hover:text-[#706D54] transition-colors pb-2 border-b border-[#706D54]/20"
           >
