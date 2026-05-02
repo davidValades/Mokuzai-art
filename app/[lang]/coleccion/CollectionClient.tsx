@@ -164,23 +164,45 @@ function CollectionContent({ artworks, dict, lang, initialFilter }: any) {
               >
                 <Link href={`/${lang}/producto/${art.slug}`}>
                   <div className="relative aspect-[3/4] overflow-hidden bg-[#C9B194]/10 mb-8">
-                    {/* Imagen Principal */}
-                    <Image
-                      src={art.image}
-                      alt={t.name || "Obra Mokuzai Art"}
-                      fill
-                      className="object-cover transition-transform duration-[3000ms] ease-out group-hover:scale-105"
-                    />
+                    {(() => {
+                      // Coordenadas para la imagen principal
+                      const mainX = art.hotspot?.x ? art.hotspot.x * 100 : 50;
+                      const mainY = art.hotspot?.y ? art.hotspot.y * 100 : 50;
 
-                    {/* Imagen Iluminada (Hover) */}
-                    {art.hoverImage && (
-                      <Image
-                        src={art.hoverImage}
-                        alt={`${t.name} detalle`}
-                        fill
-                        className="object-cover absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-[1500ms] ease-in-out"
-                      />
-                    )}
+                      // Coordenadas para la imagen hover (por si también tiene hotspot)
+                      const hoverX = art.hoverHotspot?.x
+                        ? art.hoverHotspot.x * 100
+                        : 50;
+                      const hoverY = art.hoverHotspot?.y
+                        ? art.hoverHotspot.y * 100
+                        : 50;
+
+                      return (
+                        <>
+                          {/* Imagen Principal */}
+                          <Image
+                            src={art.image}
+                            alt={t.name || "Obra Mokuzai Art"}
+                            fill
+                            className="object-cover transition-transform duration-[3000ms] ease-out group-hover:scale-105"
+                            style={{ objectPosition: `${mainX}% ${mainY}%` }}
+                          />
+
+                          {/* Imagen Iluminada (Hover) */}
+                          {art.hoverImage && (
+                            <Image
+                              src={art.hoverImage}
+                              alt={`${t.name} detalle`}
+                              fill
+                              className="object-cover absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-[1500ms] ease-in-out"
+                              style={{
+                                objectPosition: `${hoverX}% ${hoverY}%`,
+                              }}
+                            />
+                          )}
+                        </>
+                      );
+                    })()}
 
                     {/* Velo sutil */}
                     <div className="absolute inset-0 bg-[#706D54]/0 group-hover:bg-[#706D54]/5 transition-colors duration-700" />

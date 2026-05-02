@@ -66,14 +66,25 @@ export default function CollectionsGrid({
 
               {/* Imagen desde Sanity (cdn.sanity.io) */}
               <div className="absolute inset-0 w-full h-full transition-transform duration-[2.5s] ease-out group-hover:scale-105">
-                {collection.image && (
-                  <Image
-                    src={collection.image}
-                    alt={`Colección ${t.title}`}
-                    fill
-                    className="object-cover object-center opacity-80 group-hover:opacity-100 transition-opacity duration-700"
-                  />
-                )}
+                {collection.image &&
+                  (() => {
+                    const x = collection.hotspot?.x
+                      ? collection.hotspot.x * 100
+                      : 50;
+                    const y = collection.hotspot?.y
+                      ? collection.hotspot.y * 100
+                      : 50;
+
+                    return (
+                      <Image
+                        src={collection.image}
+                        alt={`Colección ${t.title}`}
+                        fill
+                        className="object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700"
+                        style={{ objectPosition: `${x}% ${y}%` }}
+                      />
+                    );
+                  })()}
               </div>
 
               {/* Overlay para garantizar legibilidad */}

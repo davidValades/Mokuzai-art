@@ -9,7 +9,9 @@ const query = `*[_type == "artwork"] | order(_createdAt desc) {
   category,
   price,
   "image": image.asset->url,
+  "hotspot": image.hotspot,
   "hoverImage": hoverImage.asset->url,
+  "hoverHotspot": hoverImage.hotspot,
   translations
 }`;
 

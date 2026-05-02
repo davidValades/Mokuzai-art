@@ -16,6 +16,7 @@ const query = `{
     kanji,
     layout,
     "image": image.asset->url,
+    "hotspot": image.hotspot,
     translations
   }
 }`;
