@@ -1,5 +1,7 @@
+// lib/auth.ts
 import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials"; // Añadimos esto
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -7,11 +9,22 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID || "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
     }),
+    // Añadimos este proveedor temporal para poder probar el login
+    CredentialsProvider({
+      name: "Invitado",
+      credentials: {},
+      async authorize(credentials) {
+        // Simulamos un login exitoso con un usuario "fake"
+        return {
+          id: "1",
+          name: "Coleccionista Mokuzai",
+          email: "coleccionista@mokuzaiart.com",
+        };
+      },
+    }),
   ],
-  // Esto es vital para que NextAuth sepa dónde enviar al usuario
   pages: {
-    signIn: "/auth/signin", // Opcional: una página de login Zen más adelante
-    error: "/auth/error",
+    signIn: "/auth/signin",
   },
   callbacks: {
     async session({ session, token }) {

@@ -224,9 +224,9 @@ export default function Header() {
             </Link>
           ) : (
             // Si no hay sesión, disparamos el login de NextAuth
-            <button
-              onClick={() => signIn()}
-              className={`transition-colors duration-500 hover:text-[#A08963] ${textColor} ml-2`}
+            <Link
+              href={`/${lang}/auth/signin`}
+              className="text-[#706D54] hover:text-[#A08963] transition-colors"
             >
               <svg
                 width="20"
@@ -239,7 +239,7 @@ export default function Header() {
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                 <circle cx="12" cy="7" r="4" />
               </svg>
-            </button>
+            </Link>
           )}
 
           <button
