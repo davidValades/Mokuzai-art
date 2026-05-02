@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useCart } from "@/context/CartContext";
 import { useI18n } from "@/context/I18nContext"; // NUEVO: Importamos el intérprete
+import { useRouter } from "next/navigation";
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -12,7 +13,14 @@ interface CartDrawerProps {
 
 export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   const { cart, removeFromCart, cartTotal } = useCart();
-  const { dict } = useI18n(); // NUEVO: Extraemos el diccionario activo
+  const { dict, lang } = useI18n(); // NUEVO: Extraemos el diccionario activo y el idioma
+  const router = useRouter();
+
+  const handleCheckout = () => {
+    // 1. Cerramos el cajón primero para una transición limpia
+    onClose();
+    router.push(`/${lang}/checkout`);
+  };
 
   return (
     <AnimatePresence>
@@ -149,7 +157,10 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                     {cartTotal < 300 ? cartTotal + 15 : cartTotal} €
                   </span>
                 </div>
-                <button className="w-full py-5 bg-[#706D54] text-[#DBDBDB] font-inter text-xs tracking-[0.2em] uppercase transition-all duration-500 hover:bg-[#5a5743]">
+                <button
+                  onClick={handleCheckout}
+                  className="w-full py-5 bg-[#706D54] text-[#DBDBDB] font-inter text-xs tracking-[0.2em] uppercase transition-all duration-500 hover:bg-[#5a5743]"
+                >
                   {/* USAMOS EL DICCIONARIO */}
                   {dict.cart.checkout}
                 </button>
