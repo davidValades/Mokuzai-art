@@ -76,7 +76,7 @@ export default async function RootLayout({
 
   // Música servida desde la carpeta public.
   // Asegúrate de colocar el archivo en: public/ambient.mp3
-  const musicUrl = "/ambient.mp3";
+  const musicUrl = "/mokuzai-ambient.mp3";
 
   return (
     <html lang={lang} className="scroll-smooth">
