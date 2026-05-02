@@ -1,38 +1,67 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function CollectionClient({ artworks, dict, lang }: any) {
-  const [filter, setFilter] = useState("all");
+const STATIC_CATEGORIES = [
+  { id: "Meisho", name: "Meisho" },
+  { id: "Shokutaku", name: "Shokutaku" },
+  { id: "Budō", name: "Budō" },
+  { id: "Kazaru", name: "Kazaru" },
+];
 
-  // Traducción sutil del botón "Todos" según el idioma activo
-  const getAllTranslation = () => {
-    switch (lang) {
-      case "es":
-        return "Todas";
-      case "en":
-        return "All";
-      case "ca":
-        return "Totes";
-      case "eu":
-        return "Guztiak";
-      case "de":
-        return "Alle";
-      default:
-        return "Todas";
-    }
+const ALL_LABELS: Record<string, string> = {
+  es: "Todas",
+  en: "All",
+  ca: "Totes",
+  eu: "Guztiak",
+  de: "Alle",
+};
+
+export default function CollectionClient({ artworks, dict, lang }: any) {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const categories = useMemo(
+    () => [
+      { id: "all", name: ALL_LABELS[lang] ?? "Todas" },
+      ...STATIC_CATEGORIES,
+    ],
+    [lang],
+  );
+
+  const resolveFilter = (param: string | null) => {
+    if (!param) return "all";
+    const found = categories.find(
+      (cat) => cat.id.toLowerCase() === param.toLowerCase(),
+    );
+    return found ? found.id : "all";
   };
 
-  const categories = [
-    { id: "all", name: getAllTranslation() },
-    { id: "Meisho", name: "Meisho" },
-    { id: "Shokutaku", name: "Shokutaku" },
-    { id: "Budō", name: "Budō" },
-    { id: "Kazaru", name: "Kazaru" },
-  ];
+  const [filter, setFilter] = useState(() =>
+    resolveFilter(searchParams.get("categoria")),
+  );
+
+  useEffect(() => {
+    setFilter(resolveFilter(searchParams.get("categoria")));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams, categories]);
+
+  const handleFilterChange = (id: string) => {
+    setFilter(id);
+    const params = new URLSearchParams(searchParams.toString());
+    if (id === "all") {
+      params.delete("categoria");
+    } else {
+      params.set("categoria", id);
+    }
+    const query = params.toString();
+    router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
+  };
 
   const filteredArtworks = artworks.filter((art: any) =>
     filter === "all" ? true : art.category === filter,
@@ -53,7 +82,7 @@ export default function CollectionClient({ artworks, dict, lang }: any) {
         {categories.map((cat) => (
           <button
             key={cat.id}
-            onClick={() => setFilter(cat.id)}
+            onClick={() => handleFilterChange(cat.id)}
             className={`font-inter text-[10px] tracking-[0.4em] uppercase transition-all duration-500 relative ${
               filter === cat.id
                 ? "text-[#A08963]"
