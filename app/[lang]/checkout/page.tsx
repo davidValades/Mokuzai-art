@@ -1,5 +1,5 @@
 import { getDictionary, Locale } from "@/lib/dictionary";
-import CheckoutForm from "./CheckoutForm"; // <-- Asegúrate de que este import sea así
+import CheckoutForm from "./CheckoutForm";
 
 export default async function CheckoutPage({
   params,

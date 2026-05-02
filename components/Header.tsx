@@ -12,6 +12,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 import { useI18n } from "@/context/I18nContext";
+import { useSession, signIn } from "next-auth/react";
 import CartDrawer from "@/components/CartDrawer";
 import "../node_modules/flag-icons/css/flag-icons.min.css";
 
@@ -30,10 +31,10 @@ export default function Header() {
   const [isPlaying, setIsPlaying] = useState(false);
 
   const pathname = usePathname();
-  const router = useRouter(); // NUEVO: Para cambiar la URL al cambiar de idioma
+  const router = useRouter();
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const { data: session } = useSession();
 
-  // NUEVO: Extraemos el idioma y el diccionario del contexto
   const { lang, dict } = useI18n();
 
   useEffect(() => {
@@ -54,11 +55,9 @@ export default function Header() {
     }
   };
 
-  // Lógica para cambiar de idioma de forma elegante
   const switchLanguage = (newLang: string) => {
     if (!pathname) return;
     const lowerLang = newLang.toLowerCase();
-    // Reemplazamos el primer segmento de la ruta (el idioma actual) por el nuevo
     const newPath = pathname.replace(/^\/[^\/]+/, `/${lowerLang}`);
     router.push(newPath);
     setIsOpen(false);
@@ -89,7 +88,6 @@ export default function Header() {
 
   const { cartCount } = useCart();
 
-  // NUEVO: Usamos las palabras de nuestro diccionario
   const navItems = [
     { name: dict.navigation.collection, path: `/${lang}/coleccion` },
     { name: dict.navigation.workshop, path: `/${lang}/el-taller` },
@@ -202,6 +200,48 @@ export default function Header() {
             ))}
           </nav>
 
+          {/* Área de autenticación y cuenta */}
+          {session ? (
+            // Si hay sesión, redirigimos al área personal
+            <Link
+              href={`/${lang}/cuenta`}
+              className={`transition-colors duration-500 hover:text-[#A08963] ${textColor} flex items-center gap-2`}
+            >
+              <span className="font-inter text-[10px] tracking-widest uppercase hidden md:inline">
+                {session.user?.name?.split(" ")[0] || "Cuenta"}
+              </span>
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.2"
+              >
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+            </Link>
+          ) : (
+            // Si no hay sesión, disparamos el login de NextAuth
+            <button
+              onClick={() => signIn()}
+              className={`transition-colors duration-500 hover:text-[#A08963] ${textColor} ml-2`}
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.2"
+              >
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+            </button>
+          )}
+
           <button
             onClick={() => setIsCartOpen(true)}
             className={`relative transition-colors duration-500 hover:opacity-50 ${textColor} md:ml-4`}
@@ -280,7 +320,6 @@ export default function Header() {
               transition={{ delay: 0.5, duration: 0.5 }}
               className="flex flex-col items-center space-y-8"
             >
-              {/* Selector de Idiomas Móvil - Refinado */}
               <div className="flex flex-wrap justify-center gap-6">
                 {LANGUAGES_CONFIG.map((l) => (
                   <button
@@ -299,6 +338,47 @@ export default function Header() {
                   </button>
                 ))}
               </div>
+
+              {/* Botón de autenticación para móvil con la nueva lógica */}
+              {session ? (
+                <Link
+                  href={`/${lang}/cuenta`}
+                  onClick={() => setIsOpen(false)}
+                  className="text-[#706D54] hover:text-[#A08963] transition-colors flex items-center gap-2"
+                >
+                  <span className="font-inter text-[10px] tracking-widest uppercase">
+                    {session.user?.name?.split(" ")[0] || "Cuenta"}
+                  </span>
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.2"
+                  >
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                </Link>
+              ) : (
+                <button
+                  onClick={() => signIn()}
+                  className="text-[#706D54] hover:text-[#A08963] transition-colors"
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.2"
+                  >
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                </button>
+              )}
 
               <button
                 onClick={toggleAudio}
