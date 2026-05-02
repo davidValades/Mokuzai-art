@@ -35,6 +35,16 @@ export const metadata: Metadata = {
     "decoración zen",
     "mokuzai",
   ],
+  alternates: {
+    canonical: "https://mokuzai-art.vercel.app",
+    languages: {
+      "es-ES": "https://mokuzai-art.vercel.app/es",
+      "en-GB": "https://mokuzai-art.vercel.app/en",
+      "ca-ES": "https://mokuzai-art.vercel.app/ca",
+      "eu-ES": "https://mokuzai-art.vercel.app/eu",
+      "de-DE": "https://mokuzai-art.vercel.app/de",
+    },
+  },
   openGraph: {
     title: "Mokuzai Art | El Alma de la Madera Japonesa", //
     description:
