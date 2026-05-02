@@ -24,7 +24,7 @@ const LANGUAGES_CONFIG = [
   { code: "DE", name: "Deutsch", icon: "de" },
 ];
 
-export default function Header({ settings }: any) {
+export default function Header({ musicUrl }: { musicUrl?: string | null }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -96,16 +96,9 @@ export default function Header({ settings }: any) {
 
   return (
     <>
-      {/* 
-        El símbolo '?.' evita el cuelgue si algo es undefined. 
-        El '||' pone tu archivo local por defecto mientras hacemos la conexión real. 
-      */}
-      <audio
-        ref={audioRef}
-        loop
-        src={settings?.ambientMusic?.url || "/mokuzai-ambient.mp3"}
-        preload="auto"
-      />
+      {musicUrl && (
+        <audio ref={audioRef} loop src={musicUrl} preload="auto" />
+      )}
 
       <motion.header
         style={{ height: headerHeight, backgroundColor: headerBg }}

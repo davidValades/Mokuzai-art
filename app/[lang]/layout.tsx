@@ -6,6 +6,7 @@ import { CartProvider } from "@/context/CartContext";
 import { I18nProvider } from "@/context/I18nContext";
 import { AuthProvider } from "@/components/Providers"; // NUEVO: Proveedor de autenticación
 import { getDictionary, Locale } from "@/lib/dictionary";
+import { client } from "@/lib/sanity";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -38,6 +39,12 @@ export default async function RootLayout({
   // Extraemos el alma de las palabras para este idioma específico
   const dict = await getDictionary(lang);
 
+  // Obtenemos la URL del archivo de música ambiental desde Sanity
+  const musicData = await client.fetch(
+    `*[_type == "home"][0] { "musicUrl": music.asset->url }`
+  );
+  const musicUrl: string | null = musicData?.musicUrl ?? null;
+
   return (
     <html lang={lang} className="scroll-smooth">
       <body
@@ -50,7 +57,7 @@ export default async function RootLayout({
           {/* Envolvemos la app con nuestro proveedor de idiomas */}
           <I18nProvider lang={lang} dict={dict}>
             <CartProvider>
-              <Header />
+              <Header musicUrl={musicUrl} />
               <main className="relative">{children}</main>
               <footer className="py-12 px-8 md:px-16 border-t border-olive-dark/10 bg-stone-serene">
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
