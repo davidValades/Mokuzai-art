@@ -6,7 +6,10 @@ import { CartProvider } from "@/context/CartContext";
 import { I18nProvider } from "@/context/I18nContext";
 import { AuthProvider } from "@/components/Providers"; // NUEVO: Proveedor de autenticación
 import { getDictionary, Locale } from "@/lib/dictionary";
-import { client } from "@/lib/sanity";
+import { serverClient } from "@/lib/sanity";
+
+// Always server-render this layout so the music URL from Sanity is always fresh
+export const dynamic = "force-dynamic";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -40,7 +43,7 @@ export default async function RootLayout({
   const dict = await getDictionary(lang);
 
   // Obtenemos la URL del archivo de música ambiental desde Sanity
-  const musicData = await client.fetch(
+  const musicData = await serverClient.fetch(
     `*[_type == "home"][0] { "musicUrl": music.asset->url }`
   );
   const musicUrl: string | null = musicData?.musicUrl ?? null;
