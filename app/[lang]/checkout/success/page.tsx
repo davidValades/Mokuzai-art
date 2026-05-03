@@ -1,20 +1,21 @@
 "use client";
 
-import { useEffect } from "react";
+import { use, useEffect } from "react";
 import { useCart } from "@/context/CartContext";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
 export default function SuccessPage({
-  params: { lang },
+  params,
 }: {
-  params: { lang: string };
+  params: Promise<{ lang: string }>;
 }) {
+  const { lang } = use(params);
   const { clearCart } = useCart();
 
   useEffect(() => {
     clearCart(); // Limpiamos el carrito automáticamente
-  }, []);
+  }, [clearCart]);
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center p-6 bg-[#DBDBDB]">

@@ -141,23 +141,24 @@ export default function CheckoutForm({
   lang: string;
 }) {
   const { cart, cartTotal } = useCart();
+  const { data: session, status: sessionStatus } = useSession();
   const [clientSecret, setClientSecret] = useState("");
 
   useEffect(() => {
-    // Si hay cosas en el carrito, pedimos el permiso de cobro al backend
-    if (cart.length > 0) {
+    // Esperamos a que la sesión haya cargado antes de crear el PaymentIntent
+    if (cart.length > 0 && sessionStatus !== "loading") {
       fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         // Enviamos el carrito real a nuestra API para que calcule el precio
-        body: JSON.stringify({ items: cart, total: cartTotal }),
+        body: JSON.stringify({ items: cart, total: cartTotal, userEmail: session?.user?.email }),
       })
         .then((res) => res.json())
         .then((data) => {
           if (data.clientSecret) setClientSecret(data.clientSecret);
         });
     }
-  }, [cart, cartTotal]);
+  }, [cart, cartTotal, session, sessionStatus]);
 
   if (cart.length === 0)
     return (
