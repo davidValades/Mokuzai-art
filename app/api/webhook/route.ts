@@ -42,42 +42,60 @@ export async function POST(req: Request) {
     console.log(`💰 ¡Pago confirmado! ID: ${paymentIntent.id}`);
 
     try {
-      // 4. CREACIÓN DEL PEDIDO EN SANITY
+      // 4. RECONSTRUIR ITEMS: Consultamos Sanity para obtener los detalles de cada obra
+      const productSlugs = paymentIntent.metadata?.product_slugs;
+      const slugsArray = productSlugs ? productSlugs.split(",") : [];
+
+      const items: { productName: string; price: number; quantity: number }[] =
+        [];
+
+      for (const slug of slugsArray) {
+        const artworkQuery = `*[_type == "artwork" && slug.current == $slug][0]{ _id, internalName, price }`;
+        const artwork = await sanityClient.fetch(artworkQuery, { slug });
+
+        if (artwork) {
+          items.push({
+            productName: artwork.internalName,
+            price: artwork.price,
+            quantity: 1,
+          });
+
+          // Marcamos la obra como vendida
+          await sanityClient
+            .patch(artwork._id)
+            .set({ isSold: true })
+            .commit();
+
+          console.log(`🎨 Obra [${slug}] marcada como VENDIDA y descatalogada.`);
+        }
+      }
+
+      // 5. CREACIÓN DEL PEDIDO EN SANITY con los campos correctos del schema
+      const orderNumber = paymentIntent.id;
+
       await sanityClient.create({
         _type: "order",
-        orderId: paymentIntent.id,
+        orderNumber,
         customerName: paymentIntent.shipping?.name || "Cliente Mokuzai",
-        email:
+        customerEmail:
           paymentIntent.metadata?.customer_email || "Email no proporcionado",
-        amount: paymentIntent.amount / 100, // Convertimos céntimos a Euros
-        status: "paid",
-        createdAt: new Date().toISOString(),
+        items,
+        totalAmount: paymentIntent.amount / 100, // Convertimos céntimos a Euros
+        status: "Pendiente",
+        shippingAddress: paymentIntent.shipping?.address
+          ? [
+              paymentIntent.shipping.address.line1,
+              paymentIntent.shipping.address.line2,
+              paymentIntent.shipping.address.city,
+              paymentIntent.shipping.address.postal_code,
+              paymentIntent.shipping.address.country,
+            ]
+              .filter(Boolean)
+              .join(", ")
+          : "",
       });
 
       console.log("✅ Pedido registrado en la base de datos de Sanity");
-
-      // 5. DESCATALOGAR LAS OBRAS VENDIDAS
-      const productSlugs = paymentIntent.metadata?.product_slugs;
-
-      if (productSlugs) {
-        // Separamos los slugs (por si ha comprado más de una obra)
-        const slugsArray = productSlugs.split(",");
-
-        for (const slug of slugsArray) {
-          // Buscamos el ID interno del documento en Sanity usando el slug
-          const query = `*[_type == "artwork" && slug.current == $slug][0]._id`;
-          const artworkId = await sanityClient.fetch(query, { slug });
-
-          if (artworkId) {
-            // Actualizamos el campo 'isSold' a true
-            await sanityClient.patch(artworkId).set({ isSold: true }).commit();
-
-            console.log(
-              `🎨 Obra [${slug}] marcada como VENDIDA y descatalogada.`,
-            );
-          }
-        }
-      }
 
       // TODO (Siguiente paso): Enviar email automático a Ricardo y al Cliente
     } catch (error) {
