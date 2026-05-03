@@ -18,7 +18,7 @@ export default defineType({
       title: "Título Interno",
       type: "string",
     }),
-    // Imágenes para tu efecto de doble exposición
+    // Imágenes
     defineField({
       name: "heroImageLight",
       title: "Hero: Imagen Clara (Fondo)",
@@ -37,6 +37,13 @@ export default defineType({
       type: "image",
       options: { hotspot: true },
     }),
+    // NUEVO: Imagen del Maestro
+    defineField({
+      name: "shokuninImage",
+      title: "Imagen del Shokunin (Ricardo)",
+      type: "image",
+      options: { hotspot: true },
+    }),
     // Textos multilingües
     defineField({
       name: "translations",
@@ -47,6 +54,7 @@ export default defineType({
         title: lang.title,
         type: "object",
         fields: [
+          // ... (Tus campos anteriores se mantienen igual)
           { name: "heroTitle", title: "Título Hero", type: "string" },
           {
             name: "manifestoTitle",
@@ -73,6 +81,33 @@ export default defineType({
             type: "string",
           },
           { name: "ctaButton", title: "CTA - Texto del botón", type: "string" },
+
+          // NUEVOS: Campos del Shokunin
+          {
+            name: "shokuninTitle",
+            title: "Shokunin: Título Principal",
+            type: "string",
+          },
+          {
+            name: "shokuninSubtitle",
+            title: "Shokunin: Subtítulo",
+            type: "string",
+          },
+          {
+            name: "shokuninText",
+            title: "Shokunin: Historia (Usa Intro para separar párrafos)",
+            type: "text",
+          },
+          {
+            name: "shokuninSignatureTitle",
+            title: "Firma: Título",
+            type: "string",
+          },
+          {
+            name: "shokuninSignatureText",
+            title: "Firma: Texto",
+            type: "text",
+          },
         ],
       })),
     }),

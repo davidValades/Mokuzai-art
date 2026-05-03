@@ -97,6 +97,73 @@ export default function WorkshopClient({
           </motion.div>
         </div>
       </div>
+      {/* 2.5 NUEVA SECCIÓN: EL SHOKUNIN (Ricardo) */}
+      <div className="w-full bg-[#C9B194]/10 flex flex-col md:flex-row items-stretch border-t border-[#706D54]/10">
+        {/* Columna Izquierda: Imagen a sangre */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1 }}
+          className="w-full md:w-1/2 relative min-h-[60vh] md:min-h-screen"
+        >
+          {data?.shokuninImage && (
+            <Image
+              src={data.shokuninImage}
+              alt="Ricardo, el Shokunin en su taller"
+              fill
+              className="object-cover object-center"
+            />
+          )}
+        </motion.div>
+
+        {/* Columna Derecha: Historia y Marca de Agua */}
+        <div className="w-full md:w-1/2 relative px-8 py-20 md:p-20 lg:p-32 flex flex-col justify-center overflow-hidden">
+          {/* Marca de agua gigante 'リ' */}
+          <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[350px] md:text-[500px] text-[#706D54] opacity-[0.03] font-cormorant pointer-events-none select-none">
+            リ
+          </span>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 0.2 }}
+            className="relative z-10"
+          >
+            <h2 className="font-cormorant text-5xl md:text-6xl text-[#706D54] mb-4">
+              {t.shokuninTitle || "El Camino de la Madera: El Shokunin"}
+            </h2>
+            <h3 className="font-inter text-sm tracking-[0.2em] uppercase text-[#706D54]/60 mb-10">
+              {t.shokuninSubtitle || "El alma detrás del formón"}
+            </h3>
+
+            {/* Truco: Separar el campo de texto en párrafos usando los saltos de línea de Sanity */}
+            <div className="font-inter text-[#706D54]/80 space-y-6 leading-relaxed mb-12">
+              {(
+                t.shokuninText ||
+                "Detrás de cada obra se encuentra Ricardo...\n\nComo 6º Dan de Karate Shito-Ryu..."
+              )
+                .split("\n")
+                .map(
+                  (paragraph: string, idx: number) =>
+                    paragraph.trim() !== "" && <p key={idx}>{paragraph}</p>,
+                )}
+            </div>
+
+            {/* Bloque de la Firma */}
+            <div className="border-t border-[#706D54]/20 pt-8">
+              <h4 className="font-cormorant text-3xl text-[#706D54] mb-3 flex items-center gap-4">
+                {t.shokuninSignatureTitle || "La Firma (リ)"}
+              </h4>
+              <p className="font-inter text-sm text-[#706D54]/70 leading-relaxed max-w-md">
+                {t.shokuninSignatureText ||
+                  "Cada obra que abandona el taller lleva grabado su sello. Representa la promesa de que esa pieza ha sido creada con la misma integridad, paciencia y espíritu inquebrantable que exige el arte marcial."}
+              </p>
+            </div>
+          </motion.div>
+        </div>
+      </div>
 
       {/* 3. IMAGEN DIVISORIA: Sanity + Tu estética Grayscale */}
       <div className="w-full py-16 bg-[#706D54] px-6 md:px-16 flex flex-col md:flex-row items-center justify-between gap-16">

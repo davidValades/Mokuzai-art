@@ -5,6 +5,7 @@ const query = `*[_type == "workshop"][0] {
   "heroImageLight": heroImageLight.asset->url,
   "heroImageDark": heroImageDark.asset->url,
   "detailImage": detailImage.asset->url,
+  "shokuninImage": shokuninImage.asset->url, 
   translations
 }`;
 
