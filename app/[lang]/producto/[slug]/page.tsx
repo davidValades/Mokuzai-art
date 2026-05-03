@@ -8,9 +8,9 @@ const query = `*[_type == "artwork" && slug.current == $slug][0]{
   kanji,
   price,
   category,
-  "image": image.asset->url,
-  "hoverImage": hoverImage.asset->url,
-  "additionalImages": additionalImages[].asset->url,
+  "image": { "url": image.asset->url, "hotspot": image.hotspot },
+  "hoverImage": { "url": hoverImage.asset->url, "hotspot": hoverImage.hotspot },
+  "additionalImages": additionalImages[]{ "url": asset->url, "hotspot": hotspot },
   translations
 }`;
 

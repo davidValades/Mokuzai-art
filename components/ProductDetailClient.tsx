@@ -1,28 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
   motion,
+  AnimatePresence,
   useScroll,
   useTransform,
   useMotionValueEvent,
 } from "framer-motion";
 import { useCart } from "@/context/CartContext";
 
-// Definimos la estructura exacta que nos llega del servidor
-interface ProductType {
-  slug: string;
-  name: string;
-  kanji: string;
-  category: string;
-  description: string;
-  details: string[];
-  price: number;
-  image: string;
-  hoverImage?: string;
-  additionalImages?: string[];
+interface SanityImage {
+  url: string;
+  hotspot?: { x: number; y: number };
+}
+
+function getObjectPosition(hotspot?: { x: number; y: number }): string {
+  if (!hotspot) return "50% 50%";
+  return `${hotspot.x * 100}% ${hotspot.y * 100}%`;
 }
 
 export default function ProductDetailClient({
@@ -45,6 +42,10 @@ export default function ProductDetailClient({
   const [isHovered, setIsHovered] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [showFloatingBar, setShowFloatingBar] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<SanityImage>(
+    translatedProduct.image
+  );
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
   const { addToCart } = useCart();
   const { scrollY } = useScroll();
@@ -54,6 +55,22 @@ export default function ProductDetailClient({
     setShowFloatingBar(latest > 400);
   });
 
+  const closeLightbox = useCallback(() => setLightboxOpen(false), []);
+
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeLightbox();
+    };
+    if (lightboxOpen) document.addEventListener("keydown", handleKey);
+    return () => document.removeEventListener("keydown", handleKey);
+  }, [lightboxOpen, closeLightbox]);
+
+  // Build thumbnail list: main image first, then additional images
+  const allImages: SanityImage[] = [
+    translatedProduct.image,
+    ...(translatedProduct.additionalImages ?? []),
+  ].filter((img: SanityImage) => img?.url);
+
   const handleAddToCart = () => {
     setIsAdding(true);
     setTimeout(() => {
@@ -61,7 +78,7 @@ export default function ProductDetailClient({
         id: translatedProduct.slug,
         name: translatedProduct.name,
         price: translatedProduct.price,
-        image: translatedProduct.image,
+        image: translatedProduct.image?.url,
         quantity: 1,
       });
       setIsAdding(false);
@@ -74,7 +91,7 @@ export default function ProductDetailClient({
       id: translatedProduct.slug,
       name: translatedProduct.name,
       price: translatedProduct.price,
-      image: translatedProduct.image,
+      image: translatedProduct.image?.url,
       quantity: 1,
     });
     alert(`Iniciando adquisición directa de: ${translatedProduct.name}`);
@@ -86,32 +103,76 @@ export default function ProductDetailClient({
       <div className="relative w-full h-[80vh] md:h-screen overflow-hidden bg-[#706D54]">
         <motion.div
           style={{ y: yImage }}
-          className="absolute inset-0 w-full h-full cursor-crosshair"
+          className="absolute inset-0 w-full h-full"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          <Image
-            src={translatedProduct.image}
-            alt={translatedProduct.name}
-            fill
-            priority
-            className={`object-cover object-center transition-opacity duration-[1500ms] ease-in-out ${
-              isHovered && translatedProduct.hoverImage
-                ? "opacity-0"
-                : "opacity-100"
-            }`}
-          />
-          {translatedProduct.hoverImage && (
+          {/* Main / selected image */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={selectedImage.url}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.8 }}
+              className="absolute inset-0"
+            >
+              <Image
+                src={selectedImage.url}
+                alt={translatedProduct.name}
+                fill
+                priority
+                className={`object-cover transition-opacity duration-[1500ms] ease-in-out ${
+                  isHovered && translatedProduct.hoverImage?.url
+                    ? "opacity-0"
+                    : "opacity-100"
+                }`}
+                style={{
+                  objectPosition: getObjectPosition(selectedImage.hotspot),
+                }}
+              />
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Hover / night image */}
+          {translatedProduct.hoverImage?.url && (
             <Image
-              src={translatedProduct.hoverImage}
+              src={translatedProduct.hoverImage.url}
               alt={`${translatedProduct.name} iluminado`}
               fill
-              className={`object-cover object-center absolute inset-0 transition-opacity duration-[1500ms] ease-in-out ${
+              className={`object-cover absolute inset-0 transition-opacity duration-[1500ms] ease-in-out ${
                 isHovered ? "opacity-100" : "opacity-0"
               }`}
+              style={{
+                objectPosition: getObjectPosition(
+                  translatedProduct.hoverImage.hotspot
+                ),
+              }}
             />
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none"></div>
+
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
+
+          {/* Zoom button */}
+          <button
+            onClick={() => setLightboxOpen(true)}
+            aria-label="Ver en detalle"
+            className="absolute top-6 right-6 z-10 bg-black/30 hover:bg-black/50 transition-colors text-white p-2 backdrop-blur-sm"
+          >
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={1.5}
+            >
+              <path
+                strokeLinecap="round"
+                d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0zm-2 4l4 4"
+              />
+            </svg>
+          </button>
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -123,34 +184,35 @@ export default function ProductDetailClient({
             </span>
           </motion.div>
         </motion.div>
-      </div>
 
-      {/* 2. GALERÍA DE IMÁGENES ADICIONALES */}
-      {translatedProduct.additionalImages && translatedProduct.additionalImages.length > 0 && (
-        <div className="bg-[#DBDBDB] py-12 px-6 md:px-16">
-          <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
-            {translatedProduct.additionalImages.map((imgUrl: string, idx: number) => (
-              <motion.div
+        {/* Thumbnail strip */}
+        {allImages.length > 1 && (
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+            {allImages.map((img, idx) => (
+              <button
                 key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: idx * 0.1 }}
-                className="relative aspect-square overflow-hidden bg-[#C9B194]/10 group cursor-pointer"
+                onClick={() => setSelectedImage(img)}
+                aria-label={`Ver foto ${idx + 1}`}
+                className={`relative w-12 h-12 md:w-16 md:h-16 overflow-hidden border-2 transition-all duration-300 ${
+                  selectedImage.url === img.url
+                    ? "border-[#DBDBDB] opacity-100"
+                    : "border-transparent opacity-60 hover:opacity-90"
+                }`}
               >
                 <Image
-                  src={imgUrl}
-                  alt={`${translatedProduct.name} — foto ${idx + 2}`}
+                  src={img.url}
+                  alt={`Miniatura ${idx + 1}`}
                   fill
-                  className="object-cover transition-transform duration-[2000ms] ease-out group-hover:scale-105"
+                  className="object-cover"
+                  style={{ objectPosition: getObjectPosition(img.hotspot) }}
                 />
-              </motion.div>
+              </button>
             ))}
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
-      {/* 3. SECCIÓN DE CONTENIDO */}
+      {/* 2. SECCIÓN DE CONTENIDO */}
       <div className="relative z-10 bg-[#DBDBDB] pt-24 pb-32 px-6 md:px-16 w-full flex justify-center shadow-[0_-20px_40px_rgba(0,0,0,0.15)]">
         <div className="max-w-3xl w-full">
           <div className="flex justify-between items-center mb-16">
@@ -212,7 +274,7 @@ export default function ProductDetailClient({
             transition={{ delay: 0.3, duration: 1 }}
             className="font-cormorant text-2xl md:text-3xl text-center italic text-[#706D54]/90 mb-20 leading-relaxed"
           >
-            "{translatedProduct.description}"
+            &ldquo;{translatedProduct.description}&rdquo;
           </motion.p>
 
           <motion.div
@@ -239,7 +301,7 @@ export default function ProductDetailClient({
         </div>
       </div>
 
-      {/* 4. BARRA FLOTANTE */}
+      {/* 3. BARRA FLOTANTE */}
       <motion.div
         animate={{ y: showFloatingBar ? 0 : 150 }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
@@ -274,6 +336,87 @@ export default function ProductDetailClient({
           </button>
         </div>
       </motion.div>
+
+      {/* 4. LIGHTBOX MODAL */}
+      <AnimatePresence>
+        {lightboxOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center"
+            onClick={closeLightbox}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="relative w-full h-full max-w-5xl max-h-[90vh] mx-auto my-auto p-4"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="relative w-full h-full">
+                <Image
+                  src={selectedImage.url}
+                  alt={translatedProduct.name}
+                  fill
+                  className="object-contain"
+                  sizes="(max-width: 1280px) 100vw, 1280px"
+                />
+              </div>
+            </motion.div>
+
+            <button
+              onClick={closeLightbox}
+              aria-label="Cerrar"
+              className="absolute top-6 right-6 text-white/70 hover:text-white transition-colors"
+            >
+              <svg
+                className="w-8 h-8"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={1.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+
+            {/* Thumbnail strip in lightbox */}
+            {allImages.length > 1 && (
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+                {allImages.map((img, idx) => (
+                  <button
+                    key={idx}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedImage(img);
+                    }}
+                    aria-label={`Ver foto ${idx + 1}`}
+                    className={`relative w-14 h-14 overflow-hidden border-2 transition-all duration-300 ${
+                      selectedImage.url === img.url
+                        ? "border-white opacity-100"
+                        : "border-transparent opacity-50 hover:opacity-80"
+                    }`}
+                  >
+                    <Image
+                      src={img.url}
+                      alt={`Miniatura ${idx + 1}`}
+                      fill
+                      className="object-cover"
+                      style={{ objectPosition: getObjectPosition(img.hotspot) }}
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
