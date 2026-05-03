@@ -160,7 +160,7 @@ function CollectionContent({ artworks, dict, lang, initialFilter }: any) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                className="group"
+                className={`group ${art.isSold ? "opacity-70" : ""}`}
               >
                 <Link href={`/${lang}/producto/${art.slug}`}>
                   <div className="relative aspect-[3/4] overflow-hidden bg-[#C9B194]/10 mb-8">
@@ -184,12 +184,12 @@ function CollectionContent({ artworks, dict, lang, initialFilter }: any) {
                             src={art.image}
                             alt={t.name || "Obra Mokuzai Art"}
                             fill
-                            className="object-cover transition-transform duration-[3000ms] ease-out group-hover:scale-105"
+                            className={`object-cover transition-transform duration-[3000ms] ease-out group-hover:scale-105 ${art.isSold ? "grayscale" : ""}`}
                             style={{ objectPosition: `${mainX}% ${mainY}%` }}
                           />
 
-                          {/* Imagen Iluminada (Hover) */}
-                          {art.hoverImage && (
+                          {/* Imagen Iluminada (Hover) — solo para obras disponibles */}
+                          {art.hoverImage && !art.isSold && (
                             <Image
                               src={art.hoverImage}
                               alt={`${t.name} detalle`}
@@ -206,17 +206,28 @@ function CollectionContent({ artworks, dict, lang, initialFilter }: any) {
 
                     {/* Velo sutil */}
                     <div className="absolute inset-0 bg-[#706D54]/0 group-hover:bg-[#706D54]/5 transition-colors duration-700" />
+
+                    {/* Cartel "Vendida" */}
+                    {art.isSold && (
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <div className="bg-[#706D54]/80 px-6 py-3 rotate-[-8deg]">
+                          <span className="font-cormorant text-xl tracking-[0.3em] uppercase text-[#DBDBDB]">
+                            {dict.product.sold}
+                          </span>
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                   <div className="flex flex-col items-center text-center px-4">
                     <span className="font-inter text-[9px] tracking-[0.4em] text-[#A08963] uppercase mb-3">
                       {art.category}
                     </span>
-                    <h3 className="font-cormorant text-2xl md:text-3xl text-[#706D54] mb-3 group-hover:text-[#A08963] transition-colors duration-500">
+                    <h3 className={`font-cormorant text-2xl md:text-3xl mb-3 transition-colors duration-500 ${art.isSold ? "text-[#706D54]/50" : "text-[#706D54] group-hover:text-[#A08963]"}`}>
                       {t.name || "Obra sin título"}
                     </h3>
                     <p className="font-inter text-[11px] tracking-[0.2em] text-[#706D54]/60">
-                      {art.price} €
+                      {art.isSold ? dict.product.sold : `${art.price} €`}
                     </p>
                   </div>
                 </Link>
