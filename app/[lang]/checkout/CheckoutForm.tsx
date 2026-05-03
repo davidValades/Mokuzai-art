@@ -2,6 +2,7 @@
 
 import { useCart } from "@/context/CartContext";
 import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 import { loadStripe } from "@stripe/stripe-js";
 import {
   Elements,
@@ -20,9 +21,31 @@ function InnerCheckoutForm({ dict, lang }: { dict: any; lang: string }) {
   const { cartTotal } = useCart();
   const stripe = useStripe();
   const elements = useElements();
+  const { data: session } = useSession();
 
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [address, setAddress] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Pre-fill fields when the user is logged in
+  useEffect(() => {
+    if (!session?.user) return;
+
+    setEmail(session.user.email ?? "");
+    setName(session.user.name ?? "");
+
+    // Fetch last shipping address from most recent order
+    fetch("/api/user")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.user?.address) {
+          setAddress(data.user.address);
+        }
+      })
+      .catch((err) => console.error("Error fetching user address:", err));
+  }, [session]);
 
   const handlePayment = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,17 +78,23 @@ function InnerCheckoutForm({ dict, lang }: { dict: any; lang: string }) {
           required
           type="email"
           placeholder={dict.checkout.email}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           className="w-full p-4 bg-transparent border-b border-[#706D54]/30 focus:border-[#706D54] outline-none transition-all font-inter text-[#706D54] placeholder:text-[#706D54]/40"
         />
         <input
           required
           type="text"
           placeholder={dict.checkout.name}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           className="w-full p-4 bg-transparent border-b border-[#706D54]/30 focus:border-[#706D54] outline-none transition-all font-inter text-[#706D54] placeholder:text-[#706D54]/40"
         />
         <textarea
           required
           placeholder={dict.checkout.address}
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
           className="w-full p-4 bg-transparent border-b border-[#706D54]/30 focus:border-[#706D54] outline-none transition-all font-inter text-[#706D54] placeholder:text-[#706D54]/40 min-h-[100px]"
         />
       </div>
