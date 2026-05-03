@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { createClient } from "@sanity/client";
+import nodemailer from "nodemailer";
 
 // 1. Inicializamos Stripe con la versión que nos pidió tu despliegue anterior
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
@@ -16,6 +17,19 @@ const sanityClient = createClient({
   useCdn: false, // Importante: false para que la escritura sea inmediata
   apiVersion: "2024-03-12",
 });
+
+// 3. Configuramos el transporte de email (SMTP)
+function createMailTransporter() {
+  return nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: Number(process.env.SMTP_PORT) || 587,
+    secure: process.env.SMTP_SECURE === "true",
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+  });
+}
 
 export async function POST(req: Request) {
   const body = await req.text();
@@ -97,7 +111,120 @@ export async function POST(req: Request) {
 
       console.log("✅ Pedido registrado en la base de datos de Sanity");
 
-      // TODO (Siguiente paso): Enviar email automático a Ricardo y al Cliente
+      // 6. ENVÍO DE EMAILS automático al cliente y a Ricardo
+      try {
+        const transporter = createMailTransporter();
+        const customerEmail = paymentIntent.metadata?.customer_email;
+        const ricardoEmail = process.env.ADMIN_EMAIL || "info@mokuzai-art.es";
+        const baseUrl = "https://mokuzai-art.es";
+        const orderRef = orderNumber.slice(-8);
+        const GUEST_EMAIL_VALUE = "invitado";
+
+        const itemsHtml = items
+          .map(
+            (item) =>
+              `<tr>
+                <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;">${item.productName}</td>
+                <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;text-align:right;">${item.price.toFixed(2)} €</td>
+              </tr>`,
+          )
+          .join("");
+
+        const shippingAddress = paymentIntent.shipping?.address
+          ? [
+              paymentIntent.shipping.address.line1,
+              paymentIntent.shipping.address.line2,
+              paymentIntent.shipping.address.city,
+              paymentIntent.shipping.address.postal_code,
+              paymentIntent.shipping.address.country,
+            ]
+              .filter(Boolean)
+              .join(", ")
+          : "No proporcionada";
+
+        const totalFormatted = (paymentIntent.amount / 100).toFixed(2);
+
+        // Email al cliente
+        if (customerEmail && customerEmail !== GUEST_EMAIL_VALUE) {
+          await transporter.sendMail({
+            from: `"Mokuzai Art" <${process.env.SMTP_USER}>`,
+            to: customerEmail,
+            subject: `✅ Confirmación de tu pedido en Mokuzai Art (#${orderRef})`,
+            html: `
+              <div style="font-family:Georgia,serif;max-width:600px;margin:0 auto;background:#fafaf9;padding:40px;border:1px solid #e5e7eb;">
+                <h1 style="font-size:24px;color:#3b2f1e;text-align:center;letter-spacing:0.1em;text-transform:uppercase;">Mokuzai Art</h1>
+                <hr style="border:none;border-top:1px solid #d6cfc4;margin:24px 0;">
+                <p style="font-size:16px;color:#3b2f1e;">Hola ${paymentIntent.shipping?.name || ""},</p>
+                <p style="color:#5c4a35;line-height:1.7;">
+                  Gracias por tu compra. Tu pedido ha sido confirmado y está siendo preparado con todo el cuidado que merece.
+                </p>
+                <table style="width:100%;border-collapse:collapse;margin:24px 0;">
+                  <thead>
+                    <tr style="background:#f0ebe4;">
+                      <th style="padding:8px 12px;text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;color:#5c4a35;">Obra</th>
+                      <th style="padding:8px 12px;text-align:right;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;color:#5c4a35;">Precio</th>
+                    </tr>
+                  </thead>
+                  <tbody>${itemsHtml}</tbody>
+                  <tfoot>
+                    <tr>
+                      <td style="padding:12px;font-weight:bold;color:#3b2f1e;">Total</td>
+                      <td style="padding:12px;text-align:right;font-weight:bold;color:#3b2f1e;">${totalFormatted} €</td>
+                    </tr>
+                  </tfoot>
+                </table>
+                <p style="color:#5c4a35;"><strong>Dirección de envío:</strong> ${shippingAddress}</p>
+                <p style="color:#5c4a35;"><strong>Referencia:</strong> ${orderRef}</p>
+                <hr style="border:none;border-top:1px solid #d6cfc4;margin:24px 0;">
+                <p style="font-size:12px;color:#9ca3af;text-align:center;">
+                  Si tienes alguna pregunta, puedes contactarnos en <a href="mailto:${ricardoEmail}" style="color:#3b2f1e;">${ricardoEmail}</a>
+                  <br>
+                  <a href="${baseUrl}" style="color:#3b2f1e;">${baseUrl}</a>
+                </p>
+              </div>
+            `,
+          });
+          console.log(`📧 Email de confirmación enviado al cliente: ${customerEmail}`);
+        }
+
+        // Email a Ricardo (administrador)
+        await transporter.sendMail({
+          from: `"Mokuzai Art - Notificaciones" <${process.env.SMTP_USER}>`,
+          to: ricardoEmail,
+          subject: `🛒 Nuevo pedido recibido (#${orderRef}) — ${totalFormatted} €`,
+          html: `
+            <div style="font-family:Georgia,serif;max-width:600px;margin:0 auto;background:#fafaf9;padding:40px;border:1px solid #e5e7eb;">
+              <h1 style="font-size:24px;color:#3b2f1e;text-align:center;letter-spacing:0.1em;text-transform:uppercase;">Nuevo Pedido</h1>
+              <hr style="border:none;border-top:1px solid #d6cfc4;margin:24px 0;">
+              <p style="font-size:16px;color:#3b2f1e;"><strong>Cliente:</strong> ${paymentIntent.shipping?.name || "Desconocido"}</p>
+              <p style="color:#5c4a35;"><strong>Email:</strong> ${customerEmail || "No proporcionado"}</p>
+              <p style="color:#5c4a35;"><strong>Dirección de envío:</strong> ${shippingAddress}</p>
+              <table style="width:100%;border-collapse:collapse;margin:24px 0;">
+                <thead>
+                  <tr style="background:#f0ebe4;">
+                    <th style="padding:8px 12px;text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;color:#5c4a35;">Obra</th>
+                    <th style="padding:8px 12px;text-align:right;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;color:#5c4a35;">Precio</th>
+                  </tr>
+                </thead>
+                <tbody>${itemsHtml}</tbody>
+                <tfoot>
+                  <tr>
+                    <td style="padding:12px;font-weight:bold;color:#3b2f1e;">Total cobrado</td>
+                    <td style="padding:12px;text-align:right;font-weight:bold;color:#3b2f1e;">${totalFormatted} €</td>
+                  </tr>
+                </tfoot>
+              </table>
+              <p style="color:#5c4a35;"><strong>ID de pago Stripe:</strong> <code>${paymentIntent.id}</code></p>
+              <hr style="border:none;border-top:1px solid #d6cfc4;margin:24px 0;">
+              <p style="font-size:12px;color:#9ca3af;text-align:center;">Gestiona el pedido en Sanity Studio: <a href="${baseUrl}/studio" style="color:#3b2f1e;">${baseUrl}/studio</a></p>
+            </div>
+          `,
+        });
+        console.log(`📧 Email de notificación enviado a Ricardo: ${ricardoEmail}`);
+      } catch (emailError) {
+        // El error de email no debe detener el flujo ni hacer que Stripe reintente
+        console.error("⚠️ Error enviando emails (el pedido sí se registró):", emailError);
+      }
     } catch (error) {
       console.error("❌ Error al procesar el webhook en Sanity:", error);
       // Devolvemos 500 para que Stripe reintente el envío del webhook más tarde

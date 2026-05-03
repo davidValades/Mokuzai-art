@@ -2,7 +2,7 @@ import { MetadataRoute } from "next";
 import { client } from "@/lib/sanity";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://mokuzai-art.vercel.app";
+  const baseUrl = "https://mokuzai-art.es";
 
   // Obtenemos todos los productos (colecciones/obras) de Sanity
   // Ajusta la query según cómo se llame tu schema de productos
