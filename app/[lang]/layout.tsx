@@ -36,24 +36,24 @@ export const metadata: Metadata = {
     "mokuzai",
   ],
   alternates: {
-    canonical: "https://mokuzai-art.vercel.app",
+    canonical: "https://mokuzai-art.es",
     languages: {
-      "es-ES": "https://mokuzai-art.vercel.app/es",
-      "en-GB": "https://mokuzai-art.vercel.app/en",
-      "ca-ES": "https://mokuzai-art.vercel.app/ca",
-      "eu-ES": "https://mokuzai-art.vercel.app/eu",
-      "de-DE": "https://mokuzai-art.vercel.app/de",
+      "es-ES": "https://mokuzai-art.es/es",
+      "en-GB": "https://mokuzai-art.es/en",
+      "ca-ES": "https://mokuzai-art.es/ca",
+      "eu-ES": "https://mokuzai-art.es/eu",
+      "de-DE": "https://mokuzai-art.es/de",
     },
   },
   openGraph: {
     title: "Mokuzai Art | El Alma de la Madera Japonesa", //
     description:
       "Descubre piezas de artesanía premium talladas a mano. Diseño minimalista inspirado en la estética Zen y Japandi para hogares contemplativos.", //
-    url: "https://mokuzai-art.vercel.app", //
+    url: "https://mokuzai-art.es", //
     siteName: "Mokuzai Art",
     images: [
       {
-        url: "/og-image.jpg", //
+        url: "https://mokuzai-art.es/og-image.jpg", //
         width: 1200,
         height: 630,
         alt: "Bodegón de artesanía japonesa Mokuzai Art: lámparas, dioramas y sets de té.", //
@@ -67,7 +67,7 @@ export const metadata: Metadata = {
     title: "Mokuzai Art | El Alma de la Madera Japonesa", //
     description:
       "Descubre piezas de artesanía premium talladas a mano. Diseño minimalista inspirado en la estética Zen y Japandi para hogares contemplativos.", //
-    images: ["/og-image.jpg"], //
+    images: ["https://mokuzai-art.es/og-image.jpg"], //
   },
 };
 
