@@ -17,7 +17,7 @@ const stripePromise = loadStripe(
 );
 
 // --- COMPONENTE INTERNO: TU FORMULARIO + LA TARJETA ---
-function InnerCheckoutForm({ dict, lang }: { dict: any; lang: string }) {
+function InnerCheckoutForm({ dict, lang, clientSecret }: { dict: any; lang: string; clientSecret: string }) {
   const { cartTotal } = useCart();
   const stripe = useStripe();
   const elements = useElements();
@@ -54,12 +54,46 @@ function InnerCheckoutForm({ dict, lang }: { dict: any; lang: string }) {
     setLoading(true);
     setError(null);
 
+    // For guest users, update the PaymentIntent metadata with their email
+    if (!session?.user?.email && email) {
+      try {
+        const parts = clientSecret.split("_secret_");
+        const paymentIntentId = parts.length === 2 ? parts[0] : null;
+        if (paymentIntentId) {
+          const res = await fetch("/api/checkout", {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ paymentIntentId, email }),
+          });
+          if (!res.ok) {
+            console.error("Failed to update PaymentIntent email:", await res.text());
+          }
+        }
+      } catch (err) {
+        console.error("Error updating guest email in PaymentIntent:", err);
+      }
+    }
+
     // Aquí es donde Stripe cifra la tarjeta y procesa el cobro
     const { error: stripeError } = await stripe.confirmPayment({
       elements,
       confirmParams: {
         // Redirigimos a la página de éxito según el idioma actual
         return_url: `${window.location.origin}/${lang}/checkout/success`,
+        payment_method_data: {
+          billing_details: {
+            name,
+            email,
+          },
+        },
+        shipping: {
+          name,
+          address: {
+            line1: address,
+            // Spain is the only country currently supported for shipping
+            country: "ES",
+          },
+        },
       },
     });
 
@@ -199,7 +233,7 @@ export default function CheckoutForm({
     <div className="w-full">
       {clientSecret ? (
         <Elements options={{ clientSecret, appearance }} stripe={stripePromise}>
-          <InnerCheckoutForm dict={dict} lang={lang} />
+          <InnerCheckoutForm dict={dict} lang={lang} clientSecret={clientSecret} />
         </Elements>
       ) : (
         <div className="flex flex-col items-center justify-center py-12 space-y-4">
