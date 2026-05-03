@@ -16,10 +16,20 @@
   },
   "product": {
     "specs": "Lanaren Zehaztapenak",
+    "unique_piece": "Eskuzko pieza bakarra",
+    "unique_piece_desc": "Obra bakoitza errepikaezia da. Erosita, dendatik betirako desagertzen da.",
+    "sold": "Obra Salduta",
+    "sold_desc": "Pieza bakar honek jadanik bere etxea aurkitu du.",
     "add_to_cart": "Saskira Gehitu",
     "adding": "Zainduz...",
     "buy_now": "Zuzenean Erosi",
-    "back": "Itzuli"
+    "back": "Itzuli",
+    "pyrography_title": "Pirografiako Pertsonalizazioa",
+    "pyrography_desc": "Obra hau pirografia teknikaren bidez egurrezko grabatu artisau batekin pertsonalizatu daiteke.",
+    "pyrography_none": "Pertsonalizaziorik gabe",
+    "pyrography_custom": "Grabatu pertsonalizatuarekin",
+    "pyrography_placeholder": "Deskribatu zure grabatua (testua, ikurra, eskaintza…)",
+    "pyrography_label": "Zure grabatua:"
   },
   "home": {
     "subtitle": "Eskuzko Lana & Dedikazioa",

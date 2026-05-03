@@ -16,10 +16,20 @@
   },
   "product": {
     "specs": "Especificacions de l'Obra",
+    "unique_piece": "Peça única i artesanal",
+    "unique_piece_desc": "Cada obra és irrepetible. Un cop adquirida, desapareix de la botiga per sempre.",
+    "sold": "Obra Venuda",
+    "sold_desc": "Aquesta peça única ja ha trobat la seva llar.",
     "add_to_cart": "Afegir a la Cistella",
     "adding": "Custodiant...",
     "buy_now": "Adquirir Directament",
-    "back": "Tornar"
+    "back": "Tornar",
+    "pyrography_title": "Personalització per Pirografia",
+    "pyrography_desc": "Aquesta obra es pot personalitzar amb un gravat artesanal en fusta mitjançant la tècnica de pirografia.",
+    "pyrography_none": "Sense personalització",
+    "pyrography_custom": "Amb gravat personalitzat",
+    "pyrography_placeholder": "Descriu el teu gravat (text, símbol, dedicatòria…)",
+    "pyrography_label": "El teu gravat:"
   },
   "home": {
     "subtitle": "Artesania & Dedicació",

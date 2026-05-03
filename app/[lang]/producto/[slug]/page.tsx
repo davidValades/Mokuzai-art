@@ -8,6 +8,8 @@ const query = `*[_type == "artwork" && slug.current == $slug][0]{
   kanji,
   price,
   category,
+  isSold,
+  allowsPyrography,
   "image": { "url": image.asset->url, "hotspot": image.hotspot },
   "hoverImage": { "url": hoverImage.asset->url, "hotspot": hoverImage.hotspot },
   "additionalImages": additionalImages[]{ "url": asset->url, "hotspot": hotspot },

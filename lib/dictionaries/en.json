@@ -16,10 +16,20 @@
   },
   "product": {
     "specs": "Work Specifications",
+    "unique_piece": "One-of-a-kind handcrafted piece",
+    "unique_piece_desc": "Each artwork is unique. Once purchased, it disappears from the store forever.",
+    "sold": "Artwork Sold",
+    "sold_desc": "This unique piece has already found its home.",
     "add_to_cart": "Add to Cart",
     "adding": "Guardians...",
     "buy_now": "Buy Directly",
-    "back": "Back"
+    "back": "Back",
+    "pyrography_title": "Pyrography Personalisation",
+    "pyrography_desc": "This artwork can be personalised with a hand-crafted wood engraving using the pyrography technique.",
+    "pyrography_none": "No personalisation",
+    "pyrography_custom": "With custom engraving",
+    "pyrography_placeholder": "Describe your engraving (text, symbol, dedication…)",
+    "pyrography_label": "Your engraving:"
   },
   "home": {
     "subtitle": "Craftsmanship & Dedication",

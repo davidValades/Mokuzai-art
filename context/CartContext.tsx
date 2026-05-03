@@ -9,6 +9,7 @@ export interface CartItem {
   price: number;
   image: string;
   quantity: number;
+  pyrographyText?: string; // Texto de personalización por pirografía (opcional)
 }
 
 interface CartContextType {
