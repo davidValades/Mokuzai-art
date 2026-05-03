@@ -78,7 +78,7 @@ export default function ProductDetailClient({
   const isSold = !!translatedProduct.isSold;
   const allowsPyrography = !!translatedProduct.allowsPyrography;
 
-  const buildCartItem = () => ({
+  const createCartItem = () => ({
     id: translatedProduct.slug,
     name: translatedProduct.name,
     price: translatedProduct.price,
@@ -93,7 +93,7 @@ export default function ProductDetailClient({
     if (isSold) return;
     setIsAdding(true);
     setTimeout(() => {
-      addToCart(buildCartItem());
+      addToCart(createCartItem());
       setIsAdding(false);
       window.dispatchEvent(new CustomEvent("openCartDrawer"));
     }, 800);
@@ -101,8 +101,8 @@ export default function ProductDetailClient({
 
   const handleDirectBuy = () => {
     if (isSold) return;
-    addToCart(buildCartItem());
-    alert(`Iniciando adquisición directa de: ${translatedProduct.name}`);
+    addToCart(createCartItem());
+    alert(`${dict.product?.buy_now || "Adquirir"}: ${translatedProduct.name}`);
   };
 
   return (
