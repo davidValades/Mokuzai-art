@@ -56,9 +56,10 @@ export async function PATCH(request: Request) {
   try {
     const { paymentIntentId, email } = await request.json();
 
-    if (!paymentIntentId || !email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!paymentIntentId || !email || !emailRegex.test(email)) {
       return NextResponse.json(
-        { error: "paymentIntentId y email son obligatorios" },
+        { error: "paymentIntentId y email válido son obligatorios" },
         { status: 400 },
       );
     }

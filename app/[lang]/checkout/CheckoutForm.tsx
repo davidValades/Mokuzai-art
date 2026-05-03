@@ -57,14 +57,20 @@ function InnerCheckoutForm({ dict, lang, clientSecret }: { dict: any; lang: stri
     // For guest users, update the PaymentIntent metadata with their email
     if (!session?.user?.email && email) {
       try {
-        const paymentIntentId = clientSecret.split("_secret_")[0];
-        await fetch("/api/checkout", {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ paymentIntentId, email }),
-        });
-      } catch {
-        // Non-blocking: proceed even if update fails
+        const parts = clientSecret.split("_secret_");
+        const paymentIntentId = parts.length === 2 ? parts[0] : null;
+        if (paymentIntentId) {
+          const res = await fetch("/api/checkout", {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ paymentIntentId, email }),
+          });
+          if (!res.ok) {
+            console.error("Failed to update PaymentIntent email:", await res.text());
+          }
+        }
+      } catch (err) {
+        console.error("Error updating guest email in PaymentIntent:", err);
       }
     }
 
@@ -84,6 +90,7 @@ function InnerCheckoutForm({ dict, lang, clientSecret }: { dict: any; lang: stri
           name,
           address: {
             line1: address,
+            // Spain is the only country currently supported for shipping
             country: "ES",
           },
         },
