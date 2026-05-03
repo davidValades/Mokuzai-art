@@ -10,26 +10,25 @@ export async function POST(request: Request) {
   try {
     // Leemos los datos que nos envía el frontend (ej. el carrito y el email)
     const body = await request.json();
-    const { items, userEmail } = body;
+    const { items, total, userEmail } = body;
+
+    // Creamos una lista separada por comas con los slugs de las obras del carrito
+    const slugs = items.map((item: any) => item.id).join(",");
 
     const calculateOrderAmount = () => {
-      // TODO: Reemplazar por la consulta a Sanity
-      return 18500;
+      // Multiplicamos por 100 porque Stripe cobra en céntimos (ej: 185€ = 18500)
+      return Math.round(total * 100);
     };
 
     // 2. Creamos la "Intención de Pago" en Stripe
     const paymentIntent = await stripe.paymentIntents.create({
       amount: calculateOrderAmount(),
       currency: "eur",
-
-      // Magia pura: Esto le dice a Stripe que queremos guardar el método de pago
-      // del cliente para usarlo en el futuro de forma segura.
       setup_future_usage: "on_session",
-
-      // Opcional: Guardamos datos extra en el recibo de Stripe
       metadata: {
         customer_email: userEmail || "invitado",
         order_type: "mokuzai_art_collection",
+        product_slugs: slugs, // <--- LA MAGIA: Guardamos las obras en Stripe
       },
       // Habilitamos los métodos de pago automáticos (Apple Pay, Google Pay, Tarjetas...)
       automatic_payment_methods: {
