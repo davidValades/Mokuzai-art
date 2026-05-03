@@ -102,7 +102,7 @@ export default function ProductDetailClient({
   const handleDirectBuy = () => {
     if (isSold) return;
     addToCart(createCartItem());
-    alert(`${dict.product?.buy_now || "Adquirir"}: ${translatedProduct.name}`);
+    router.push(`/${lang}/checkout`);
   };
 
   return (

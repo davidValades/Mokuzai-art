@@ -50,3 +50,29 @@ export async function POST(request: Request) {
     );
   }
 }
+
+// Actualiza el email del cliente invitado en los metadatos del PaymentIntent
+export async function PATCH(request: Request) {
+  try {
+    const { paymentIntentId, email } = await request.json();
+
+    if (!paymentIntentId || !email) {
+      return NextResponse.json(
+        { error: "paymentIntentId y email son obligatorios" },
+        { status: 400 },
+      );
+    }
+
+    await stripe.paymentIntents.update(paymentIntentId, {
+      metadata: { customer_email: email },
+    });
+
+    return NextResponse.json({ ok: true });
+  } catch (error: any) {
+    console.error("Error actualizando PaymentIntent:", error);
+    return NextResponse.json(
+      { error: error.message || "Error al actualizar el pago" },
+      { status: 500 },
+    );
+  }
+}
