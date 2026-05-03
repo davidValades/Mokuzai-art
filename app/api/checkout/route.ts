@@ -3,7 +3,7 @@ import Stripe from "stripe";
 
 // 1. Inicializamos Stripe de forma segura con tu clave privada
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-  apiVersion: "2024-04-10", // Usamos la API reciente
+  apiVersion: "2026-04-22.dahlia",
 });
 
 export async function POST(request: Request) {
@@ -11,15 +11,6 @@ export async function POST(request: Request) {
     // Leemos los datos que nos envía el frontend (ej. el carrito y el email)
     const body = await request.json();
     const { items, userEmail } = body;
-
-    // ⚠️ ALERTA DE SENIOR ENGINEER (Seguridad):
-    // NUNCA te fíes del precio que te envía el navegador del cliente.
-    // Un usuario malicioso podría modificar el precio a 0.01€.
-    // El flujo correcto aquí será: leer el ID de los 'items' del carrito,
-    // buscar su precio real en Sanity, y sumarlo aquí en el servidor.
-    //
-    // Por ahora, para probar que el formulario carga, pondremos un precio estático de 185€.
-    // Recuerda: Stripe trabaja SIEMPRE en céntimos (185.00€ = 18500 céntimos).
 
     const calculateOrderAmount = () => {
       // TODO: Reemplazar por la consulta a Sanity
