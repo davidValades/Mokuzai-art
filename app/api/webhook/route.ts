@@ -117,6 +117,8 @@ export async function POST(req: Request) {
         const customerEmail = paymentIntent.metadata?.customer_email;
         const ricardoEmail = process.env.ADMIN_EMAIL || "info@mokuzai-art.es";
         const baseUrl = "https://mokuzai-art.es";
+        const orderRef = orderNumber.slice(-8);
+        const GUEST_EMAIL_VALUE = "invitado";
 
         const itemsHtml = items
           .map(
@@ -143,11 +145,11 @@ export async function POST(req: Request) {
         const totalFormatted = (paymentIntent.amount / 100).toFixed(2);
 
         // Email al cliente
-        if (customerEmail && customerEmail !== "invitado") {
+        if (customerEmail && customerEmail !== GUEST_EMAIL_VALUE) {
           await transporter.sendMail({
             from: `"Mokuzai Art" <${process.env.SMTP_USER}>`,
             to: customerEmail,
-            subject: `✅ Confirmación de tu pedido en Mokuzai Art (#${orderNumber.slice(-8)})`,
+            subject: `✅ Confirmación de tu pedido en Mokuzai Art (#${orderRef})`,
             html: `
               <div style="font-family:Georgia,serif;max-width:600px;margin:0 auto;background:#fafaf9;padding:40px;border:1px solid #e5e7eb;">
                 <h1 style="font-size:24px;color:#3b2f1e;text-align:center;letter-spacing:0.1em;text-transform:uppercase;">Mokuzai Art</h1>
@@ -172,7 +174,7 @@ export async function POST(req: Request) {
                   </tfoot>
                 </table>
                 <p style="color:#5c4a35;"><strong>Dirección de envío:</strong> ${shippingAddress}</p>
-                <p style="color:#5c4a35;"><strong>Referencia:</strong> ${orderNumber.slice(-8)}</p>
+                <p style="color:#5c4a35;"><strong>Referencia:</strong> ${orderRef}</p>
                 <hr style="border:none;border-top:1px solid #d6cfc4;margin:24px 0;">
                 <p style="font-size:12px;color:#9ca3af;text-align:center;">
                   Si tienes alguna pregunta, puedes contactarnos en <a href="mailto:${ricardoEmail}" style="color:#3b2f1e;">${ricardoEmail}</a>
@@ -189,7 +191,7 @@ export async function POST(req: Request) {
         await transporter.sendMail({
           from: `"Mokuzai Art - Notificaciones" <${process.env.SMTP_USER}>`,
           to: ricardoEmail,
-          subject: `🛒 Nuevo pedido recibido (#${orderNumber.slice(-8)}) — ${totalFormatted} €`,
+          subject: `🛒 Nuevo pedido recibido (#${orderRef}) — ${totalFormatted} €`,
           html: `
             <div style="font-family:Georgia,serif;max-width:600px;margin:0 auto;background:#fafaf9;padding:40px;border:1px solid #e5e7eb;">
               <h1 style="font-size:24px;color:#3b2f1e;text-align:center;letter-spacing:0.1em;text-transform:uppercase;">Nuevo Pedido</h1>
