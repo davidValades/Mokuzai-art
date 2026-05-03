@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
-import { client } from "@/lib/sanity";
+import { serverClient } from "@/lib/sanity";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2026-04-22.dahlia",
@@ -35,7 +35,7 @@ export async function POST(request: Request) {
       const items = JSON.parse(session.metadata?.orderItems || "[]");
 
       // Creamos el documento en Sanity siguiendo tu esquema "order"
-      await client.create({
+      await serverClient.create({
         _type: "order",
         orderNumber: session.id.slice(-8).toUpperCase(), // Un ID corto para el cliente
         customerName: session.customer_details?.name || "Cliente",
