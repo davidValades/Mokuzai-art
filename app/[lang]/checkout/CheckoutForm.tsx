@@ -11,14 +11,16 @@ import {
 } from "@stripe/react-stripe-js";
 
 // 1. Inicializamos Stripe fuera del componente para no recargarlo
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
+);
 
 // --- COMPONENTE INTERNO: TU FORMULARIO + LA TARJETA ---
 function InnerCheckoutForm({ dict, lang }: { dict: any; lang: string }) {
   const { cartTotal } = useCart();
   const stripe = useStripe();
   const elements = useElements();
-  
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -41,7 +43,7 @@ function InnerCheckoutForm({ dict, lang }: { dict: any; lang: string }) {
     if (stripeError) {
       setError(stripeError.message || "Error al procesar el pago");
     }
-    
+
     setLoading(false);
   };
 
@@ -102,7 +104,13 @@ function InnerCheckoutForm({ dict, lang }: { dict: any; lang: string }) {
 }
 
 // --- COMPONENTE EXPORTADO: EL ENVOLTORIO (WRAPPER) ---
-export default function CheckoutForm({ dict, lang }: { dict: any; lang: string }) {
+export default function CheckoutForm({
+  dict,
+  lang,
+}: {
+  dict: any;
+  lang: string;
+}) {
   const { cart, cartTotal } = useCart();
   const [clientSecret, setClientSecret] = useState("");
 
@@ -131,30 +139,30 @@ export default function CheckoutForm({ dict, lang }: { dict: any; lang: string }
 
   // Forzamos a que Stripe respete tu paleta de colores y bordes
   const appearance = {
-    theme: 'flat' as const,
+    theme: "flat" as const,
     variables: {
-      fontFamily: 'Inter, system-ui, sans-serif',
-      colorBackground: 'transparent',
-      colorText: '#706D54',
-      colorPrimary: '#A08963',
-      borderRadius: '0px',
+      fontFamily: "Inter, system-ui, sans-serif",
+      colorBackground: "transparent",
+      colorText: "#706D54",
+      colorPrimary: "#A08963",
+      borderRadius: "0px",
     },
     rules: {
-      '.Input': {
-        border: '1px solid rgba(112, 109, 84, 0.3)',
-        boxShadow: 'none',
-        padding: '12px',
+      ".Input": {
+        border: "1px solid rgba(112, 109, 84, 0.3)",
+        boxShadow: "none",
+        padding: "12px",
       },
-      '.Input:focus': {
-        border: '1px solid #706D54',
+      ".Input:focus": {
+        border: "1px solid #706D54",
       },
-      '.Label': {
-        textTransform: 'uppercase',
-        letterSpacing: '0.15em',
-        fontSize: '0.7rem',
-        color: '#706D54',
-      }
-    }
+      ".Label": {
+        textTransform: "uppercase",
+        letterSpacing: "0.15em",
+        fontSize: "0.7rem",
+        color: "#706D54",
+      },
+    },
   };
 
   return (
@@ -174,4 +182,3 @@ export default function CheckoutForm({ dict, lang }: { dict: any; lang: string }
     </div>
   );
 }
-```</Elements>
