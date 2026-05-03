@@ -16,10 +16,20 @@
   },
   "product": {
     "specs": "Spezifikationen des Werks",
+    "unique_piece": "Unikat in Handarbeit",
+    "unique_piece_desc": "Jedes Werk ist einzigartig. Nach dem Kauf verschwindet es für immer aus dem Shop.",
+    "sold": "Werk verkauft",
+    "sold_desc": "Dieses einzigartige Stück hat bereits sein Zuhause gefunden.",
     "add_to_cart": "In den Warenkorb",
     "adding": "Wird verwahrt...",
     "buy_now": "Direkt erwerben",
-    "back": "Zurück"
+    "back": "Zurück",
+    "pyrography_title": "Personalisierung per Brandmalerei",
+    "pyrography_desc": "Dieses Werk kann mit einer handgefertigten Holzgravur in der Brandmalerei-Technik personalisiert werden.",
+    "pyrography_none": "Ohne Personalisierung",
+    "pyrography_custom": "Mit individueller Gravur",
+    "pyrography_placeholder": "Beschreibe deine Gravur (Text, Symbol, Widmung…)",
+    "pyrography_label": "Deine Gravur:"
   },
   "home": {
     "subtitle": "Handwerkskunst & Hingabe",

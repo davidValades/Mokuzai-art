@@ -101,9 +101,14 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                         <h3 className="font-cormorant text-xl text-[#706D54] leading-tight mb-2">
                           {item.name}
                         </h3>
-                        <p className="font-inter text-sm text-[#A08963] mb-4">
+                        <p className="font-inter text-sm text-[#A08963] mb-2">
                           {item.price} €
                         </p>
+                        {item.pyrographyText && (
+                          <p className="font-inter text-[10px] text-[#706D54]/60 italic mb-3 leading-relaxed">
+                            ✦ {item.pyrographyText}
+                          </p>
+                        )}
                         <button
                           onClick={() => removeFromCart(item.id)}
                           className="text-left font-inter text-[10px] tracking-widest uppercase text-[#706D54]/50 hover:text-[#706D54] transition-colors"

@@ -16,10 +16,20 @@
   },
   "product": {
     "specs": "Especificaciones de la Obra",
+    "unique_piece": "Pieza única y artesanal",
+    "unique_piece_desc": "Cada obra es irrepetible. Una vez adquirida, desaparece de la tienda para siempre.",
+    "sold": "Obra Vendida",
+    "sold_desc": "Esta pieza única ya ha encontrado su hogar.",
     "add_to_cart": "Añadir a la Cesta",
     "adding": "Custodiando...",
     "buy_now": "Adquirir Directamente",
-    "back": "Volver"
+    "back": "Volver",
+    "pyrography_title": "Personalización por Pirografía",
+    "pyrography_desc": "Esta obra puede personalizarse con un grabado artesanal en madera mediante la técnica de pirografía.",
+    "pyrography_none": "Sin personalización",
+    "pyrography_custom": "Con grabado personalizado",
+    "pyrography_placeholder": "Describe tu grabado (texto, símbolo, dedicatoria…)",
+    "pyrography_label": "Tu grabado:"
   },
   "home": {
     "subtitle": "Craftsmanship & Dedication",

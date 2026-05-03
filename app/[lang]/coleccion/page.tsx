@@ -3,8 +3,8 @@ import { client } from "@/lib/sanity";
 import { getDictionary, Locale } from "@/lib/dictionary";
 import CollectionClient from "./CollectionClient";
 
-// Traemos todas las obras y sus categorías
-const query = `*[_type == "artwork"] | order(_createdAt desc) {
+// Traemos todas las obras no vendidas y sus categorías
+const query = `*[_type == "artwork" && isSold != true] | order(_createdAt desc) {
   "slug": slug.current,
   category,
   price,

@@ -47,6 +47,10 @@ export default function ProductDetailClient({
   );
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
+  // Pyrography state
+  const [pyrographyOption, setPyrographyOption] = useState<"none" | "custom">("none");
+  const [pyrographyText, setPyrographyText] = useState("");
+
   const { addToCart } = useCart();
   const { scrollY } = useScroll();
   const yImage = useTransform(scrollY, [0, 1000], [0, 300]);
@@ -71,30 +75,34 @@ export default function ProductDetailClient({
     ...(translatedProduct.additionalImages ?? []),
   ].filter((img: SanityImage) => img?.url);
 
+  const isSold = !!translatedProduct.isSold;
+  const allowsPyrography = !!translatedProduct.allowsPyrography;
+
+  const createCartItem = () => ({
+    id: translatedProduct.slug,
+    name: translatedProduct.name,
+    price: translatedProduct.price,
+    image: translatedProduct.image?.url,
+    quantity: 1,
+    ...(allowsPyrography && pyrographyOption === "custom" && pyrographyText.trim()
+      ? { pyrographyText: pyrographyText.trim() }
+      : {}),
+  });
+
   const handleAddToCart = () => {
+    if (isSold) return;
     setIsAdding(true);
     setTimeout(() => {
-      addToCart({
-        id: translatedProduct.slug,
-        name: translatedProduct.name,
-        price: translatedProduct.price,
-        image: translatedProduct.image?.url,
-        quantity: 1,
-      });
+      addToCart(createCartItem());
       setIsAdding(false);
       window.dispatchEvent(new CustomEvent("openCartDrawer"));
     }, 800);
   };
 
   const handleDirectBuy = () => {
-    addToCart({
-      id: translatedProduct.slug,
-      name: translatedProduct.name,
-      price: translatedProduct.price,
-      image: translatedProduct.image?.url,
-      quantity: 1,
-    });
-    alert(`Iniciando adquisición directa de: ${translatedProduct.name}`);
+    if (isSold) return;
+    addToCart(createCartItem());
+    alert(`${dict.product?.buy_now || "Adquirir"}: ${translatedProduct.name}`);
   };
 
   return (
@@ -152,6 +160,15 @@ export default function ProductDetailClient({
           )}
 
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
+
+          {/* Sold overlay */}
+          {isSold && (
+            <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-10 pointer-events-none">
+              <span className="font-cormorant text-4xl md:text-6xl text-[#DBDBDB]/90 tracking-[0.3em] uppercase border border-[#DBDBDB]/40 px-8 py-4">
+                {dict.product?.sold || "Vendida"}
+              </span>
+            </div>
+          )}
 
           {/* Zoom button */}
           <button
@@ -267,6 +284,55 @@ export default function ProductDetailClient({
             </motion.p>
           </div>
 
+          {/* PIEZA ÚNICA badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.25, duration: 0.8 }}
+            className="flex flex-col items-center mb-12"
+          >
+            <div className="inline-flex items-center gap-3 border border-[#A08963]/40 px-6 py-3 text-center">
+              <svg
+                className="w-4 h-4 text-[#A08963] flex-shrink-0"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={1.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"
+                />
+              </svg>
+              <span className="font-inter text-[10px] tracking-[0.3em] uppercase text-[#A08963]">
+                {dict.product?.unique_piece || "Pieza única y artesanal"}
+              </span>
+            </div>
+            <p className="font-inter text-xs text-[#706D54]/60 mt-3 text-center max-w-sm leading-relaxed">
+              {dict.product?.unique_piece_desc ||
+                "Cada obra es irrepetible. Una vez adquirida, desaparece de la tienda para siempre."}
+            </p>
+          </motion.div>
+
+          {/* SOLD notice */}
+          {isSold && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="mb-12 border border-[#706D54]/30 bg-[#706D54]/5 px-6 py-5 text-center"
+            >
+              <p className="font-cormorant text-2xl text-[#706D54] mb-1">
+                {dict.product?.sold || "Obra Vendida"}
+              </p>
+              <p className="font-inter text-xs text-[#706D54]/60 tracking-wide">
+                {dict.product?.sold_desc ||
+                  "Esta pieza única ya ha encontrado su hogar."}
+              </p>
+            </motion.div>
+          )}
+
           <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -298,6 +364,99 @@ export default function ProductDetailClient({
               ))}
             </ul>
           </motion.div>
+
+          {/* PYROGRAPHY SECTION */}
+          {allowsPyrography && !isSold && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.5, duration: 1 }}
+              className="mb-20 border border-[#A08963]/30 p-8"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <svg
+                  className="w-5 h-5 text-[#A08963] flex-shrink-0"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={1.5}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125"
+                  />
+                </svg>
+                <h4 className="font-inter text-xs tracking-[0.3em] uppercase text-[#A08963]">
+                  {dict.product?.pyrography_title || "Personalización por Pirografía"}
+                </h4>
+              </div>
+              <p className="font-inter text-xs text-[#706D54]/70 leading-relaxed mb-6">
+                {dict.product?.pyrography_desc ||
+                  "Esta obra puede personalizarse con un grabado artesanal en madera mediante la técnica de pirografía."}
+              </p>
+
+              <div className="flex flex-col gap-3 mb-6">
+                <label className="flex items-center gap-3 cursor-pointer group">
+                  <input
+                    type="radio"
+                    name="pyrography"
+                    value="none"
+                    checked={pyrographyOption === "none"}
+                    onChange={() => setPyrographyOption("none")}
+                    className="accent-[#706D54] w-4 h-4"
+                  />
+                  <span className="font-inter text-sm text-[#706D54] group-hover:text-[#A08963] transition-colors">
+                    {dict.product?.pyrography_none || "Sin personalización"}
+                  </span>
+                </label>
+                <label className="flex items-center gap-3 cursor-pointer group">
+                  <input
+                    type="radio"
+                    name="pyrography"
+                    value="custom"
+                    checked={pyrographyOption === "custom"}
+                    onChange={() => setPyrographyOption("custom")}
+                    className="accent-[#706D54] w-4 h-4"
+                  />
+                  <span className="font-inter text-sm text-[#706D54] group-hover:text-[#A08963] transition-colors">
+                    {dict.product?.pyrography_custom || "Con grabado personalizado"}
+                  </span>
+                </label>
+              </div>
+
+              <AnimatePresence>
+                {pyrographyOption === "custom" && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                    className="overflow-hidden"
+                  >
+                    <label className="block font-inter text-[10px] tracking-[0.25em] uppercase text-[#706D54]/70 mb-2">
+                      {dict.product?.pyrography_label || "Tu grabado:"}
+                    </label>
+                    <textarea
+                      value={pyrographyText}
+                      onChange={(e) => setPyrographyText(e.target.value)}
+                      placeholder={
+                        dict.product?.pyrography_placeholder ||
+                        "Describe tu grabado (texto, símbolo, dedicatoria…)"
+                      }
+                      rows={3}
+                      maxLength={200}
+                      className="w-full bg-transparent border border-[#706D54]/30 focus:border-[#A08963] outline-none px-4 py-3 font-inter text-sm text-[#706D54] placeholder:text-[#706D54]/30 resize-none transition-colors duration-300"
+                    />
+                    <p className="text-right font-inter text-[10px] text-[#706D54]/40 mt-1">
+                      {pyrographyText.length}/200
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          )}
         </div>
       </div>
 
@@ -316,25 +475,33 @@ export default function ProductDetailClient({
           </span>
         </div>
 
-        <div className="w-full md:w-auto flex gap-4">
-          <button
-            onClick={handleAddToCart}
-            disabled={isAdding}
-            className={`flex-1 md:flex-none px-8 py-3 border border-[#706D54] text-[#706D54] font-inter text-[10px] tracking-[0.2em] uppercase transition-all duration-500 ${
-              isAdding ? "bg-[#706D54]/10" : "hover:bg-[#706D54]/5"
-            }`}
-          >
-            {isAdding
-              ? dict.product?.adding || "Custodiando..."
-              : dict.product?.add_to_cart || "Añadir a la Cesta"}
-          </button>
-          <button
-            onClick={handleDirectBuy}
-            className="flex-1 md:flex-none px-8 py-3 bg-[#706D54] text-[#DBDBDB] font-inter text-[10px] tracking-[0.2em] uppercase transition-all duration-500 hover:bg-[#5a5743]"
-          >
-            {dict.product?.buy_now || "Adquirir"}
-          </button>
-        </div>
+        {isSold ? (
+          <div className="w-full md:w-auto flex items-center justify-center">
+            <span className="font-inter text-[10px] tracking-[0.3em] uppercase text-[#706D54]/50 border border-[#706D54]/20 px-8 py-3">
+              {dict.product?.sold || "Obra Vendida"}
+            </span>
+          </div>
+        ) : (
+          <div className="w-full md:w-auto flex gap-4">
+            <button
+              onClick={handleAddToCart}
+              disabled={isAdding}
+              className={`flex-1 md:flex-none px-8 py-3 border border-[#706D54] text-[#706D54] font-inter text-[10px] tracking-[0.2em] uppercase transition-all duration-500 ${
+                isAdding ? "bg-[#706D54]/10" : "hover:bg-[#706D54]/5"
+              }`}
+            >
+              {isAdding
+                ? dict.product?.adding || "Custodiando..."
+                : dict.product?.add_to_cart || "Añadir a la Cesta"}
+            </button>
+            <button
+              onClick={handleDirectBuy}
+              className="flex-1 md:flex-none px-8 py-3 bg-[#706D54] text-[#DBDBDB] font-inter text-[10px] tracking-[0.2em] uppercase transition-all duration-500 hover:bg-[#5a5743]"
+            >
+              {dict.product?.buy_now || "Adquirir"}
+            </button>
+          </div>
+        )}
       </motion.div>
 
       {/* 4. LIGHTBOX MODAL */}

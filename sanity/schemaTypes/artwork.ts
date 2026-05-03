@@ -74,6 +74,22 @@ export default defineType({
       options: { hotspot: true },
     }),
     defineField({
+      name: "isSold",
+      title: "¿Vendida?",
+      type: "boolean",
+      description:
+        "Marca esta obra como vendida. Al activarlo, la obra desaparecerá de la tienda automáticamente.",
+      initialValue: false,
+    }),
+    defineField({
+      name: "allowsPyrography",
+      title: "Permite Personalización por Pirografía",
+      type: "boolean",
+      description:
+        "Activa esta opción si el comprador puede solicitar un grabado personalizado en madera mediante pirografía.",
+      initialValue: false,
+    }),
+    defineField({
       name: "translations",
       title: "Contenido Multilingüe",
       type: "object",
