@@ -177,7 +177,7 @@ export default function ProductDetailClient({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 1 }}
-            className="absolute bottom-12 left-0 w-full flex justify-center pointer-events-none"
+            className="absolute bottom-6 left-6 pointer-events-none"
           >
             <span className="font-cormorant text-8xl md:text-[12rem] text-[#DBDBDB]/80 block leading-none tracking-widest drop-shadow-lg">
               {product.kanji}
