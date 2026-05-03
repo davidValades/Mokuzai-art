@@ -5,6 +5,7 @@ import {
   useContext,
   useState,
   useEffect,
+  useCallback,
   ReactNode,
 } from "react";
 
@@ -63,10 +64,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const removeFromCart = (id: string) =>
     setCart((prev) => prev.filter((i) => i.id !== id));
 
-  const clearCart = () => {
+  const clearCart = useCallback(() => {
     setCart([]);
     localStorage.removeItem("mokuzai_cart");
-  };
+  }, []);
 
   const cartTotal = cart.reduce((t, i) => t + i.price * i.quantity, 0);
   const cartCount = cart.reduce((c, i) => c + i.quantity, 0);
