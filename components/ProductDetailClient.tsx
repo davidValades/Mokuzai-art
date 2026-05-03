@@ -167,7 +167,7 @@ export default function ProductDetailClient({
               strokeWidth={1.5}
             >
               <path
-                strokeLinecap="square"
+                strokeLinecap="round"
                 d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0zm-2 4l4 4"
               />
             </svg>
@@ -380,7 +380,7 @@ export default function ProductDetailClient({
                 strokeWidth={1.5}
               >
                 <path
-                  strokeLinecap="square"
+                  strokeLinecap="round"
                   d="M6 18L18 6M6 6l12 12"
                 />
               </svg>
