@@ -17,7 +17,24 @@ export default async function AccountPage({
   }
 
   // Traemos los pedidos de este usuario desde Sanity (sin CDN para datos en tiempo real)
-  const query = `*[_type == "order" && customerEmail == $email] | order(_createdAt desc)`;
+  const query = `*[_type == "order" && customerEmail == $email] | order(_createdAt desc) {
+    _id,
+    orderNumber,
+    status,
+    totalAmount,
+    _createdAt,
+    items[] {
+      productName,
+      price,
+      quantity,
+      artworkRef-> {
+        _id,
+        "slug": slug.current,
+        image { asset->{ url } },
+        translations
+      }
+    }
+  }`;
   const orders = await serverClient.fetch(query, { email: session.user?.email });
 
   return (

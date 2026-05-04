@@ -90,6 +90,14 @@ export default defineType({
       initialValue: false,
     }),
     defineField({
+      name: "buyer",
+      title: "Comprador",
+      type: "reference",
+      to: [{ type: "user" }],
+      weak: true,
+      description: "Usuario registrado que adquirió esta obra.",
+    }),
+    defineField({
       name: "translations",
       title: "Contenido Multilingüe",
       type: "object",
