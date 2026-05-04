@@ -127,9 +127,7 @@ export default function ProductDetailClient({
             >
               <Image
                 src={selectedImage.url}
-                alt={translatedProduct.name}
-                fill
-                priority
+                alt={`${translatedProduct.name} – ${translatedProduct.category}`}
                 className={`object-cover transition-opacity duration-[1500ms] ease-in-out ${
                   isHovered && translatedProduct.hoverImage?.url
                     ? "opacity-0"
@@ -146,7 +144,7 @@ export default function ProductDetailClient({
           {translatedProduct.hoverImage?.url && (
             <Image
               src={translatedProduct.hoverImage.url}
-              alt={`${translatedProduct.name} iluminado`}
+              alt={`${translatedProduct.name} – ${translatedProduct.category} iluminado`}
               fill
               className={`object-cover absolute inset-0 transition-opacity duration-[1500ms] ease-in-out ${
                 isHovered ? "opacity-100" : "opacity-0"
@@ -218,7 +216,7 @@ export default function ProductDetailClient({
               >
                 <Image
                   src={img.url}
-                  alt={`Miniatura ${idx + 1}`}
+                  alt={`${translatedProduct.name} – foto ${idx + 1}`}
                   fill
                   className="object-cover"
                   style={{ objectPosition: getObjectPosition(img.hotspot) }}
@@ -526,7 +524,7 @@ export default function ProductDetailClient({
               <div className="relative w-full h-full">
                 <Image
                   src={selectedImage.url}
-                  alt={translatedProduct.name}
+                  alt={`${translatedProduct.name} – ${translatedProduct.category}`}
                   fill
                   className="object-contain"
                   sizes="(max-width: 1280px) 100vw, 1280px"
@@ -572,7 +570,7 @@ export default function ProductDetailClient({
                   >
                     <Image
                       src={img.url}
-                      alt={`Miniatura ${idx + 1}`}
+                      alt={`${translatedProduct.name} – foto ${idx + 1}`}
                       fill
                       className="object-cover"
                       style={{ objectPosition: getObjectPosition(img.hotspot) }}

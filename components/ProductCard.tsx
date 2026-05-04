@@ -26,7 +26,7 @@ export default function ProductCard({ product, index, lang = "es" }: { product: 
         {product.hoverImage && (
           <Image
             src={product.hoverImage}
-            alt={`${product.name} iluminado o detalle`}
+            alt={`${product.name} – ${product.category} iluminado o detalle`}
             fill
             className="object-cover object-center scale-105"
           />
@@ -35,7 +35,7 @@ export default function ProductCard({ product, index, lang = "es" }: { product: 
         {/* Imagen Principal (Día) - Al frente */}
         <Image
           src={product.image}
-          alt={product.name}
+          alt={`${product.name} – ${product.category}`}
           fill
           className={`object-cover object-center transition-all duration-[1000ms] ease-in-out scale-100 group-hover:scale-105 ${
             product.hoverImage ? "group-hover:opacity-0 z-10" : ""
