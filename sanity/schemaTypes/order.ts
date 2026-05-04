@@ -24,6 +24,8 @@ export default defineType({
             { name: "productName", type: "string" },
             { name: "price", type: "number" },
             { name: "quantity", type: "number" },
+            { name: "imageUrl", title: "URL de Imagen", type: "string" },
+            { name: "artworkSlug", title: "Slug de la Obra", type: "string" },
             defineField({
               name: "artworkRef",
               title: "Obra",
