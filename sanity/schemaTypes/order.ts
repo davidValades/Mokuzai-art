@@ -24,8 +24,18 @@ export default defineType({
             { name: "productName", type: "string" },
             { name: "price", type: "number" },
             { name: "quantity", type: "number" },
-            { name: "imageUrl", title: "URL de Imagen", type: "string" },
-            { name: "artworkSlug", title: "Slug de la Obra", type: "string" },
+            {
+              name: "imageUrl",
+              title: "URL de Imagen",
+              type: "string",
+              description: "URL de la imagen de la obra, almacenada en el momento de la compra.",
+            },
+            {
+              name: "artworkSlug",
+              title: "Slug de la Obra",
+              type: "string",
+              description: "Slug de la obra, almacenado en el momento de la compra para mantener el enlace.",
+            },
             defineField({
               name: "artworkRef",
               title: "Obra",

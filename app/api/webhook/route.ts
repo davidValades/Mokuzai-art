@@ -85,14 +85,13 @@ export async function POST(req: Request) {
         const artwork = await serverClient.fetch(artworkQuery, { slug });
 
         if (artwork) {
-          const rawImageUrl = artwork.image?.asset?.url
+          const imageUrl = artwork.image?.asset?.url
             ? `${artwork.image.asset.url}?w=300&h=300&fit=crop&auto=format`
             : undefined;
           const artworkSlug: string | undefined = artwork.slug ?? undefined;
-          const imageUrl = rawImageUrl;
 
           orderItems.push({
-            _key: Math.random().toString(36).slice(2, 10),
+            _key: crypto.randomUUID(),
             productName: artwork.internalName,
             price: artwork.price,
             quantity: 1,
@@ -151,7 +150,7 @@ export async function POST(req: Request) {
         const artworkRefs = orderItems
           .filter((item) => item.artworkRef)
           .map((item) => ({
-            _key: Math.random().toString(36).slice(2, 10),
+            _key: crypto.randomUUID(),
             _type: "reference" as const,
             _ref: item.artworkRef!._ref,
             _weak: true,
