@@ -40,7 +40,7 @@ export const authOptions: NextAuthOptions = {
               _type: "user",
               name: user.name ?? "",
               email: user.email,
-              image: user.image ?? "",
+              ...(user.image ? { image: user.image } : {}),
               role: "cliente",
             });
           }
