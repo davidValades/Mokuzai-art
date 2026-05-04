@@ -13,7 +13,7 @@ export interface Product {
   hoverImage?: string; // Opcional, para el efecto día/noche
 }
 
-export default function ProductCard({ product, index }: { product: Product; index: number }) {
+export default function ProductCard({ product, index, lang = "es" }: { product: Product; index: number; lang?: string }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -21,7 +21,7 @@ export default function ProductCard({ product, index }: { product: Product; inde
       transition={{ duration: 0.8, delay: index * 0.15, ease: [0.22, 1, 0.36, 1] }}
       className="flex flex-col group cursor-pointer"
     >
-      <Link href={`/producto/${product.slug}`} className="block relative w-full aspect-[3/4] overflow-hidden bg-[#DBDBDB]/30 mb-6">
+      <Link href={`/${lang}/producto/${product.slug}`} className="block relative w-full aspect-[3/4] overflow-hidden bg-[#DBDBDB]/30 mb-6">
         {/* Imagen Secundaria (Noche / Detalle) - Al fondo */}
         {product.hoverImage && (
           <Image
@@ -46,7 +46,7 @@ export default function ProductCard({ product, index }: { product: Product; inde
       {/* Metadatos de la Obra */}
       <div className="flex justify-between items-start">
         <div className="flex flex-col">
-          <Link href={`/producto/${product.slug}`}>
+          <Link href={`/${lang}/producto/${product.slug}`}>
             <h3 className="font-cormorant text-2xl text-[#706D54] transition-colors duration-300 group-hover:opacity-70">
               {product.name}
             </h3>

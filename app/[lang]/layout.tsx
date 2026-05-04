@@ -3,6 +3,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { Inter, Cormorant_Garamond } from "next/font/google";
+import Link from "next/link";
 import "../globals.css";
 import Header from "@/components/Header";
 import { CartProvider } from "@/context/CartContext";
@@ -112,9 +113,17 @@ export default async function RootLayout({
                   </p>
 
                   {/* 2. Copyright (Centro) */}
-                  <p className="font-inter text-[10px] md:text-xs tracking-widest opacity-60 uppercase text-center">
-                    © 2026 Crafted with Dedication
-                  </p>
+                  <div className="flex flex-col items-center gap-2">
+                    <p className="font-inter text-[10px] md:text-xs tracking-widest opacity-60 uppercase text-center">
+                      © 2026 Crafted with Dedication
+                    </p>
+                    <Link
+                      href={`/${lang}/privacidad`}
+                      className="font-inter text-[9px] tracking-widest opacity-40 hover:opacity-70 uppercase transition-opacity"
+                    >
+                      Política de Privacidad
+                    </Link>
+                  </div>
 
                   {/* 3. Firma (Derecha en desktop, abajo en móvil) */}
                   <a
@@ -139,7 +148,7 @@ export default async function RootLayout({
           </I18nProvider>
         </AuthProvider>
         <Analytics />
-        <CookieBanner />
+        <CookieBanner lang={lang} />
         <GoogleAnalytics gaId="G-F3ETRPEJC8" />
       </body>
     </html>
