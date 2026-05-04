@@ -115,7 +115,7 @@ export async function POST(req: Request) {
       try {
         const transporter = createMailTransporter();
         const customerEmail = paymentIntent.metadata?.customer_email;
-        const ricardoEmail = process.env.ADMIN_EMAIL || "info@mokuzai-art.es";
+        const ricardoEmail = process.env.ADMIN_EMAIL || "davidmokuzaiart@gmail.com";
         const baseUrl = "https://mokuzai-art.es";
         const orderRef = orderNumber.slice(-8);
         const GUEST_EMAIL_VALUE = "invitado";
