@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
 import { Inter, Cormorant_Garamond } from "next/font/google";
 import "../globals.css";
@@ -134,6 +135,7 @@ export default async function RootLayout({
             </CartProvider>
           </I18nProvider>
         </AuthProvider>
+        <Analytics />
       </body>
     </html>
   );
