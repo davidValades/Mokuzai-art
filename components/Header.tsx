@@ -279,7 +279,7 @@ export default function Header({ musicUrl }: { musicUrl?: string | null }) {
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-[#DBDBDB] flex flex-col items-center justify-center z-50"
           >
-            {/* Contenido Menú Mobile... (mantiene tu lógica actual) */}
+            {/* Contenido Menú Mobile */}
             <div className="flex flex-col items-center space-y-8 mb-12">
               {navItems.map((item, index) => (
                 <motion.div
@@ -291,7 +291,7 @@ export default function Header({ musicUrl }: { musicUrl?: string | null }) {
                   <Link
                     href={item.path}
                     onClick={() => setIsOpen(false)}
-                    className="font-cormorant text-4xl tracking-widest text-[#706D54] uppercase hover:opacity-60"
+                    className="font-cormorant text-4xl tracking-widest text-[#706D54] uppercase hover:opacity-60 transition-opacity"
                   >
                     {item.name}
                   </Link>
@@ -299,13 +299,13 @@ export default function Header({ musicUrl }: { musicUrl?: string | null }) {
               ))}
             </div>
 
-            {/* ... Resto de tu menú móvil (Idiomas, Audio etc) ... */}
+            {/* Idiomas */}
             <div className="flex flex-wrap justify-center gap-6 mb-12">
               {LANGUAGES_CONFIG.map((l) => (
                 <button
                   key={l.code}
                   onClick={() => switchLanguage(l.code)}
-                  className="flex flex-col items-center gap-2"
+                  className="flex flex-col items-center gap-2 hover:opacity-60 transition-opacity"
                 >
                   <span className={`fi fi-${l.icon} text-2xl`}></span>
                   <span className="font-inter text-[8px] tracking-[0.2em] uppercase text-[#706D54]">
@@ -315,20 +315,45 @@ export default function Header({ musicUrl }: { musicUrl?: string | null }) {
               ))}
             </div>
 
+            {/* Atmósfera Audio */}
             <button
               onClick={toggleAudio}
-              className="flex items-center space-x-3 text-[#706D54]"
+              className="flex items-center space-x-3 text-[#706D54] hover:opacity-60 transition-opacity"
             >
               <span className="font-inter text-[10px] tracking-[0.2em] uppercase">
                 {isPlaying ? "Pausar" : "Activar"} Atmósfera
               </span>
-              {/* Reutilización de visualizer simple */}
               <div className="flex items-end gap-[1px] h-3">
                 <div
                   className={`w-[2px] h-3 bg-current ${isPlaying ? "animate-pulse" : ""}`}
                 />
               </div>
             </button>
+
+            {/* NUEVO: Firma del desarrollador (GitHub) posicionada abajo */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              className="absolute bottom-8 w-full flex justify-center"
+            >
+              <a
+                href="https://github.com/davidvalades"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 text-[#706D54]/70 hover:text-[#A08963] transition-colors duration-300 font-inter text-[9px] tracking-[0.2em] uppercase"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="w-4 h-4"
+                >
+                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                </svg>
+                David Valadés
+              </a>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
