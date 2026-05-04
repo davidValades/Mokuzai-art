@@ -87,7 +87,7 @@ export async function POST(req: Request) {
         if (artwork) {
           const imageUrl: string | undefined = artwork.image?.asset?.url ?? undefined;
           const artworkSlug: string | undefined = artwork.slug ?? undefined;
-          const productName: string = artwork.publicName || artwork.internalName;
+          const productName: string = artwork.publicName ?? artwork.internalName;
 
           orderItems.push({
             _key: crypto.randomUUID(),
