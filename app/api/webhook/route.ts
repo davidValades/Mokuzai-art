@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
-import { createClient } from "@sanity/client";
+import { serverClient } from "@/lib/sanity";
 import nodemailer from "nodemailer";
 
 function escapeHtml(str: string): string {
@@ -17,15 +17,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: "2026-04-22.dahlia",
 });
 
-// 2. Configuramos el cliente de Sanity con permisos de escritura
-// Necesitarás crear el token 'SANITY_API_WRITE_TOKEN' en manage.sanity.io
-const sanityClient = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
-  token: process.env.SANITY_API_WRITE_TOKEN,
-  useCdn: false, // Importante: false para que la escritura sea inmediata
-  apiVersion: "2024-03-12",
-});
+// 2. Stripe is initialized above; Sanity writes use the shared serverClient from lib/sanity.ts
 
 // 3. Configuramos el transporte de email (SMTP)
 function createMailTransporter() {
@@ -69,25 +61,36 @@ export async function POST(req: Request) {
       const productSlugs = paymentIntent.metadata?.product_slugs;
       const slugsArray = productSlugs ? productSlugs.split(",") : [];
 
-      const items: { productName: string; price: number; quantity: number; imageUrl?: string }[] =
+      // orderItems: only schema fields, saved to Sanity
+      const orderItems: { productName: string; price: number; quantity: number }[] = [];
+      // emailItems: includes imageUrl for the confirmation email only
+      const emailItems: { productName: string; price: number; quantity: number; imageUrl?: string }[] =
         [];
 
       for (const slug of slugsArray) {
         const artworkQuery = `*[_type == "artwork" && slug.current == $slug][0]{ _id, internalName, price, image { asset->{ url } } }`;
-        const artwork = await sanityClient.fetch(artworkQuery, { slug });
+        const artwork = await serverClient.fetch(artworkQuery, { slug });
 
         if (artwork) {
-          items.push({
+          const imageUrl = artwork.image?.asset?.url
+            ? `${artwork.image.asset.url}?w=300&h=300&fit=crop&auto=format`
+            : undefined;
+
+          orderItems.push({
             productName: artwork.internalName,
             price: artwork.price,
             quantity: 1,
-            imageUrl: artwork.image?.asset?.url
-              ? `${artwork.image.asset.url}?w=300&h=300&fit=crop&auto=format`
-              : undefined,
+          });
+
+          emailItems.push({
+            productName: artwork.internalName,
+            price: artwork.price,
+            quantity: 1,
+            imageUrl,
           });
 
           // Marcamos la obra como vendida
-          await sanityClient
+          await serverClient
             .patch(artwork._id)
             .set({ isSold: true })
             .commit();
@@ -99,13 +102,13 @@ export async function POST(req: Request) {
       // 5. CREACIÓN DEL PEDIDO EN SANITY con los campos correctos del schema
       const orderNumber = paymentIntent.id;
 
-      await sanityClient.create({
+      await serverClient.create({
         _type: "order",
         orderNumber,
         customerName: paymentIntent.shipping?.name || "Cliente Mokuzai",
         customerEmail:
           paymentIntent.metadata?.customer_email || "Email no proporcionado",
-        items,
+        items: orderItems,
         totalAmount: paymentIntent.amount / 100, // Convertimos céntimos a Euros
         status: "Pendiente",
         shippingAddress: paymentIntent.shipping?.address
@@ -132,7 +135,7 @@ export async function POST(req: Request) {
         const orderRef = orderNumber.slice(-8);
         const GUEST_EMAIL_VALUE = "invitado";
 
-        const itemsHtml = items
+        const itemsHtml = emailItems
           .map(
             (item) =>
               `<tr>
