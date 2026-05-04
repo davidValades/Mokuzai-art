@@ -144,7 +144,7 @@ export default function ProductDetailClient({
           {translatedProduct.hoverImage?.url && (
             <Image
               src={translatedProduct.hoverImage.url}
-              alt={`${translatedProduct.name} – ${translatedProduct.category} iluminado`}
+              alt={`${translatedProduct.name} – ${translatedProduct.category} ${dict.product.alt_hover_label}`}
               fill
               className={`object-cover absolute inset-0 transition-opacity duration-[1500ms] ease-in-out ${
                 isHovered ? "opacity-100" : "opacity-0"
@@ -216,7 +216,7 @@ export default function ProductDetailClient({
               >
                 <Image
                   src={img.url}
-                  alt={`${translatedProduct.name} – foto ${idx + 1}`}
+                  alt={`${translatedProduct.name} – ${dict.product.alt_photo_label} ${idx + 1}`}
                   fill
                   className="object-cover"
                   style={{ objectPosition: getObjectPosition(img.hotspot) }}
@@ -570,7 +570,7 @@ export default function ProductDetailClient({
                   >
                     <Image
                       src={img.url}
-                      alt={`${translatedProduct.name} – foto ${idx + 1}`}
+                      alt={`${translatedProduct.name} – ${dict.product.alt_photo_label} ${idx + 1}`}
                       fill
                       className="object-cover"
                       style={{ objectPosition: getObjectPosition(img.hotspot) }}
