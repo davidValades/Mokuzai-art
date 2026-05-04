@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@next/third-parties": "^16.2.4",
     "@sanity/image-url": "^2.1.1",
     "@sanity/vision": "^5.23.0",
     "@stripe/react-stripe-js": "^6.3.0",

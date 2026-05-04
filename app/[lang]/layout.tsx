@@ -1,4 +1,6 @@
 import { Analytics } from "@vercel/analytics/react";
+// 1. Importamos la herramienta oficial de Google Analytics para Next.js
+import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { Inter, Cormorant_Garamond } from "next/font/google";
 import "../globals.css";
@@ -7,6 +9,7 @@ import { CartProvider } from "@/context/CartContext";
 import { I18nProvider } from "@/context/I18nContext";
 import { AuthProvider } from "@/components/Providers";
 import { getDictionary, Locale } from "@/lib/dictionary";
+import CookieBanner from "@/components/CookieBanner";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -23,10 +26,10 @@ const cormorant = Cormorant_Garamond({
 export const metadata: Metadata = {
   title: {
     template: "%s | Mokuzai Art",
-    default: "Mokuzai Art | El Alma de la Madera Japonesa", //
+    default: "Mokuzai Art | El Alma de la Madera Japonesa",
   },
   description:
-    "Descubre piezas de artesanía premium talladas a mano. Diseño minimalista inspirado en la estética Zen y Japandi para hogares contemplativos.", //
+    "Descubre piezas de artesanía premium talladas a mano. Diseño minimalista inspirado en la estética Zen y Japandi para hogares contemplativos.",
   keywords: [
     "artesanía japonesa",
     "madera",
@@ -47,28 +50,28 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Mokuzai Art | El Alma de la Madera Japonesa", //
+    title: "Mokuzai Art | El Alma de la Madera Japonesa",
     description:
-      "Descubre piezas de artesanía premium talladas a mano. Diseño minimalista inspirado en la estética Zen y Japandi para hogares contemplativos.", //
-    url: "https://mokuzai-art.es", //
+      "Descubre piezas de artesanía premium talladas a mano. Diseño minimalista inspirado en la estética Zen y Japandi para hogares contemplativos.",
+    url: "https://mokuzai-art.es",
     siteName: "Mokuzai Art",
     images: [
       {
-        url: "https://mokuzai-art.es/og-image.jpg", //
+        url: "https://mokuzai-art.es/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Bodegón de artesanía japonesa Mokuzai Art: lámparas, dioramas y sets de té.", //
+        alt: "Bodegón de artesanía japonesa Mokuzai Art: lámparas, dioramas y sets de té.",
       },
     ],
     locale: "es_ES",
-    type: "website", //
+    type: "website",
   },
   twitter: {
-    card: "summary_large_image", //
-    title: "Mokuzai Art | El Alma de la Madera Japonesa", //
+    card: "summary_large_image",
+    title: "Mokuzai Art | El Alma de la Madera Japonesa",
     description:
-      "Descubre piezas de artesanía premium talladas a mano. Diseño minimalista inspirado en la estética Zen y Japandi para hogares contemplativos.", //
-    images: ["https://mokuzai-art.es/og-image.jpg"], //
+      "Descubre piezas de artesanía premium talladas a mano. Diseño minimalista inspirado en la estética Zen y Japandi para hogares contemplativos.",
+    images: ["https://mokuzai-art.es/og-image.jpg"],
   },
 };
 
@@ -136,6 +139,8 @@ export default async function RootLayout({
           </I18nProvider>
         </AuthProvider>
         <Analytics />
+        <CookieBanner />
+        <GoogleAnalytics gaId="G-F3ETRPEJC8" />
       </body>
     </html>
   );
