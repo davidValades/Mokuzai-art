@@ -110,7 +110,13 @@ export default async function RootLayout({
                   </p>
                 </div>
                 <p className="font-inter text-[9px] tracking-[0.15em] opacity-30 text-center mt-6 uppercase">
-                  Diseñado &amp; desarrollado por David Valadés
+                  <a
+                    href="https://github.com/davidvalades"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Diseñado &amp; desarrollado por David Valadés
+                  </a>
                 </p>
               </footer>
             </CartProvider>
