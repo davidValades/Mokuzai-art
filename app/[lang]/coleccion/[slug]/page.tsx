@@ -7,6 +7,7 @@ const query = `*[_type == "artwork" && slug.current == $slug][0]{
   "slug": slug.current,
   kanji,
   price,
+  isSold,
   category,
   "image": image.asset->url,
   "hoverImage": hoverImage.asset->url,
@@ -31,5 +32,37 @@ export default async function CollectionProductPage({
   const t = productRaw.translations?.[lang] || productRaw.translations?.["es"] || {};
   const product = { ...productRaw, ...t };
 
-  return <ProductDetailClient product={product} dict={dict} lang={lang} />;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name || product.kanji,
+    image: product.image,
+    description:
+      product.description ||
+      "Obra de artesanía premium tallada a mano de la colección Mokuzai Art.",
+    brand: {
+      "@type": "Brand",
+      name: "Mokuzai Art",
+    },
+    offers: {
+      "@type": "Offer",
+      url: `https://mokuzai-art.es/${lang}/coleccion/${slug}`,
+      priceCurrency: "EUR",
+      price: product.price,
+      itemCondition: "https://schema.org/NewCondition",
+      availability: product.isSold
+        ? "https://schema.org/OutOfStock"
+        : "https://schema.org/InStock",
+    },
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <ProductDetailClient product={product} dict={dict} lang={lang} />
+    </>
+  );
 }
