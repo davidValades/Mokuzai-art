@@ -15,5 +15,17 @@ export default defineType({
       options: { list: ["cliente", "admin"] },
       initialValue: "cliente",
     }),
+    defineField({
+      name: "purchases",
+      title: "Obras Adquiridas",
+      type: "array",
+      of: [
+        {
+          type: "reference",
+          to: [{ type: "artwork" }],
+          weak: true,
+        },
+      ],
+    }),
   ],
 });

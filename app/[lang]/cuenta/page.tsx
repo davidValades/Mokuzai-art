@@ -27,6 +27,8 @@ export default async function AccountPage({
       productName,
       price,
       quantity,
+      imageUrl,
+      artworkSlug,
       artworkRef-> {
         _id,
         "slug": slug.current,
