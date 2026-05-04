@@ -115,7 +115,7 @@ export async function POST(req: Request) {
       try {
         const transporter = createMailTransporter();
         const customerEmail = paymentIntent.metadata?.customer_email;
-        const ricardoEmail = process.env.ADMIN_EMAIL || "davidmokuzaiart@gmail.com";
+        const adminEmail = process.env.ADMIN_EMAIL || "davidmokuzaiart@gmail.com";
         const baseUrl = "https://mokuzai-art.es";
         const orderRef = orderNumber.slice(-8);
         const GUEST_EMAIL_VALUE = "invitado";
@@ -177,7 +177,7 @@ export async function POST(req: Request) {
                 <p style="color:#5c4a35;"><strong>Referencia:</strong> ${orderRef}</p>
                 <hr style="border:none;border-top:1px solid #d6cfc4;margin:24px 0;">
                 <p style="font-size:12px;color:#9ca3af;text-align:center;">
-                  Si tienes alguna pregunta, puedes contactarnos en <a href="mailto:${ricardoEmail}" style="color:#3b2f1e;">${ricardoEmail}</a>
+                  Si tienes alguna pregunta, puedes contactarnos en <a href="mailto:${adminEmail}" style="color:#3b2f1e;">${adminEmail}</a>
                   <br>
                   <a href="${baseUrl}" style="color:#3b2f1e;">${baseUrl}</a>
                 </p>
@@ -190,7 +190,7 @@ export async function POST(req: Request) {
         // Email a Ricardo (administrador)
         await transporter.sendMail({
           from: `"Mokuzai Art - Notificaciones" <${process.env.SMTP_USER}>`,
-          to: ricardoEmail,
+          to: adminEmail,
           subject: `🛒 Nuevo pedido recibido (#${orderRef}) — ${totalFormatted} €`,
           html: `
             <div style="font-family:Georgia,serif;max-width:600px;margin:0 auto;background:#fafaf9;padding:40px;border:1px solid #e5e7eb;">
@@ -220,7 +220,7 @@ export async function POST(req: Request) {
             </div>
           `,
         });
-        console.log(`📧 Email de notificación enviado a Ricardo: ${ricardoEmail}`);
+        console.log(`📧 Email de notificación enviado al administrador: ${adminEmail}`);
       } catch (emailError) {
         // El error de email no debe detener el flujo ni hacer que Stripe reintente
         console.error("⚠️ Error enviando emails (el pedido sí se registró):", emailError);
