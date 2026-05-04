@@ -81,18 +81,17 @@ export async function POST(req: Request) {
       }
 
       for (const slug of slugsArray) {
-        const artworkQuery = `*[_type == "artwork" && slug.current == $slug][0]{ _id, "slug": slug.current, internalName, price, image { asset->{ url } } }`;
+        const artworkQuery = `*[_type == "artwork" && slug.current == $slug][0]{ _id, "slug": slug.current, internalName, price, image { asset->{ url } }, "publicName": translations.es.name }`;
         const artwork = await serverClient.fetch(artworkQuery, { slug });
 
         if (artwork) {
-          const imageUrl = artwork.image?.asset?.url
-            ? `${artwork.image.asset.url}?w=300&h=300&fit=crop&auto=format`
-            : undefined;
+          const imageUrl: string | undefined = artwork.image?.asset?.url ?? undefined;
           const artworkSlug: string | undefined = artwork.slug ?? undefined;
+          const productName: string = artwork.publicName || artwork.internalName;
 
           orderItems.push({
             _key: crypto.randomUUID(),
-            productName: artwork.internalName,
+            productName,
             price: artwork.price,
             quantity: 1,
             imageUrl,
@@ -101,10 +100,12 @@ export async function POST(req: Request) {
           });
 
           emailItems.push({
-            productName: artwork.internalName,
+            productName,
             price: artwork.price,
             quantity: 1,
-            imageUrl,
+            imageUrl: imageUrl
+              ? `${imageUrl}?w=300&h=300&fit=crop&auto=format`
+              : undefined,
           });
 
           // Marcamos la obra como vendida y asignamos el comprador si está registrado
