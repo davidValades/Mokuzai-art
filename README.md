@@ -17,13 +17,14 @@ Mokuzai Art es la representación digital de nuestro estudio de diseño y artesa
 6. [Internacionalización (i18n)](#6-internacionalización-i18n)
 7. [Esquemas de Contenido (Sanity)](#7-esquemas-de-contenido-sanity)
 8. [Carrito de Compra](#8-carrito-de-compra)
-9. [Autenticación](#9-autenticación)
-10. [Gestión de Activos y Fotografía](#10-gestión-de-activos-y-fotografía)
-11. [Guía de Instalación](#11-guía-de-instalación)
-12. [Variables de Entorno](#12-variables-de-entorno)
-13. [Scripts Disponibles](#13-scripts-disponibles)
-14. [Despliegue](#14-despliegue)
-15. [Contribuir](#15-contribuir)
+9. [Rutas de API](#9-rutas-de-api)
+10. [Autenticación](#10-autenticación)
+11. [Gestión de Activos y Fotografía](#11-gestión-de-activos-y-fotografía)
+12. [Guía de Instalación](#12-guía-de-instalación)
+13. [Variables de Entorno](#13-variables-de-entorno)
+14. [Scripts Disponibles](#14-scripts-disponibles)
+15. [Despliegue](#15-despliegue)
+16. [Contribuir](#16-contribuir)
 
 ---
 
@@ -41,6 +42,7 @@ Arquitectura de **Headless Commerce** acoplada con un CMS especializado, prioriz
 | **Pasarela de Pagos**   | Stripe                      | ^22       | Integración directa mediante API para un checkout inmersivo.                                        |
 | **Autenticación**       | NextAuth.js                 | ^4        | Sesiones de usuario con Google OAuth y proveedor de credenciales.                                   |
 | **Iconos de Idioma**    | flag-icons                  | ^7        | Banderas SVG para el selector de idioma en el header.                                               |
+| **Email transaccional** | Nodemailer                  | ^7        | Envío de emails de confirmación al cliente y al administrador tras cada pedido completado.          |
 | **Tipografía**          | Inter + Cormorant Garamond  | (Google)  | Inter para textos funcionales; Cormorant para titulares y marca.                                    |
 
 ---
@@ -99,7 +101,7 @@ Navegador
 
 | Contexto        | Archivo                  | Estado que provee                          |
 | :-------------- | :----------------------- | :----------------------------------------- |
-| `CartContext`   | `context/CartContext.tsx` | `cart`, `addToCart`, `removeFromCart`, `cartTotal`, `cartCount` |
+| `CartContext`   | `context/CartContext.tsx` | `cart`, `addToCart`, `removeFromCart`, `clearCart`, `cartTotal`, `cartCount` |
 | `I18nContext`   | `context/I18nContext.tsx` | `lang` (código activo), `dict` (traducciones JSON) |
 
 ---
@@ -117,10 +119,14 @@ Navegador
 │   │   ├── el-taller/       # Historia del taller y los artesanos
 │   │   ├── producto/[slug]/ # Página de detalle de obra (galería, precio, carrito)
 │   │   ├── checkout/        # Proceso de pago con Stripe
+│   │   │   └── success/     # Confirmación de pedido (limpia el carrito)
 │   │   ├── cuenta/          # Área privada del usuario (requiere sesión)
 │   │   └── auth/signin/     # Inicio de sesión (NextAuth)
 │   ├── api/
-│   │   └── auth/[...nextauth]/ # Endpoints automáticos de NextAuth
+│   │   ├── auth/[...nextauth]/ # Endpoints automáticos de NextAuth
+│   │   ├── checkout/        # POST: crea PaymentIntent en Stripe; PATCH: actualiza email del cliente
+│   │   ├── webhook/         # POST: webhook de Stripe (confirma pago, registra pedido, envía emails)
+│   │   └── user/            # GET: devuelve datos del usuario autenticado y última dirección de envío
 │   ├── robots.ts            # Configuración de robots.txt
 │   ├── sitemap.ts           # Sitemap dinámico para SEO
 │   └── studio/[[...tool]]/ # Sanity Studio embebido
@@ -181,6 +187,7 @@ Todas las rutas están bajo el segmento dinámico `[lang]` (ej: `/es`, `/en`). E
 | `/[lang]/producto/[slug]`     | Detalle de obra: galería, descripción, detalles técnicos, precio, añadir al carrito |
 | `/[lang]/el-taller`           | Historia del taller, filosofía y artesanos                          |
 | `/[lang]/checkout`            | Formulario de envío e integración con Stripe                        |
+| `/[lang]/checkout/success`    | Confirmación de pedido completado (vacía el carrito automáticamente) |
 | `/[lang]/cuenta`              | Área privada: perfil e historial de pedidos (ruta protegida)        |
 | `/[lang]/auth/signin`         | Inicio de sesión (Google OAuth o acceso de invitado)                |
 | `/studio`                     | Sanity Studio embebido (solo para administradores)                  |
@@ -224,6 +231,8 @@ El proyecto soporta 5 idiomas sin ninguna dependencia externa de i18n: el sistem
 | `image`            | image    | ✅         | Fotografía principal (hotspot activado)                  |
 | `additionalImages` | image[]  | —         | Galería de hasta 4 imágenes adicionales                  |
 | `hoverImage`       | image    | —         | Imagen "iluminada" para el efecto noche en hover         |
+| `isSold`           | boolean  | —         | Marca la obra como vendida; la descataloga de la tienda automáticamente. El webhook de Stripe lo activa al confirmar el pago. |
+| `allowsPyrography` | boolean  | —         | Indica si el comprador puede solicitar un grabado personalizado por pirografía |
 | `translations`     | object   | —         | Nombre público, descripción evocativa y detalles técnicos por idioma |
 
 #### Categorías disponibles
@@ -271,10 +280,6 @@ Vincula un usuario con las obras compradas, el total y el estado del pedido.
 
 Datos del cliente para el área privada `/cuenta`.
 
-### `siteSettings` — Configuración Global
-
-Ajustes globales del sitio (título, descripción, favicon, etc.).
-
 ---
 
 ## 8. Carrito de Compra
@@ -283,14 +288,27 @@ El carrito está gestionado íntegramente en el cliente mediante `CartContext` (
 
 - **Persistencia:** El estado del carrito se serializa en `localStorage` bajo la clave `mokuzai_cart`. Al recargar la página, se restaura automáticamente.
 - **Estructura de un ítem:** `{ id: string (slug), name: string, price: number, image: string, quantity: number }`.
-- **Operaciones:** `addToCart(item)` — añade o incrementa cantidad; `removeFromCart(id)` — elimina por slug.
+- **Operaciones:** `addToCart(item)` — añade o incrementa cantidad; `removeFromCart(id)` — elimina por slug; `clearCart()` — vacía el carrito por completo (se invoca automáticamente en `/checkout/success`).
 - **Métricas derivadas:** `cartTotal` (suma de `precio × cantidad`) y `cartCount` (número total de unidades).
 - **Apertura del drawer:** Cualquier componente puede abrir el `CartDrawer` disparando el evento personalizado `window.dispatchEvent(new Event("openCartDrawer"))`.
 - **Badge:** El icono del carrito en el header muestra un punto de color `#A08963` cuando `cartCount > 0`.
 
 ---
 
-## 9. Autenticación
+## 9. Rutas de API
+
+Todos los endpoints están bajo `app/api/`.
+
+| Endpoint              | Método(s)    | Descripción                                                                                  |
+| :-------------------- | :----------- | :------------------------------------------------------------------------------------------- |
+| `/api/auth/[...nextauth]` | GET, POST | Endpoints automáticos de NextAuth (login, logout, sesión).                               |
+| `/api/checkout`       | POST, PATCH  | **POST:** crea un `PaymentIntent` en Stripe con el carrito y el email del usuario. **PATCH:** actualiza el email del cliente en los metadatos del `PaymentIntent`. |
+| `/api/webhook`        | POST         | Webhook de Stripe. Verifica la firma, registra el pedido en Sanity, marca cada obra como `isSold: true` y envía emails de confirmación al cliente y al administrador vía Nodemailer. Requiere la variable `STRIPE_WEBHOOK_SECRET`. |
+| `/api/user`           | GET          | Devuelve los datos del usuario autenticado y la última dirección de envío registrada en Sanity. Requiere sesión activa (401 si no). |
+
+---
+
+## 10. Autenticación
 
 La autenticación se gestiona con **NextAuth.js v4** y está configurada en `lib/auth.ts`.
 
@@ -313,7 +331,7 @@ La autenticación se gestiona con **NextAuth.js v4** y está configurada en `lib
 
 ---
 
-## 10. Gestión de Activos y Fotografía
+## 11. Gestión de Activos y Fotografía
 
 La tasa de conversión depende de la calidad visual de piezas únicas.
 
@@ -325,7 +343,7 @@ La tasa de conversión depende de la calidad visual de piezas únicas.
 
 ---
 
-## 11. Guía de Instalación
+## 12. Guía de Instalación
 
 ### Requisitos Previos
 
@@ -358,7 +376,7 @@ Accede a [http://localhost:3000/studio](http://localhost:3000/studio) para admin
 
 ---
 
-## 12. Variables de Entorno
+## 13. Variables de Entorno
 
 Crea un archivo `.env.local` en la raíz del proyecto con las siguientes variables. Solicita los valores al líder del equipo.
 
@@ -367,10 +385,12 @@ Crea un archivo `.env.local` en la raíz del proyecto con las siguientes variabl
 NEXT_PUBLIC_SANITY_PROJECT_ID=
 NEXT_PUBLIC_SANITY_DATASET=production
 SANITY_API_TOKEN=
+SANITY_API_WRITE_TOKEN=        # Token con permisos de escritura para el webhook (crear pedidos y marcar obras como vendidas)
 
 # Stripe
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
 STRIPE_SECRET_KEY=
+STRIPE_WEBHOOK_SECRET=         # Secreto del endpoint de webhook en el Dashboard de Stripe
 
 # NextAuth
 NEXTAUTH_URL=http://localhost:3000
@@ -379,15 +399,25 @@ NEXTAUTH_SECRET=
 # Google OAuth (para login con Google en NextAuth)
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
+
+# Email transaccional (Nodemailer / SMTP)
+SMTP_HOST=
+SMTP_PORT=587
+SMTP_SECURE=false              # true para puerto 465 (SSL)
+SMTP_USER=
+SMTP_PASS=
+ADMIN_EMAIL=davidmokuzaiart@gmail.com   # Email del administrador para notificaciones de nuevos pedidos
 ```
 
 > ⚠️ **Nunca** subas `.env.local` al repositorio. Está incluido en `.gitignore`.
 >
 > `NEXTAUTH_SECRET` puede generarse con: `openssl rand -base64 32`
+>
+> Para pruebas locales del webhook de Stripe, utiliza la CLI de Stripe: `stripe listen --forward-to localhost:3000/api/webhook`
 
 ---
 
-## 13. Scripts Disponibles
+## 14. Scripts Disponibles
 
 | Comando         | Descripción                                         |
 | :-------------- | :-------------------------------------------------- |
@@ -398,7 +428,7 @@ GOOGLE_CLIENT_SECRET=
 
 ---
 
-## 14. Despliegue
+## 15. Despliegue
 
 La rama `main` está conectada directamente a **Vercel**.
 
@@ -411,7 +441,7 @@ Solo se aceptan commits que respeten la filosofía de **lujo silencioso** en el 
 
 ---
 
-## 15. Contribuir
+## 16. Contribuir
 
 1. Trabaja siempre en una rama nueva: `git checkout -b feat/nombre-de-la-mejora`.
 2. Asegúrate de que `npm run lint` pasa sin errores antes de hacer commit.
