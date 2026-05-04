@@ -29,7 +29,9 @@
     "pyrography_none": "Sense personalització",
     "pyrography_custom": "Amb gravat personalitzat",
     "pyrography_placeholder": "Descriu el teu gravat (text, símbol, dedicatòria…)",
-    "pyrography_label": "El teu gravat:"
+    "pyrography_label": "El teu gravat:",
+    "not_found": "Obra no trobada | Mokuzai Art",
+    "description_fallback": "Artesania japonesa premium tallada a mà de la col·lecció Mokuzai Art."
   },
   "home": {
     "subtitle": "Artesania & Dedicació",

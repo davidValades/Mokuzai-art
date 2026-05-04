@@ -29,7 +29,9 @@
     "pyrography_none": "Sin personalización",
     "pyrography_custom": "Con grabado personalizado",
     "pyrography_placeholder": "Describe tu grabado (texto, símbolo, dedicatoria…)",
-    "pyrography_label": "Tu grabado:"
+    "pyrography_label": "Tu grabado:",
+    "not_found": "Obra no encontrada | Mokuzai Art",
+    "description_fallback": "Artesanía japonesa premium tallada a mano de la colección Mokuzai Art."
   },
   "home": {
     "subtitle": "Craftsmanship & Dedication",

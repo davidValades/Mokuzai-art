@@ -29,7 +29,9 @@
     "pyrography_none": "No personalisation",
     "pyrography_custom": "With custom engraving",
     "pyrography_placeholder": "Describe your engraving (text, symbol, dedication…)",
-    "pyrography_label": "Your engraving:"
+    "pyrography_label": "Your engraving:",
+    "not_found": "Artwork not found | Mokuzai Art",
+    "description_fallback": "Premium Japanese handcrafted artwork, hand-carved, from the Mokuzai Art collection."
   },
   "home": {
     "subtitle": "Craftsmanship & Dedication",
