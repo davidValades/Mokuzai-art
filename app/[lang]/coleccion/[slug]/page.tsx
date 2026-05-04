@@ -53,7 +53,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
               url: product.imageUrl,
               width: 1200,
               height: 630,
-              alt: `Detalle de la obra ${product.name}`,
+              alt: title,
             },
           ]
         : undefined,
@@ -128,7 +128,7 @@ export default async function CollectionProductPage({ params }: Props) {
       {
         "@type": "ListItem",
         position: 3,
-        name: product.name || slug.replace(/-/g, " "),
+        name: product.name || slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
         item: `${baseUrl}/${lang}/coleccion/${slug}`,
       },
     ],
