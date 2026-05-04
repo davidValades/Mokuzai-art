@@ -2,6 +2,7 @@
 import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials"; // Añadimos esto
+import { serverClient } from "@/lib/sanity";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -27,6 +28,28 @@ export const authOptions: NextAuthOptions = {
     signIn: "/auth/signin",
   },
   callbacks: {
+    async signIn({ user, account }) {
+      if (account?.provider === "google" && user.email) {
+        try {
+          const existing = await serverClient.fetch(
+            `*[_type == "user" && email == $email][0]`,
+            { email: user.email }
+          );
+          if (!existing) {
+            await serverClient.create({
+              _type: "user",
+              name: user.name ?? "",
+              email: user.email,
+              image: user.image ?? "",
+              role: "cliente",
+            });
+          }
+        } catch (err) {
+          console.error("Error al guardar usuario en Sanity:", err);
+        }
+      }
+      return true;
+    },
     async session({ session, token }) {
       return session;
     },
