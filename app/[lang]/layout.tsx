@@ -75,7 +75,7 @@ export const metadata: Metadata = {
     images: ["https://mokuzai-art.es/og-image.jpg"],
   },
   verification: {
-    google: "google97c2a6cd0e5ab3d9",
+    google: "X-SqHKGlMuqNCKNZMjOff6VvlXzrdtd5AZSGT1XUd9",
   },
 };
 
