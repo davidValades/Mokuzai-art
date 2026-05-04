@@ -31,7 +31,9 @@
     "pyrography_placeholder": "Beschreibe deine Gravur (Text, Symbol, Widmung…)",
     "pyrography_label": "Deine Gravur:",
     "not_found": "Werk nicht gefunden | Mokuzai Art",
-    "description_fallback": "Japanisches Premium-Kunsthandwerk, von Hand geschnitzt, aus der Mokuzai Art Kollektion."
+    "description_fallback": "Japanisches Premium-Kunsthandwerk, von Hand geschnitzt, aus der Mokuzai Art Kollektion.",
+    "alt_hover_label": "beleuchtet",
+    "alt_photo_label": "Foto"
   },
   "home": {
     "subtitle": "Handwerkskunst & Hingabe",

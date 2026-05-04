@@ -13,7 +13,8 @@ export interface Product {
   hoverImage?: string; // Opcional, para el efecto día/noche
 }
 
-export default function ProductCard({ product, index, lang = "es" }: { product: Product; index: number; lang?: string }) {
+export default function ProductCard({ product, index, lang = "es", dict }: { product: Product; index: number; lang?: string; dict?: { product: { alt_hover_label: string } } }) {
+  const hoverLabel = dict?.product?.alt_hover_label ?? "iluminado";
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -26,7 +27,7 @@ export default function ProductCard({ product, index, lang = "es" }: { product: 
         {product.hoverImage && (
           <Image
             src={product.hoverImage}
-            alt={`${product.name} iluminado o detalle`}
+            alt={`${product.name} – ${product.category} ${hoverLabel}`}
             fill
             className="object-cover object-center scale-105"
           />
@@ -35,7 +36,7 @@ export default function ProductCard({ product, index, lang = "es" }: { product: 
         {/* Imagen Principal (Día) - Al frente */}
         <Image
           src={product.image}
-          alt={product.name}
+          alt={`${product.name} – ${product.category}`}
           fill
           className={`object-cover object-center transition-all duration-[1000ms] ease-in-out scale-100 group-hover:scale-105 ${
             product.hoverImage ? "group-hover:opacity-0 z-10" : ""

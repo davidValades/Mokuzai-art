@@ -31,7 +31,9 @@
     "pyrography_placeholder": "Deskribatu zure grabatua (testua, ikurra, eskaintza…)",
     "pyrography_label": "Zure grabatua:",
     "not_found": "Obra ez da aurkitu | Mokuzai Art",
-    "description_fallback": "Mokuzai Art bildumako eskuz zizelkatutako japoniar artisautza lana."
+    "description_fallback": "Mokuzai Art bildumako eskuz zizelkatutako japoniar artisautza lana.",
+    "alt_hover_label": "argiztua",
+    "alt_photo_label": "argazkia"
   },
   "home": {
     "subtitle": "Eskuzko Lana & Dedikazioa",
