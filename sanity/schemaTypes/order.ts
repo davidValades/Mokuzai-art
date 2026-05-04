@@ -24,6 +24,13 @@ export default defineType({
             { name: "productName", type: "string" },
             { name: "price", type: "number" },
             { name: "quantity", type: "number" },
+            defineField({
+              name: "artworkRef",
+              title: "Obra",
+              type: "reference",
+              to: [{ type: "artwork" }],
+              weak: true,
+            }),
           ],
         },
       ],

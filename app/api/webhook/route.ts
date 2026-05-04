@@ -62,10 +62,23 @@ export async function POST(req: Request) {
       const slugsArray = productSlugs ? productSlugs.split(",") : [];
 
       // orderItems: only schema fields, saved to Sanity
-      const orderItems: { productName: string; price: number; quantity: number }[] = [];
+      const orderItems: { productName: string; price: number; quantity: number; artworkRef?: { _type: string; _ref: string; _weak: boolean } }[] = [];
       // emailItems: includes imageUrl for the confirmation email only
       const emailItems: { productName: string; price: number; quantity: number; imageUrl?: string }[] =
         [];
+
+      // Resolve buyer user document once (for all artworks in this order)
+      const buyerEmail = paymentIntent.metadata?.customer_email;
+      let buyerRef: { _type: string; _ref: string; _weak: boolean } | undefined;
+      if (buyerEmail && buyerEmail !== "invitado") {
+        const buyerUser = await serverClient.fetch(
+          `*[_type == "user" && email == $email][0] { _id }`,
+          { email: buyerEmail }
+        );
+        if (buyerUser?._id) {
+          buyerRef = { _type: "reference", _ref: buyerUser._id, _weak: true };
+        }
+      }
 
       for (const slug of slugsArray) {
         const artworkQuery = `*[_type == "artwork" && slug.current == $slug][0]{ _id, internalName, price, image { asset->{ url } } }`;
@@ -80,6 +93,7 @@ export async function POST(req: Request) {
             productName: artwork.internalName,
             price: artwork.price,
             quantity: 1,
+            artworkRef: { _type: "reference", _ref: artwork._id, _weak: true },
           });
 
           emailItems.push({
@@ -89,11 +103,12 @@ export async function POST(req: Request) {
             imageUrl,
           });
 
-          // Marcamos la obra como vendida
-          await serverClient
-            .patch(artwork._id)
-            .set({ isSold: true })
-            .commit();
+          // Marcamos la obra como vendida y asignamos el comprador si está registrado
+          let patchOp = serverClient.patch(artwork._id).set({ isSold: true });
+          if (buyerRef) {
+            patchOp = patchOp.set({ buyer: buyerRef });
+          }
+          await patchOp.commit();
 
           console.log(`🎨 Obra [${slug}] marcada como VENDIDA y descatalogada.`);
         }
