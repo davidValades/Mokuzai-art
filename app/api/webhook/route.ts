@@ -3,6 +3,15 @@ import Stripe from "stripe";
 import { createClient } from "@sanity/client";
 import nodemailer from "nodemailer";
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#x27;");
+}
+
 // 1. Inicializamos Stripe con la versión que nos pidió tu despliegue anterior
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: "2026-04-22.dahlia",
@@ -60,11 +69,11 @@ export async function POST(req: Request) {
       const productSlugs = paymentIntent.metadata?.product_slugs;
       const slugsArray = productSlugs ? productSlugs.split(",") : [];
 
-      const items: { productName: string; price: number; quantity: number }[] =
+      const items: { productName: string; price: number; quantity: number; imageUrl?: string }[] =
         [];
 
       for (const slug of slugsArray) {
-        const artworkQuery = `*[_type == "artwork" && slug.current == $slug][0]{ _id, internalName, price }`;
+        const artworkQuery = `*[_type == "artwork" && slug.current == $slug][0]{ _id, internalName, price, image { asset->{ url } } }`;
         const artwork = await sanityClient.fetch(artworkQuery, { slug });
 
         if (artwork) {
@@ -72,6 +81,9 @@ export async function POST(req: Request) {
             productName: artwork.internalName,
             price: artwork.price,
             quantity: 1,
+            imageUrl: artwork.image?.asset?.url
+              ? `${artwork.image.asset.url}?w=300&h=300&fit=crop&auto=format`
+              : undefined,
           });
 
           // Marcamos la obra como vendida
@@ -124,8 +136,11 @@ export async function POST(req: Request) {
           .map(
             (item) =>
               `<tr>
-                <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;">${item.productName}</td>
-                <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;text-align:right;">${item.price.toFixed(2)} €</td>
+                <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;">
+                  ${item.imageUrl ? `<img src="${item.imageUrl}" alt="${escapeHtml(item.productName)}" width="80" height="80" style="display:block;object-fit:cover;margin-bottom:6px;border:1px solid #e5e7eb;">` : ""}
+                  ${escapeHtml(item.productName)}
+                </td>
+                <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;text-align:right;vertical-align:top;">${item.price.toFixed(2)} €</td>
               </tr>`,
           )
           .join("");
