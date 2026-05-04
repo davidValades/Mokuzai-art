@@ -128,6 +128,8 @@ export default function ProductDetailClient({
               <Image
                 src={selectedImage.url}
                 alt={`${translatedProduct.name} – ${translatedProduct.category}`}
+                fill
+                priority
                 className={`object-cover transition-opacity duration-[1500ms] ease-in-out ${
                   isHovered && translatedProduct.hoverImage?.url
                     ? "opacity-0"
