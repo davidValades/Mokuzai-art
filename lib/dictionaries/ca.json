@@ -95,6 +95,14 @@
     "marketing_desc": "Utilitzades per mostrar-te contingut i anuncis rellevants fora de la nostra galeria."
   },
   "footer": {
-    "privacy": "Política de Privacitat"
+    "privacy": "Política de Privacitat",
+    "designed_by": "Dissenyat & Desenvolupat per David Valadés"
+  },
+  "signin": {
+    "private_area": "Àrea Privada",
+    "title": "Col·leccionistes",
+    "description": "Accedeix al teu espai personal per fer el seguiment de les obres que el temps i la fusta estan esculpint per a tu.",
+    "continue_with_google": "Continua amb Google",
+    "back_to_gallery": "Tornar a la Galeria"
   }
 }

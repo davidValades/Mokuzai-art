@@ -95,6 +95,14 @@
     "marketing_desc": "Utilizadas para mostrarte contenido y anuncios relevantes fuera de nuestra galería."
   },
   "footer": {
-    "privacy": "Política de Privacidad"
+    "privacy": "Política de Privacidad",
+    "designed_by": "Diseñado & Desarrollado por David Valadés"
+  },
+  "signin": {
+    "private_area": "Área Privada",
+    "title": "Coleccionistas",
+    "description": "Accede a tu espacio personal para dar seguimiento a las obras que el tiempo y la madera están esculpiendo para ti.",
+    "continue_with_google": "Continuar con Google",
+    "back_to_gallery": "Volver a la Galería"
   }
 }

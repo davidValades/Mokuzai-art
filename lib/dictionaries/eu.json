@@ -95,6 +95,14 @@
     "marketing_desc": "Gure galeriatik kanpo eduki eta iragarki garrantzitsuak erakusteko erabiltzen dira."
   },
   "footer": {
-    "privacy": "Pribatutasun Politika"
+    "privacy": "Pribatutasun Politika",
+    "designed_by": "Diseinatuta & Garatuta David Valadés-ek"
+  },
+  "signin": {
+    "private_area": "Eremu Pribatua",
+    "title": "Kolekzionistak",
+    "description": "Sartu zure espazio pertsonalera denborak eta egurrak zuretzat eskulturatzen ari diren obren jarraipena egiteko.",
+    "continue_with_google": "Jarraitu Googlerekin",
+    "back_to_gallery": "Galeriara itzuli"
   }
 }
