@@ -28,8 +28,8 @@ export default function SuccessPage({
           searchParams.get("payment_intent") || `mokuzai_${Date.now()}`;
         gaPurchase(items, total, transactionId);
       }
-    } catch {
-      // If parsing fails, skip the purchase event
+    } catch (err) {
+      console.error("GA4 purchase event failed:", err);
     }
     clearCart();
   }, [clearCart, searchParams]);
