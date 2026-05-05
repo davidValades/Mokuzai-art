@@ -1,9 +1,11 @@
 "use client";
 
 import { use, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { gaPurchase } from "@/lib/analytics";
 
 export default function SuccessPage({
   params,
@@ -12,10 +14,25 @@ export default function SuccessPage({
 }) {
   const { lang } = use(params);
   const { clearCart } = useCart();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
-    clearCart(); // Limpiamos el carrito automáticamente
-  }, [clearCart]);
+    // Read cart from localStorage before clearing it
+    try {
+      const raw = localStorage.getItem("mokuzai_cart");
+      if (raw) {
+        const items: { id: string; name: string; price: number; quantity: number }[] =
+          JSON.parse(raw);
+        const total = items.reduce((acc, i) => acc + i.price * i.quantity, 0);
+        const transactionId =
+          searchParams.get("payment_intent") || `mokuzai_${Date.now()}`;
+        gaPurchase(items, total, transactionId);
+      }
+    } catch {
+      // If parsing fails, skip the purchase event
+    }
+    clearCart();
+  }, [clearCart, searchParams]);
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center p-6 bg-[#DBDBDB]">

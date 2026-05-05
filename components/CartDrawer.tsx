@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useCart } from "@/context/CartContext";
 import { useI18n } from "@/context/I18nContext"; // NUEVO: Importamos el intérprete
 import { useRouter } from "next/navigation";
+import { gaRemoveFromCart, gaBeginCheckout } from "@/lib/analytics";
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -17,7 +18,9 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   const router = useRouter();
 
   const handleCheckout = () => {
-    // 1. Cerramos el cajón primero para una transición limpia
+    // 1. Disparamos el evento de GA4 antes de navegar
+    gaBeginCheckout(cart, cartTotal);
+    // 2. Cerramos el cajón primero para una transición limpia
     onClose();
     router.push(`/${lang}/checkout`);
   };
@@ -110,7 +113,10 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                           </p>
                         )}
                         <button
-                          onClick={() => removeFromCart(item.id)}
+                          onClick={() => {
+                            gaRemoveFromCart({ id: item.id, name: item.name, price: item.price, quantity: item.quantity });
+                            removeFromCart(item.id);
+                          }}
                           className="text-left font-inter text-[10px] tracking-widest uppercase text-[#706D54]/50 hover:text-[#706D54] transition-colors"
                         >
                           {/* USAMOS EL DICCIONARIO */}
