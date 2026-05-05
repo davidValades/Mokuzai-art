@@ -74,14 +74,18 @@ export const metadata: Metadata = {
       "Descubre piezas de artesanía premium talladas a mano. Diseño minimalista inspirado en la estética Zen y Japandi para hogares contemplativos.",
     images: ["https://mokuzai-art.es/og-image.jpg"],
   },
-  icons: {
+icons: {
     icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/icon.png", type: "image/png", sizes: "512x512" },
+      { url: "/favicon.ico" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
     ],
-    shortcut: "/favicon.ico",
-    apple: "/icon.png",
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180" },
+    ],
   },
+  manifest: "/site.webmanifest", // Enlaza el manifiesto para Android
+  // 👆 ---------------------------- 👆
   verification: {
     google: "X-SqHKGlMuqNCKNZMjOff6VvlXzrdtd5AZSGT1XUd9",
   },
