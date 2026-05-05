@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { useI18n } from "@/context/I18nContext";
 
 interface CookiePreferences {
   necessary: true;
@@ -28,6 +29,7 @@ function applyGtagConsent(prefs: CookiePreferences) {
 }
 
 export default function CookieBanner({ lang = "es" }: { lang?: string }) {
+  const { dict } = useI18n();
   const [isVisible, setIsVisible] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [preferences, setPreferences] =
@@ -88,16 +90,15 @@ export default function CookieBanner({ lang = "es" }: { lang?: string }) {
               {/* Texto del Banner */}
               <div className="flex-1 text-center md:text-left">
                 <h3 className="font-cormorant text-xl tracking-widest uppercase text-[#706D54] mb-2">
-                  Privacidad & Serenidad
+                  {dict.cookies.title}
                 </h3>
                 <p className="font-inter text-xs tracking-wider text-[#706D54]/80 leading-relaxed max-w-2xl">
-                  Utilizamos cookies para mejorar tu experiencia. Puedes elegir
-                  qué tipos de cookies permites o leer más en nuestra{" "}
+                  {dict.cookies.description}{" "}
                   <Link
                     href={`/${lang}/privacidad`}
                     className="underline hover:text-[#A08963] transition-colors"
                   >
-                    política de privacidad
+                    {dict.cookies.privacy_link}
                   </Link>
                   .
                 </p>
@@ -109,19 +110,19 @@ export default function CookieBanner({ lang = "es" }: { lang?: string }) {
                   onClick={() => setIsExpanded((v) => !v)}
                   className="font-inter text-[10px] tracking-[0.2em] uppercase text-[#706D54]/60 hover:text-[#706D54] transition-colors border border-[#706D54]/30 px-5 py-3"
                 >
-                  {isExpanded ? "Ocultar" : "Configurar"}
+                  {isExpanded ? dict.cookies.hide : dict.cookies.configure}
                 </button>
                 <button
                   onClick={handleDeclineAll}
                   className="font-inter text-[10px] tracking-[0.2em] uppercase text-[#706D54]/60 hover:text-[#706D54] transition-colors"
                 >
-                  Rechazar
+                  {dict.cookies.decline}
                 </button>
                 <button
                   onClick={handleAcceptAll}
                   className="font-inter text-[10px] tracking-[0.2em] uppercase bg-[#706D54] text-[#DBDBDB] px-8 py-4 hover:bg-[#A08963] transition-colors"
                 >
-                  Aceptar todo
+                  {dict.cookies.accept_all}
                 </button>
               </div>
             </div>
@@ -139,24 +140,24 @@ export default function CookieBanner({ lang = "es" }: { lang?: string }) {
                   <div className="p-6 md:p-8 pt-5 grid grid-cols-1 md:grid-cols-3 gap-4">
                     {/* Necesarias */}
                     <CookieToggleRow
-                      label="Cookies necesarias"
-                      description="Imprescindibles para el funcionamiento del sitio (sesión, carrito). Siempre activas."
+                      label={dict.cookies.necessary_label}
+                      description={dict.cookies.necessary_desc}
                       checked={true}
                       disabled
                     />
 
                     {/* Analíticas */}
                     <CookieToggleRow
-                      label="Cookies analíticas"
-                      description="Nos permiten entender cómo navegas por la galería y mejorar la experiencia (Google Analytics)."
+                      label={dict.cookies.analytics_label}
+                      description={dict.cookies.analytics_desc}
                       checked={preferences.analytics}
                       onChange={() => toggle("analytics")}
                     />
 
                     {/* Marketing */}
                     <CookieToggleRow
-                      label="Cookies de marketing"
-                      description="Utilizadas para mostrarte contenido y anuncios relevantes fuera de nuestra galería."
+                      label={dict.cookies.marketing_label}
+                      description={dict.cookies.marketing_desc}
                       checked={preferences.marketing}
                       onChange={() => toggle("marketing")}
                     />
@@ -167,7 +168,7 @@ export default function CookieBanner({ lang = "es" }: { lang?: string }) {
                       onClick={handleSavePreferences}
                       className="font-inter text-[10px] tracking-[0.2em] uppercase bg-[#706D54] text-[#DBDBDB] px-8 py-4 hover:bg-[#A08963] transition-colors"
                     >
-                      Guardar preferencias
+                      {dict.cookies.save_preferences}
                     </button>
                   </div>
                 </motion.div>

@@ -53,6 +53,48 @@
     "address": "Adreça completa",
     "city": "Ciutat",
     "pay_now": "Procedir al pagament",
-    "processing": "Processant artesania..."
+    "processing": "Processant artesania...",
+    "total_label": "Total de l'obra",
+    "connecting": "Connectant amb passarel·la segura..."
+  },
+  "collection": {
+    "loading": "Carregant la col·lecció..."
+  },
+  "header": {
+    "activate_atmosphere": "Activar Atmosfera",
+    "pause_atmosphere": "Pausar Atmosfera"
+  },
+  "dashboard": {
+    "welcome": "Benvingut, Col·leccionista",
+    "sign_out": "Tancar Sessió",
+    "acquisitions": "Les teves adquisicions",
+    "order": "Comanda",
+    "empty_orders": "Encara no has iniciat la teva col·lecció. La fusta espera la teva elecció.",
+    "untitled": "Obra sense títol"
+  },
+  "not_found": {
+    "title": "Pàgina no trobada",
+    "description": "Com la veta de la fusta, cada camí és únic. La pàgina que cerques ja no existeix o ha estat moguda. Deixa'ns guiar-te de tornada a la galeria.",
+    "back_home": "Tornar a l'inici",
+    "view_collection": "Veure la col·lecció"
+  },
+  "cookies": {
+    "title": "Privacitat & Serenitat",
+    "description": "Utilitzem cookies per millorar la teva experiència. Pots triar quins tipus de cookies permets o llegir més a la nostra",
+    "privacy_link": "política de privacitat",
+    "configure": "Configurar",
+    "hide": "Ocultar",
+    "decline": "Rebutjar",
+    "accept_all": "Acceptar tot",
+    "save_preferences": "Desa les preferències",
+    "necessary_label": "Cookies necessàries",
+    "necessary_desc": "Imprescindibles per al funcionament del lloc (sessió, cistella). Sempre actives.",
+    "analytics_label": "Cookies analítiques",
+    "analytics_desc": "Ens permeten entendre com navegues per la galeria i millorar l'experiència (Google Analytics).",
+    "marketing_label": "Cookies de màrqueting",
+    "marketing_desc": "Utilitzades per mostrar-te contingut i anuncis rellevants fora de la nostra galeria."
+  },
+  "footer": {
+    "privacy": "Política de Privacitat"
   }
 }

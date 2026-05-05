@@ -53,6 +53,48 @@
     "address": "Dirección completa",
     "city": "Ciudad",
     "pay_now": "Proceder al pago",
-    "processing": "Procesando artesanía..."
+    "processing": "Procesando artesanía...",
+    "total_label": "Total de la obra",
+    "connecting": "Conectando con pasarela segura..."
+  },
+  "collection": {
+    "loading": "Cargando la colección..."
+  },
+  "header": {
+    "activate_atmosphere": "Activar Atmósfera",
+    "pause_atmosphere": "Pausar Atmósfera"
+  },
+  "dashboard": {
+    "welcome": "Bienvenido, Coleccionista",
+    "sign_out": "Cerrar Sesión",
+    "acquisitions": "Tus adquisiciones",
+    "order": "Pedido",
+    "empty_orders": "Aún no has iniciado tu colección. La madera espera tu elección.",
+    "untitled": "Obra sin título"
+  },
+  "not_found": {
+    "title": "Página no encontrada",
+    "description": "Como la veta de la madera, cada camino es único. La página que buscas ya no existe o ha sido movida. Permítenos guiarte de vuelta a la galería.",
+    "back_home": "Volver al inicio",
+    "view_collection": "Ver la colección"
+  },
+  "cookies": {
+    "title": "Privacidad & Serenidad",
+    "description": "Utilizamos cookies para mejorar tu experiencia. Puedes elegir qué tipos de cookies permites o leer más en nuestra",
+    "privacy_link": "política de privacidad",
+    "configure": "Configurar",
+    "hide": "Ocultar",
+    "decline": "Rechazar",
+    "accept_all": "Aceptar todo",
+    "save_preferences": "Guardar preferencias",
+    "necessary_label": "Cookies necesarias",
+    "necessary_desc": "Imprescindibles para el funcionamiento del sitio (sesión, carrito). Siempre activas.",
+    "analytics_label": "Cookies analíticas",
+    "analytics_desc": "Nos permiten entender cómo navegas por la galería y mejorar la experiencia (Google Analytics).",
+    "marketing_label": "Cookies de marketing",
+    "marketing_desc": "Utilizadas para mostrarte contenido y anuncios relevantes fuera de nuestra galería."
+  },
+  "footer": {
+    "privacy": "Política de Privacidad"
   }
 }

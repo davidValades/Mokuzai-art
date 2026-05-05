@@ -53,6 +53,48 @@
     "address": "Helbide osoa",
     "city": "Hiria",
     "pay_now": "Ordainketara joan",
-    "processing": "Eskuzko lana prozesatzen..."
+    "processing": "Eskuzko lana prozesatzen...",
+    "total_label": "Obraren guztira",
+    "connecting": "Pasabide segurura konektatzen..."
+  },
+  "collection": {
+    "loading": "Bilduma kargatzen..."
+  },
+  "header": {
+    "activate_atmosphere": "Atmosfera aktibatu",
+    "pause_atmosphere": "Atmosfera pausatu"
+  },
+  "dashboard": {
+    "welcome": "Ongi etorri, Kolekzionista",
+    "sign_out": "Saioa itxi",
+    "acquisitions": "Zure eskurapenak",
+    "order": "Eskaria",
+    "empty_orders": "Oraindik ez duzu zure bilduma hasi. Egurrak zure aukera itxaroten du.",
+    "untitled": "Izenbururik gabeko obra"
+  },
+  "not_found": {
+    "title": "Orria ez da aurkitu",
+    "description": "Egurraren zerrenda bezala, bide bakoitza bakarra da. Bilatzen ari zaren orria jada ez da existitzen edo mugitu egin da. Utzi gurekin galeriara itzultzen.",
+    "back_home": "Hasierara itzuli",
+    "view_collection": "Bilduma ikusi"
+  },
+  "cookies": {
+    "title": "Pribatutasuna & Lasaitasuna",
+    "description": "Cookieak erabiltzen ditugu zure esperientzia hobetzeko. Aukera ditzakezu zein cookie mota onartzen dituzun edo gehiago irakurri gure",
+    "privacy_link": "pribatutasun politikan",
+    "configure": "Konfiguratu",
+    "hide": "Ezkutatu",
+    "decline": "Ukatu",
+    "accept_all": "Dena onartu",
+    "save_preferences": "Lehentasunak gorde",
+    "necessary_label": "Beharrezko cookieak",
+    "necessary_desc": "Gunearen funtzionamendurako ezinbestekoak (saioa, saskia). Beti aktibo.",
+    "analytics_label": "Cookie analitikoak",
+    "analytics_desc": "Galerian nola nabigatzen duzun ulertzeko eta esperientzia hobetzeko aukera ematen digute (Google Analytics).",
+    "marketing_label": "Marketing cookieak",
+    "marketing_desc": "Gure galeriatik kanpo eduki eta iragarki garrantzitsuak erakusteko erabiltzen dira."
+  },
+  "footer": {
+    "privacy": "Pribatutasun Politika"
   }
 }

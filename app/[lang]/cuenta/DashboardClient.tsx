@@ -22,7 +22,7 @@ export default function DashboardClient({ session, orders }: any) {
           animate={{ opacity: 1 }}
           className="font-inter text-[10px] tracking-[0.4em] uppercase text-[#A08963] mb-4 block"
         >
-          Bienvenido, Coleccionista
+          {dict.dashboard.welcome}
         </motion.span>
         <div className="flex justify-between items-end">
           <motion.h1
@@ -36,7 +36,7 @@ export default function DashboardClient({ session, orders }: any) {
             onClick={() => signOut({ callbackUrl: `/${lang}` })}
             className="font-inter text-[10px] tracking-widest uppercase text-[#706D54]/50 hover:text-[#706D54] transition-colors pb-2 border-b border-[#706D54]/20"
           >
-            Cerrar Sesión
+            {dict.dashboard.sign_out}
           </button>
         </div>
       </header>
@@ -44,13 +44,13 @@ export default function DashboardClient({ session, orders }: any) {
       {/* Listado de Pedidos / Obras */}
       <section>
         <h2 className="font-cormorant text-2xl text-[#706D54] mb-10 italic">
-          Tus adquisiciones
+          {dict.dashboard.acquisitions}
         </h2>
 
         {orders.length === 0 ? (
           <div className="border-t border-[#706D54]/10 py-20 text-center">
             <p className="font-inter text-sm text-[#706D54]/60 italic">
-              Aún no has iniciado tu colección. La madera espera tu elección.
+              {dict.dashboard.empty_orders}
             </p>
           </div>
         ) : (
@@ -102,7 +102,7 @@ export default function DashboardClient({ session, orders }: any) {
 
                     <div>
                       <span className="font-inter text-[10px] text-[#A08963] uppercase tracking-widest block mb-2">
-                        Pedido {order.orderNumber}
+                        {dict.dashboard.order} {order.orderNumber}
                       </span>
                       <p className="font-cormorant text-xl text-[#706D54]">
                         {artworkName}

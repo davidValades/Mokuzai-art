@@ -53,6 +53,48 @@
     "address": "Full address",
     "city": "City",
     "pay_now": "Proceed to payment",
-    "processing": "Processing craftsmanship..."
+    "processing": "Processing craftsmanship...",
+    "total_label": "Artwork total",
+    "connecting": "Connecting to secure gateway..."
+  },
+  "collection": {
+    "loading": "Loading collection..."
+  },
+  "header": {
+    "activate_atmosphere": "Activate Atmosphere",
+    "pause_atmosphere": "Pause Atmosphere"
+  },
+  "dashboard": {
+    "welcome": "Welcome, Collector",
+    "sign_out": "Sign Out",
+    "acquisitions": "Your acquisitions",
+    "order": "Order",
+    "empty_orders": "You haven't started your collection yet. The wood awaits your choice.",
+    "untitled": "Untitled artwork"
+  },
+  "not_found": {
+    "title": "Page not found",
+    "description": "Like the grain of wood, each path is unique. The page you're looking for no longer exists or has been moved. Let us guide you back to the gallery.",
+    "back_home": "Back to home",
+    "view_collection": "View the collection"
+  },
+  "cookies": {
+    "title": "Privacy & Serenity",
+    "description": "We use cookies to enhance your experience. You can choose which types of cookies to allow or read more in our",
+    "privacy_link": "privacy policy",
+    "configure": "Configure",
+    "hide": "Hide",
+    "decline": "Decline",
+    "accept_all": "Accept all",
+    "save_preferences": "Save preferences",
+    "necessary_label": "Necessary cookies",
+    "necessary_desc": "Essential for the site to function (session, cart). Always active.",
+    "analytics_label": "Analytics cookies",
+    "analytics_desc": "They allow us to understand how you navigate the gallery and improve the experience (Google Analytics).",
+    "marketing_label": "Marketing cookies",
+    "marketing_desc": "Used to show you relevant content and adverts outside our gallery."
+  },
+  "footer": {
+    "privacy": "Privacy Policy"
   }
 }
