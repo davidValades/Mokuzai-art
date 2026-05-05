@@ -120,6 +120,7 @@ export default async function RootLayout({
             <CartProvider>
               <Header musicUrl={musicUrl} />
               <main className="relative">{children}</main>
+              <CookieBanner lang={lang} />
               <footer className="py-12 px-8 md:px-16 border-t border-olive-dark/10 bg-stone-serene">
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 md:gap-4">
                   {/* 1. Marca (Izquierda en desktop, arriba en móvil) */}
@@ -163,7 +164,6 @@ export default async function RootLayout({
           </I18nProvider>
         </AuthProvider>
         <Analytics />
-        <CookieBanner lang={lang} />
         <GoogleAnalytics gaId="G-F3ETRPEJC8" />
       </body>
     </html>
