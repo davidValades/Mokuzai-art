@@ -136,7 +136,7 @@ export default async function RootLayout({
                       href={`/${lang}/privacidad`}
                       className="font-inter text-[9px] tracking-widest opacity-40 hover:opacity-70 uppercase transition-opacity"
                     >
-                      Política de Privacidad
+                      {dict.footer.privacy}
                     </Link>
                   </div>
 

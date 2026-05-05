@@ -149,7 +149,7 @@ function InnerCheckoutForm({ dict, lang, clientSecret }: { dict: any; lang: stri
       <div className="bg-[#706D54]/5 p-8 rounded-sm">
         <div className="flex justify-between items-center mb-6">
           <span className="font-inter text-xs tracking-widest uppercase text-[#706D54]/60">
-            Total de la obra
+            {dict.checkout.total_label}
           </span>
           <span className="font-cormorant text-2xl text-[#706D54]">
             {cartTotal} €
@@ -239,7 +239,7 @@ export default function CheckoutForm({
         <div className="flex flex-col items-center justify-center py-12 space-y-4">
           <div className="w-8 h-8 border-y-2 border-[#706D54] rounded-full animate-spin"></div>
           <span className="font-inter text-[10px] uppercase tracking-[0.2em] text-[#706D54]/60">
-            Conectando con pasarela segura...
+            {dict.checkout.connecting}
           </span>
         </div>
       )}

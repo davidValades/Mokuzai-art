@@ -3,10 +3,12 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { useI18n } from "@/context/I18nContext";
 
 export default function NotFound() {
   const params = useParams();
   const lang = (params?.lang as string) || "es";
+  const { dict } = useI18n();
 
   return (
     <main className="min-h-screen bg-[#DBDBDB] flex flex-col items-center justify-center px-6 text-center">
@@ -39,7 +41,7 @@ export default function NotFound() {
           transition={{ duration: 0.9, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           className="font-cormorant text-5xl md:text-6xl tracking-widest uppercase text-[#706D54] mb-4"
         >
-          Página no encontrada
+          {dict.not_found.title}
         </motion.h1>
 
         {/* Separador */}
@@ -57,9 +59,7 @@ export default function NotFound() {
           transition={{ duration: 0.8, delay: 0.35 }}
           className="font-inter text-xs tracking-wider text-[#706D54]/70 leading-relaxed mb-12"
         >
-          Como la veta de la madera, cada camino es único. La página que buscas
-          ya no existe o ha sido movida. Permítenos guiarte de vuelta a la
-          galería.
+          {dict.not_found.description}
         </motion.p>
 
         {/* Acciones */}
@@ -73,13 +73,13 @@ export default function NotFound() {
             href={`/${lang}`}
             className="font-inter text-[10px] tracking-[0.2em] uppercase bg-[#706D54] text-[#DBDBDB] px-10 py-4 hover:bg-[#A08963] transition-colors duration-300"
           >
-            Volver al inicio
+            {dict.not_found.back_home}
           </Link>
           <Link
             href={`/${lang}/coleccion`}
             className="font-inter text-[10px] tracking-[0.2em] uppercase text-[#706D54]/60 hover:text-[#706D54] transition-colors duration-300 border border-[#706D54]/30 px-10 py-4"
           >
-            Ver la colección
+            {dict.not_found.view_collection}
           </Link>
         </motion.div>
       </div>

@@ -182,7 +182,7 @@ function CollectionContent({ artworks, dict, lang, initialFilter }: any) {
                           {/* Imagen Principal */}
                           <Image
                             src={art.image}
-                            alt={t.name || "Obra Mokuzai Art"}
+                            alt={t.name || dict.dashboard?.untitled || "Obra Mokuzai Art"}
                             fill
                             className={`object-cover transition-transform duration-[3000ms] ease-out group-hover:scale-105 ${art.isSold ? "grayscale" : ""}`}
                             style={{ objectPosition: `${mainX}% ${mainY}%` }}
@@ -246,7 +246,7 @@ export default function CollectionClient(props: any) {
     <Suspense
       fallback={
         <div className="w-full py-32 flex justify-center text-[#706D54]/50 tracking-widest uppercase font-inter text-xs">
-          Cargando la colección...
+          {props.dict?.collection?.loading ?? "Cargando la colección..."}
         </div>
       }
     >

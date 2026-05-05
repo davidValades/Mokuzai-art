@@ -321,7 +321,7 @@ export default function Header({ musicUrl }: { musicUrl?: string | null }) {
               className="flex items-center space-x-3 text-[#706D54] hover:opacity-60 transition-opacity"
             >
               <span className="font-inter text-[10px] tracking-[0.2em] uppercase">
-                {isPlaying ? "Pausar" : "Activar"} Atmósfera
+                {isPlaying ? dict.header.pause_atmosphere : dict.header.activate_atmosphere}
               </span>
               <div className="flex items-end gap-[1px] h-3">
                 <div

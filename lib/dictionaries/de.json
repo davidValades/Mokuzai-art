@@ -53,6 +53,48 @@
     "address": "Vollständige Adresse",
     "city": "Stadt",
     "pay_now": "Zur Zahlung fortfahren",
-    "processing": "Handwerk wird verarbeitet..."
+    "processing": "Handwerk wird verarbeitet...",
+    "total_label": "Gesamtbetrag des Werks",
+    "connecting": "Verbindung mit sicherem Gateway..."
+  },
+  "collection": {
+    "loading": "Kollektion wird geladen..."
+  },
+  "header": {
+    "activate_atmosphere": "Atmosphäre aktivieren",
+    "pause_atmosphere": "Atmosphäre pausieren"
+  },
+  "dashboard": {
+    "welcome": "Willkommen, Sammler",
+    "sign_out": "Abmelden",
+    "acquisitions": "Deine Erwerbungen",
+    "order": "Bestellung",
+    "empty_orders": "Du hast deine Sammlung noch nicht begonnen. Das Holz wartet auf deine Wahl.",
+    "untitled": "Werk ohne Titel"
+  },
+  "not_found": {
+    "title": "Seite nicht gefunden",
+    "description": "Wie die Maserung des Holzes ist jeder Weg einzigartig. Die gesuchte Seite existiert nicht mehr oder wurde verschoben. Lass uns dich zurück zur Galerie führen.",
+    "back_home": "Zur Startseite",
+    "view_collection": "Kollektion ansehen"
+  },
+  "cookies": {
+    "title": "Datenschutz & Stille",
+    "description": "Wir verwenden Cookies, um dein Erlebnis zu verbessern. Du kannst wählen, welche Cookie-Typen du zulässt, oder mehr in unserer",
+    "privacy_link": "Datenschutzrichtlinie",
+    "configure": "Konfigurieren",
+    "hide": "Ausblenden",
+    "decline": "Ablehnen",
+    "accept_all": "Alle akzeptieren",
+    "save_preferences": "Einstellungen speichern",
+    "necessary_label": "Notwendige Cookies",
+    "necessary_desc": "Unerlässlich für die Funktion der Website (Sitzung, Warenkorb). Immer aktiv.",
+    "analytics_label": "Analytische Cookies",
+    "analytics_desc": "Sie ermöglichen uns zu verstehen, wie du durch die Galerie navigierst und das Erlebnis zu verbessern (Google Analytics).",
+    "marketing_label": "Marketing-Cookies",
+    "marketing_desc": "Werden verwendet, um dir relevante Inhalte und Anzeigen außerhalb unserer Galerie anzuzeigen."
+  },
+  "footer": {
+    "privacy": "Datenschutzrichtlinie"
   }
 }
