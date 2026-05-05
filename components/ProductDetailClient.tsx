@@ -11,6 +11,7 @@ import {
   useMotionValueEvent,
 } from "framer-motion";
 import { useCart } from "@/context/CartContext";
+import { gaAddToCart } from "@/lib/analytics";
 
 interface SanityImage {
   url: string;
@@ -93,7 +94,9 @@ export default function ProductDetailClient({
     if (isSold) return;
     setIsAdding(true);
     setTimeout(() => {
-      addToCart(createCartItem());
+      const item = createCartItem();
+      addToCart(item);
+      gaAddToCart({ id: item.id, name: item.name, price: item.price, quantity: 1 });
       setIsAdding(false);
       window.dispatchEvent(new CustomEvent("openCartDrawer"));
     }, 800);
@@ -101,7 +104,9 @@ export default function ProductDetailClient({
 
   const handleDirectBuy = () => {
     if (isSold) return;
-    addToCart(createCartItem());
+    const item = createCartItem();
+    addToCart(item);
+    gaAddToCart({ id: item.id, name: item.name, price: item.price, quantity: 1 });
     router.push(`/${lang}/checkout`);
   };
 
