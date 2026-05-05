@@ -95,6 +95,14 @@
     "marketing_desc": "Used to show you relevant content and adverts outside our gallery."
   },
   "footer": {
-    "privacy": "Privacy Policy"
+    "privacy": "Privacy Policy",
+    "designed_by": "Designed & Developed by David Valadés"
+  },
+  "signin": {
+    "private_area": "Private Area",
+    "title": "Collectors",
+    "description": "Access your personal space to follow the artworks that time and wood are sculpting for you.",
+    "continue_with_google": "Continue with Google",
+    "back_to_gallery": "Back to the Gallery"
   }
 }

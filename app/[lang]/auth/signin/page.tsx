@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useI18n } from "@/context/I18nContext";
 
 export default function SignInPage() {
-  const { lang } = useI18n();
+  const { lang, dict } = useI18n();
 
   return (
     <main className="min-h-screen bg-[#DBDBDB] flex flex-col items-center justify-center px-6 relative overflow-hidden selection:bg-[#706D54] selection:text-[#DBDBDB]">
@@ -30,16 +30,15 @@ export default function SignInPage() {
         className="max-w-md w-full relative z-10 flex flex-col items-center text-center"
       >
         <span className="font-inter text-[10px] tracking-[0.4em] uppercase text-[#A08963] mb-6 block">
-          Área Privada
+          {dict.signin.private_area}
         </span>
 
         <h1 className="font-cormorant text-5xl text-[#706D54] mb-4">
-          Coleccionistas
+          {dict.signin.title}
         </h1>
 
         <p className="font-inter text-sm text-[#706D54]/70 mb-12 leading-relaxed">
-          Accede a tu espacio personal para dar seguimiento a las obras que el
-          tiempo y la madera están esculpiendo para ti.
+          {dict.signin.description}
         </p>
 
         {/* Botón de Login Estilo Mokuzai (Google Exclusivo) */}
@@ -58,7 +57,7 @@ export default function SignInPage() {
             <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
           </svg>
           <span className="font-inter text-xs tracking-[0.2em] uppercase">
-            Continuar con Google
+            {dict.signin.continue_with_google}
           </span>
         </button>
 
@@ -67,7 +66,7 @@ export default function SignInPage() {
             href={`/${lang}`}
             className="font-inter text-[10px] tracking-widest uppercase text-[#706D54]/50 hover:text-[#706D54] transition-colors border-b border-transparent hover:border-[#706D54]/30 pb-1"
           >
-            Volver a la Galería
+            {dict.signin.back_to_gallery}
           </Link>
         </div>
       </motion.div>

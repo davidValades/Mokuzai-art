@@ -95,6 +95,14 @@
     "marketing_desc": "Werden verwendet, um dir relevante Inhalte und Anzeigen außerhalb unserer Galerie anzuzeigen."
   },
   "footer": {
-    "privacy": "Datenschutzrichtlinie"
+    "privacy": "Datenschutzrichtlinie",
+    "designed_by": "Entworfen & Entwickelt von David Valadés"
+  },
+  "signin": {
+    "private_area": "Privater Bereich",
+    "title": "Sammler",
+    "description": "Greife auf deinen persönlichen Bereich zu, um die Werke zu verfolgen, die Zeit und Holz für dich formen.",
+    "continue_with_google": "Mit Google fortfahren",
+    "back_to_gallery": "Zurück zur Galerie"
   }
 }
